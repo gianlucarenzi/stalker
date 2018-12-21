@@ -1,0 +1,8 @@
+/amiga.h/1.4/Thu Nov 29 16:10:37 2018/-ko/
+/debug.h/1.1/Tue Oct 09 13:17:22 2018/-ko/
+/main.h/1.1/Tue Oct 09 13:21:09 2018/-ko/
+/stm32f4xx_hal_conf.h/1.1/Tue Oct 09 11:01:21 2018/-ko/
+/stm32f4xx_it.h/1.1/Tue Oct 09 13:36:30 2018/-ko/
+/syscall.h/1.1/Tue Oct 09 11:03:05 2018/-ko/
+/usb_host.h/1.1/Tue Oct 09 13:36:57 2018/-ko/
+/usbh_conf.h/1.2/Mon Oct 22 16:19:19 2018/-ko/
