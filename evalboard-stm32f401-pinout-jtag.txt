@@ -1,0 +1,15 @@
+EVALBOARD ARMJTAG PINOUT
+------------------------
+
+HEADER_CONN_2X10
+
+1  +3v3       2   +3v3
+3  nTRST      4   GND
+5  TDI        6   GND
+7  TMS/SWDIO  8   GND
+9  TCK/SWCLK  10  GND
+11 NC         12  GND
+13 TDO        14  GND
+15 nRST       16  GND
+17 NC         18  GND
+19 NC         20  GND

@@ -1,0 +1,57 @@
+# Makefile.common
+
+######################################
+# building variables
+######################################
+# debug build?
+DEBUG = 1
+# optimization
+OPT = -Og
+
+
+#######################################
+# paths
+#######################################
+# Build path
+BUILD_DIR = build
+
+######################################
+# Library sources
+######################################
+LIBRARY_C_SOURCES =  \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
+	Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.c \
+	Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ctlreq.c \
+	Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c \
+	Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_pipes.c \
+	Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid.c \
+	Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid_keybd.c \
+	Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid_mouse.c \
+	Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid_parser.c \
+
+
+LIBRARY_C_INCLUDES = \
+	-IDrivers/STM32F4xx_HAL_Driver/Inc \
+	-IDrivers/STM32F4xx_HAL_Driver/Inc/Legacy \
+	-IMiddlewares/ST/STM32_USB_Host_Library/Core/Inc \
+	-IMiddlewares/ST/STM32_USB_Host_Library/Class/HID/Inc \
+	-IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
+	-IDrivers/CMSIS/Include \
+
+# End of Makefile.common
