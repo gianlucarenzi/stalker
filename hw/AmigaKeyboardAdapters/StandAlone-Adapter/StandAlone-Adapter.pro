@@ -1,4 +1,4 @@
-update=Sat 22 Dec 2018 20:00:38 CET
+update=Sun 23 Dec 2018 00:46:28 CET
 version=1
 last_client=kicad
 [pcbnew]
@@ -25,16 +25,6 @@ version=1
 NetIExt=net
 [general]
 version=1
-[schematic_editor]
-version=1
-PageLayoutDescrFile=
-PlotDirectoryName=
-SubpartIdSeparator=0
-SubpartFirstId=65
-NetFmtName=Pcbnew
-SpiceForceRefPrefix=0
-SpiceUseNetNumbers=0
-LabSize=28
 [eeschema]
 version=1
 LibDir=/home/debian/packages/kicad/kicad-symbols;/home/debian/packages/kicad/kicad-footprints;/home/debian/packages/kicad/kicad-packages3D
@@ -82,3 +72,13 @@ LibName40=Timer
 LibName41=Switch
 LibName42=StandAlone-Adapter-cache
 LibName43=AmigaComponents
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=Pcbnew
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=28
