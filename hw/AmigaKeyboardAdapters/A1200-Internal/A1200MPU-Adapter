@@ -1,0 +1,9 @@
+Reference, Value, Footprint, Datasheet
+U1,A1200U13_REV_PLCC44,Sockets:PLCC44,
+P1,CONN_02X03,Pin_Headers:Pin_Header_Straight_2x03,
+C2,10uF,SMD_Packages:SMD-1206_Pol,
+C1,10uF,SMD_Packages:SMD-1206_Pol,
+R1,330,Resistors_SMD:R_1206_HandSoldering,
+D1,Led_Small,SMD_Packages:SMD-1206_Pol,
+C3,100nF,Capacitors_SMD:C_1206_HandSoldering,
+C4,100nF,Capacitors_SMD:C_1206_HandSoldering,

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>/home/debian/AMIGA/projects/AmigaKeyboardAdapters/A1200-Internal/A1200MPU-Adapter.sch</source>
+    <date>Wed 14 Nov 2018 22:29:52 CET</date>
+    <tool>Eeschema 4.0.2+dfsg1-stable</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>Amiga1200 U13 MPU Adapter</title>
+        <company/>
+        <rev/>
+        <date>2018-11-11</date>
+        <source>A1200MPU-Adapter.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="U1">
+      <value>A1200U13_REV_PLCC44</value>
+      <footprint>Sockets:PLCC44</footprint>
+      <libsource lib="AmigaComponents" part="A1200U13_REV_PLCC44"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5BE895D2</tstamp>
+    </comp>
+    <comp ref="P1">
+      <value>CONN_02X03</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_2x03</footprint>
+      <libsource lib="conn" part="CONN_02X03"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5BE89651</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>10uF</value>
+      <footprint>SMD_Packages:SMD-1206_Pol</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5BE89B1D</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>10uF</value>
+      <footprint>SMD_Packages:SMD-1206_Pol</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5BE89BB8</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>330</value>
+      <footprint>Resistors_SMD:R_1206_HandSoldering</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5BE8AFFD</tstamp>
+    </comp>
+    <comp ref="D1">
+      <value>Led_Small</value>
+      <footprint>SMD_Packages:SMD-1206_Pol</footprint>
+      <libsource lib="device" part="Led_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5BE8B056</tstamp>
+    </comp>
+    <comp ref="C3">
+      <value>100nF</value>
+      <footprint>Capacitors_SMD:C_1206_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5BE8B488</tstamp>
+    </comp>
+    <comp ref="C4">
+      <value>100nF</value>
+      <footprint>Capacitors_SMD:C_1206_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5BE8B4DE</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="AmigaComponents" part="A1200U13_REV_PLCC44">
+      <aliases>
+        <alias>U13A1200</alias>
+      </aliases>
+      <description>Amiga 1200 Keyboard MPU Socket Reversed(version PLCC 44 pins)</description>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">A1200U13_REV_PLCC44</field>
+      </fields>
+      <pins>
+        <pin num="11" name="VCC5V" type="power_in"/>
+        <pin num="13" name="VCC5V" type="power_in"/>
+        <pin num="19" name="~KB_RESET" type="BiDi"/>
+        <pin num="35" name="GND" type="power_in"/>
+        <pin num="43" name="~KB_CLOCK" type="BiDi"/>
+        <pin num="44" name="~KB_DATA" type="BiDi"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="CONN_02X03">
+      <description>Connector 02x03</description>
+      <footprints>
+        <fp>Pin_Header_Straight_2X03</fp>
+        <fp>Pin_Header_Angled_2X03</fp>
+        <fp>Socket_Strip_Straight_2X03</fp>
+        <fp>Socket_Strip_Angled_2X03</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_02X03</field>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="CP1_Small">
+      <description>Polarised capacitor</description>
+      <footprints>
+        <fp>CP*</fp>
+        <fp>Elko*</fp>
+        <fp>TantalC*</fp>
+        <fp>C*elec</fp>
+        <fp>c_elec*</fp>
+        <fp>SMD*_Pol</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">CP1_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="C_Small">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C?</fp>
+        <fp>C_????_*</fp>
+        <fp>C_????</fp>
+        <fp>SMD*_c</fp>
+        <fp>Capacitor*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="Led_Small">
+      <description>Led</description>
+      <footprints>
+        <fp>CP*</fp>
+        <fp>SM*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">Led_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="R_Small">
+      <description>Resistor</description>
+      <footprints>
+        <fp>Resistor_*</fp>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="AmigaComponents">
+      <uri>/home/debian/packages/kicad/kicad-symbols/AmigaComponents.lib</uri>
+    </library>
+    <library logical="conn">
+      <uri>/usr/share/kicad/library/conn.lib</uri>
+    </library>
+    <library logical="device">
+      <uri>/usr/share/kicad/library/device.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(D1-Pad2)">
+      <node ref="R1" pin="1"/>
+      <node ref="D1" pin="2"/>
+    </net>
+    <net code="2" name="GND">
+      <node ref="C4" pin="2"/>
+      <node ref="D1" pin="1"/>
+      <node ref="U1" pin="35"/>
+      <node ref="C1" pin="2"/>
+      <node ref="P1" pin="3"/>
+      <node ref="C2" pin="2"/>
+      <node ref="P1" pin="4"/>
+      <node ref="C3" pin="2"/>
+    </net>
+    <net code="3" name="VCC5V">
+      <node ref="P1" pin="6"/>
+      <node ref="U1" pin="13"/>
+      <node ref="U1" pin="11"/>
+      <node ref="R1" pin="2"/>
+      <node ref="C4" pin="1"/>
+      <node ref="C3" pin="1"/>
+      <node ref="C2" pin="1"/>
+      <node ref="C1" pin="1"/>
+    </net>
+    <net code="5" name="mKBD_RESET">
+      <node ref="U1" pin="19"/>
+      <node ref="P1" pin="5"/>
+    </net>
+    <net code="6" name="mKBD_DATA">
+      <node ref="U1" pin="44"/>
+      <node ref="P1" pin="2"/>
+    </net>
+    <net code="7" name="mKBD_CLOCK">
+      <node ref="U1" pin="43"/>
+      <node ref="P1" pin="1"/>
+    </net>
+  </nets>
+</export>

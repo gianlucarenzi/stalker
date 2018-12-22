@@ -1,0 +1,67 @@
+Cmp-Mod V01 Created by PcbNew   date = Sun 11 Nov 2018 22:19:59 CET
+
+BeginCmp
+TimeStamp = 5BE98F05
+Path = /5BE89BB8
+Reference = C1;
+ValeurCmp = 10uF;
+IdModule  = SMD_Packages:SMD-1206_Pol;
+EndCmp
+
+BeginCmp
+TimeStamp = 5BE98F0B
+Path = /5BE89B1D
+Reference = C2;
+ValeurCmp = 10uF;
+IdModule  = SMD_Packages:SMD-1206_Pol;
+EndCmp
+
+BeginCmp
+TimeStamp = 5BE98F17
+Path = /5BE8B4DE
+Reference = C4;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 5BE98F1D
+Path = /5BE8B056
+Reference = D1;
+ValeurCmp = Led_Small;
+IdModule  = SMD_Packages:SMD-1206_Pol;
+EndCmp
+
+BeginCmp
+TimeStamp = 5BE98F34
+Path = /5BE89651
+Reference = P1;
+ValeurCmp = CONN_02X03;
+IdModule  = Pin_Headers:Pin_Header_Straight_2x03;
+EndCmp
+
+BeginCmp
+TimeStamp = 5BE98F3A
+Path = /5BE8AFFD
+Reference = R1;
+ValeurCmp = 330;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = 5BE98F6A
+Path = /5BE895D2
+Reference = U1;
+ValeurCmp = A1200U13_REV_PLCC44;
+IdModule  = Sockets:PLCC44;
+EndCmp
+
+BeginCmp
+TimeStamp = 5BE98F11
+Path = /5BE8B488
+Reference = C3;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+EndListe

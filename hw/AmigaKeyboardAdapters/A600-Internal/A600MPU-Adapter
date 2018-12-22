@@ -1,0 +1,10 @@
+Reference, Value, Footprint, Datasheet
+P1,CONN_02X03,Pin_Headers:Pin_Header_Straight_2x03,
+U1,6571R4_PLCC44_MPUKEY_REV,Sockets:PLCC44,
+P2,CONN_01X03,Pin_Headers:Pin_Header_Straight_1x03,
+C2,100nF,Capacitors_SMD:C_0603_HandSoldering,
+C4,100nF,Capacitors_SMD:C_0603_HandSoldering,
+C1,10uF,Capacitors_SMD:c_elec_3x5.3,
+C3,10uF,Capacitors_SMD:c_elec_3x5.3,
+D1,Led_Small,SMD_Packages:SMD-1206_Pol,
+R1,330,Resistors_SMD:R_0603_HandSoldering,

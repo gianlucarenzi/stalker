@@ -1,0 +1,41 @@
+### Module positions - created on Mon 12 Nov 2018 22:57:07 CET ###
+### Printed by Pcbnew version kicad 4.0.2+dfsg1-stable
+## Unit = mm, Angle = deg.
+## Side : top
+# Ref     Val            Package                          PosX       PosY       Rot  Side
+C1        10u            c_elec_4x4.5                 170.1800  -104.1400    0.0000  top
+C2        22u            c_elec_4x4.5                 180.3400  -111.7600    0.0000  top
+C3        47u            c_elec_4x4.5                 154.9400  -104.1400  180.0000  top
+C4        22p            C_0603_HandSoldering         150.8760  -114.3000    0.0000  top
+C5        22p            C_0603_HandSoldering         155.9560  -120.9040    0.0000  top
+C6        100n           C_0603_HandSoldering         172.7200  -109.2200    0.0000  top
+C7        100n           C_0603_HandSoldering         175.2600  -116.8400   90.0000  top
+C8        100n           C_0603_HandSoldering         172.7200  -119.3800   90.0000  top
+C9        100n           C_0603_HandSoldering         172.7200  -111.7600    0.0000  top
+D1        LED            LED_0603                     175.2600   -99.0600  270.0000  top
+D2        LED            LED_0603                     152.4000  -109.2200  180.0000  top
+D3        LED            LED_0603                     193.0400  -111.7600    0.0000  top
+D4        LED            LED_0603                     132.0800  -109.2200  180.0000  top
+L1        10uH           SELF-WE-PD3S                 187.9600   -91.4400  270.0000  top
+L2        10uH           SELF-WE-PD3S                 180.3400  -104.1400    0.0000  top
+Q1        BSS138         SOT-23                       172.7200  -129.5400  180.0000  top
+Q2        BSS138         SOT-23                       162.5600  -127.0000  180.0000  top
+Q3        BSS138         SOT-23                       152.4000  -129.5400  180.0000  top
+R1        330            R_0603_HandSoldering         172.7200   -99.0600  270.0000  top
+R2        220            R_0603_HandSoldering         147.3200  -109.2200    0.0000  top
+R3        10K            R_0603_HandSoldering         139.7000  -114.3000  270.0000  top
+R4        10k            R_0603_HandSoldering         157.4800  -124.9680    0.0000  top
+R5        10k            R_0603_HandSoldering         168.1480  -124.4600    0.0000  top
+R6        1K             R_0603_HandSoldering         187.9600  -111.7600    0.0000  top
+R7        10k            R_0603_HandSoldering         172.7200  -124.4600  180.0000  top
+R8        10k            R_0603_HandSoldering         177.8000  -129.5400  270.0000  top
+R9        10k            R_0603_HandSoldering         157.4800  -129.5400    0.0000  top
+R10       10k            R_0603_HandSoldering         167.6400  -129.5400  180.0000  top
+R11       10k            R_0603_HandSoldering         147.3200  -129.5400   90.0000  top
+R12       10k            R_0603_HandSoldering         152.4000  -124.4600  180.0000  top
+R13       330            R_0603_HandSoldering         137.1600  -109.2200    0.0000  top
+RESET1    SW_PUSH        SW_SPST_FSMSM                127.0000  -116.8400   90.0000  top
+U1        AZ1117-3.3     SOT-223                      180.3400   -93.9800  180.0000  top
+U3        STM32F401RCTx  LQFP-64_10x10mm_Pitch0.5mm   162.5600  -114.3000   45.0000  top
+XT1       8Mhz           Crystal_SMD_0603_4Pads       150.4950  -119.1260    0.0000  top
+## End
