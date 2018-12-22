@@ -1,4 +1,4 @@
-(pcb "/home/debian/AMIGA/projects/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.dsn"
+(pcb "/home/debian/AMIGA/projects/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.dsn"
   (parser
     (string_quote ")
     (space_in_quoted_tokens on)
@@ -117,11 +117,21 @@
       (place H3 196850 -140970 front 0 (PN CONN_01X01))
       (place H4 125730 -140970 front 0 (PN CONN_01X01))
     )
-    (component Connect:RJ12_E
-      (place J1 162560 -142240 front 0 (PN RJ12))
-    )
     (component Pin_Headers:Pin_Header_Straight_2x03
       (place J2 134620 -129540 front 0 (PN Conn_02x03_Odd_Even))
+    )
+    (component "Symbols:Symbol_GNU-GPL_CopperTop_Small"
+      (place GNUGPL 193040 -118110 front 0 (PN "Symbol_GNU-GPL_CopperTop_Small"))
+    )
+    (component "Symbols:Symbol_OSHW-Logo_SilkScreen"
+      (place "OPEN SOURCE HARDWARE" 176784 -137922 front 0 (PN "Symbol_OSHW-Logo_SilkScreen"))
+    )
+    (component "RetroBitLab:amigaLogo_BW_31x12mm-SilkScreenBack"
+      (place AMIGALOGO 163830 -106680 back 0 (PN LOGO))
+      (place WORKBENCHLOGO 161290 -121920 back 0 (PN LOGO))
+    )
+    (component "RetroBitLab:RJ10-RECEPTACLE-Assmann-ASS-2004-3-4-LP-N-R"
+      (place J1 158750 -130810 front 0 (PN RJ10))
     )
   )
   (library
@@ -532,21 +542,6 @@
             706.413 2174.11  1343.68 1849.41  1849.41 1343.68  2174.11 706.413))
       (pin Round[A]Pad_4064_um 1 0 0)
     )
-    (image Connect:RJ12_E
-      (outline (path signal 150  -6858 10922  -6858 -2286))
-      (outline (path signal 150  6604 10922  6604 -2286))
-      (outline (path signal 150  -6858 -2286  6604 -2286))
-      (outline (path signal 150  5842 10922  6604 10922))
-      (outline (path signal 150  -6858 10922  5842 10922))
-      (pin Round[A]Pad_1524_um 4 508 8890)
-      (pin Round[A]Pad_1524_um 2 -2032 8890)
-      (pin Round[A]Pad_1524_um 6 3048 8890)
-      (pin Round[A]Pad_1524_um 1 -3302 6350)
-      (pin Round[A]Pad_1524_um 3 -762 6350)
-      (pin Round[A]Pad_1524_um 5 1778 6350)
-      (pin Round[A]Pad_2999.74_um 8 6604 4318)
-      (pin Round[A]Pad_2999.74_um 7 -6858 4318)
-    )
     (image Pin_Headers:Pin_Header_Straight_2x03
       (outline (path signal 150  -1270 -1270  -1270 -6350))
       (outline (path signal 150  -1550 1550  0 1550))
@@ -568,14 +563,157 @@
       (pin Oval[A]Pad_1727.2x1727.2_um 5 0 -5080)
       (pin Oval[A]Pad_1727.2x1727.2_um 6 2540 -5080)
     )
+    (image "Symbols:Symbol_GNU-GPL_CopperTop_Small"
+      (outline (path signal 381  2100.58 -299.72  2100.58 -1899.92))
+      (outline (path signal 381  2100.58 -1899.92  3299.46 -1899.92))
+      (outline (path signal 381  -398.78 -1899.92  -398.78 -398.78))
+      (outline (path signal 381  -398.78 -398.78  500.38 -398.78))
+      (outline (path signal 381  500.38 -398.78  701.04 -398.78))
+      (outline (path signal 381  701.04 -398.78  899.16 -500.38))
+      (outline (path signal 381  899.16 -500.38  1000.76 -701.04))
+      (outline (path signal 381  1000.76 -701.04  1000.76 -899.16))
+      (outline (path signal 381  1000.76 -899.16  800.1 -1099.82))
+      (outline (path signal 381  800.1 -1099.82  500.38 -1198.88))
+      (outline (path signal 381  500.38 -1198.88  -398.78 -1198.88))
+      (outline (path signal 381  -1600.2 -500.38  -1800.86 -398.78))
+      (outline (path signal 381  -1800.86 -398.78  -2301.24 -398.78))
+      (outline (path signal 381  -2301.24 -398.78  -2600.96 -500.38))
+      (outline (path signal 381  -2600.96 -500.38  -2799.08 -599.44))
+      (outline (path signal 381  -2799.08 -599.44  -2999.74 -899.16))
+      (outline (path signal 381  -2999.74 -899.16  -2999.74 -1198.88))
+      (outline (path signal 381  -2999.74 -1198.88  -2900.68 -1600.2))
+      (outline (path signal 381  -2900.68 -1600.2  -2600.96 -1800.86))
+      (outline (path signal 381  -2600.96 -1800.86  -2301.24 -1899.92))
+      (outline (path signal 381  -2301.24 -1899.92  -1998.98 -1899.92))
+      (outline (path signal 381  -1998.98 -1899.92  -1501.14 -1800.86))
+      (outline (path signal 381  -1501.14 -1800.86  -1501.14 -1300.48))
+      (outline (path signal 381  -1501.14 -1300.48  -1998.98 -1300.48))
+      (outline (path signal 381  1800.86 2199.64  1800.86 899.16))
+      (outline (path signal 381  1800.86 899.16  2100.58 701.04))
+      (outline (path signal 381  2100.58 701.04  2400.3 701.04))
+      (outline (path signal 381  2400.3 701.04  2799.08 701.04))
+      (outline (path signal 381  2799.08 701.04  3098.8 800.1))
+      (outline (path signal 381  3098.8 800.1  3299.46 899.16))
+      (outline (path signal 381  3299.46 899.16  3299.46 2199.64))
+      (outline (path signal 381  -800.1 701.04  -800.1 2199.64))
+      (outline (path signal 381  -800.1 2199.64  701.04 701.04))
+      (outline (path signal 381  701.04 701.04  701.04 2199.64))
+      (outline (path signal 381  -1998.98 2100.58  -2301.24 2199.64))
+      (outline (path signal 381  -2301.24 2199.64  -2799.08 2100.58))
+      (outline (path signal 381  -2799.08 2100.58  -3200.4 1899.92))
+      (outline (path signal 381  -3200.4 1899.92  -3401.06 1501.14))
+      (outline (path signal 381  -3401.06 1501.14  -3299.46 1099.82))
+      (outline (path signal 381  -3299.46 1099.82  -2999.74 800.1))
+      (outline (path signal 381  -2999.74 800.1  -2499.36 599.44))
+      (outline (path signal 381  -2499.36 599.44  -1800.86 800.1))
+      (outline (path signal 381  -1800.86 800.1  -1800.86 1300.48))
+      (outline (path signal 381  -1800.86 1300.48  -2301.24 1300.48))
+      (outline (path signal 381  -4064 3048  4064 3048))
+      (outline (path signal 381  4064 3048  4064 -2540))
+      (outline (path signal 381  4064 -2540  -4064 -2540))
+      (outline (path signal 381  -4064 -2540  -4064 3048))
+    )
+    (image "Symbols:Symbol_OSHW-Logo_SilkScreen"
+      (outline (path signal 150  1668.78 -2689.86  2029.46 -4160.52))
+      (outline (path signal 150  2029.46 -4160.52  2308.86 -3098.8))
+      (outline (path signal 150  2308.86 -3098.8  2618.74 -4170.68))
+      (outline (path signal 150  2618.74 -4170.68  2959.1 -2720.34))
+      (outline (path signal 150  248.92 -3380.74  1038.86 -3370.58))
+      (outline (path signal 150  1038.86 -3370.58  1049.02 -3380.74))
+      (outline (path signal 150  1049.02 -3380.74  1049.02 -3370.58))
+      (outline (path signal 150  1089.66 -2659.38  1089.66 -4201.16))
+      (outline (path signal 150  200.66 -2649.22  200.66 -4218.94))
+      (outline (path signal 150  200.66 -4218.94  210.82 -4208.78))
+      (outline (path signal 150  -350.52 -2750.82  -701.04 -2669.54))
+      (outline (path signal 150  -701.04 -2669.54  -1021.08 -2659.38))
+      (outline (path signal 150  -1021.08 -2659.38  -1259.84 -2860.04))
+      (outline (path signal 150  -1259.84 -2860.04  -1290.32 -3129.28))
+      (outline (path signal 150  -1290.32 -3129.28  -1049.02 -3370.58))
+      (outline (path signal 150  -1049.02 -3370.58  -660.4 -3500.12))
+      (outline (path signal 150  -660.4 -3500.12  -480.06 -3660.14))
+      (outline (path signal 150  -480.06 -3660.14  -439.42 -3959.86))
+      (outline (path signal 150  -439.42 -3959.86  -670.56 -4180.84))
+      (outline (path signal 150  -670.56 -4180.84  -990.6 -4208.78))
+      (outline (path signal 150  -990.6 -4208.78  -1341.12 -4099.56))
+      (outline (path signal 150  -2379.98 -2649.22  -2628.9 -2669.54))
+      (outline (path signal 150  -2628.9 -2669.54  -2870.2 -2910.84))
+      (outline (path signal 150  -2870.2 -2910.84  -2959.1 -3401.06))
+      (outline (path signal 150  -2959.1 -3401.06  -2931.16 -3749.04))
+      (outline (path signal 150  -2931.16 -3749.04  -2730.5 -4069.08))
+      (outline (path signal 150  -2730.5 -4069.08  -2479.04 -4191))
+      (outline (path signal 150  -2479.04 -4191  -2169.16 -4119.88))
+      (outline (path signal 150  -2169.16 -4119.88  -1950.72 -3939.54))
+      (outline (path signal 150  -1950.72 -3939.54  -1879.6 -3479.8))
+      (outline (path signal 150  -1879.6 -3479.8  -1930.4 -3070.86))
+      (outline (path signal 150  -1930.4 -3070.86  -2039.62 -2788.92))
+      (outline (path signal 150  -2039.62 -2788.92  -2400.3 -2659.38))
+      (outline (path signal 150  -1780.54 -929.64  -2039.62 -1490.98))
+      (outline (path signal 150  -2039.62 -1490.98  -1501.14 -2009.14))
+      (outline (path signal 150  -1501.14 -2009.14  -980.44 -1739.9))
+      (outline (path signal 150  -980.44 -1739.9  -701.04 -1899.92))
+      (outline (path signal 150  739.14 -1879.6  1069.34 -1689.1))
+      (outline (path signal 150  1069.34 -1689.1  1508.76 -2019.3))
+      (outline (path signal 150  1508.76 -2019.3  1981.2 -1529.08))
+      (outline (path signal 150  1981.2 -1529.08  1699.26 -1049.02))
+      (outline (path signal 150  1699.26 -1049.02  1889.76 -579.12))
+      (outline (path signal 150  1889.76 -579.12  2499.36 -391.16))
+      (outline (path signal 150  2499.36 -391.16  2499.36 289.56))
+      (outline (path signal 150  2499.36 289.56  1940.56 429.26))
+      (outline (path signal 150  1940.56 429.26  1739.9 1000.76))
+      (outline (path signal 150  1739.9 1000.76  2009.14 1470.66))
+      (outline (path signal 150  2009.14 1470.66  1539.24 1981.2))
+      (outline (path signal 150  1539.24 1981.2  1021.08 1719.58))
+      (outline (path signal 150  1021.08 1719.58  551.18 1920.24))
+      (outline (path signal 150  551.18 1920.24  381 2461.26))
+      (outline (path signal 150  381 2461.26  -309.88 2479.04))
+      (outline (path signal 150  -309.88 2479.04  -520.7 1930.4))
+      (outline (path signal 150  -520.7 1930.4  -939.8 1760.22))
+      (outline (path signal 150  -939.8 1760.22  -1490.98 2029.46))
+      (outline (path signal 150  -1490.98 2029.46  -2009.14 1501.14))
+      (outline (path signal 150  -2009.14 1501.14  -1760.22 960.12))
+      (outline (path signal 150  -1760.22 960.12  -1930.4 480.06))
+      (outline (path signal 150  -1930.4 480.06  -2479.04 381))
+      (outline (path signal 150  -2479.04 381  -2489.2 -320.04))
+      (outline (path signal 150  -2489.2 -320.04  -1930.4 -520.7))
+      (outline (path signal 150  -1930.4 -520.7  -1790.7 -919.48))
+      (outline (path signal 150  350.52 -899.16  650.24 -749.3))
+      (outline (path signal 150  650.24 -749.3  850.9 -551.18))
+      (outline (path signal 150  850.9 -551.18  1000.76 -149.86))
+      (outline (path signal 150  1000.76 -149.86  1000.76 248.92))
+      (outline (path signal 150  1000.76 248.92  850.9 599.44))
+      (outline (path signal 150  850.9 599.44  398.78 949.96))
+      (outline (path signal 150  398.78 949.96  -50.8 1000.76))
+      (outline (path signal 150  -50.8 1000.76  -449.58 899.16))
+      (outline (path signal 150  -449.58 899.16  -850.9 551.18))
+      (outline (path signal 150  -850.9 551.18  -1000.76 99.06))
+      (outline (path signal 150  -1000.76 99.06  -949.96 -398.78))
+      (outline (path signal 150  -949.96 -398.78  -701.04 -701.04))
+      (outline (path signal 150  -701.04 -701.04  -350.52 -899.16))
+      (outline (path signal 150  -350.52 -899.16  -701.04 -1899.92))
+      (outline (path signal 150  350.52 -899.16  749.3 -1899.92))
+    )
+    (image "RetroBitLab:amigaLogo_BW_31x12mm-SilkScreenBack"
+    )
+    (image "RetroBitLab:RJ10-RECEPTACLE-Assmann-ASS-2004-3-4-LP-N-R"
+      (outline (path signal 150  0 -34  11200 -34))
+      (outline (path signal 150  11200 -18034  11200 -34))
+      (outline (path signal 150  0 -18034  0 -34))
+      (outline (path signal 150  0 -18034  11200 -18034))
+      (pin Round[A]Pad_1270_um 3 6235 -3800)
+      (pin Round[A]Pad_1270_um 1 3695 -3800)
+      (pin Round[A]Pad_1270_um 4 7505 -1270)
+      (pin Round[A]Pad_3000_um 5 9410 -10150)
+      (pin Round[A]Pad_3000_um 5@1 1790 -10150)
+      (pin Round[A]Pad_1270_um 2 4965 -1270)
+    )
+    (padstack Round[A]Pad_1270_um
+      (shape (circle F.Cu 1270))
+      (shape (circle B.Cu 1270))
+      (attach off)
+    )
     (padstack Round[A]Pad_1501.14_um
       (shape (circle F.Cu 1501.14))
       (shape (circle B.Cu 1501.14))
-      (attach off)
-    )
-    (padstack Round[A]Pad_1524_um
-      (shape (circle F.Cu 1524))
-      (shape (circle B.Cu 1524))
       (attach off)
     )
     (padstack Round[A]Pad_1998.98_um
@@ -586,6 +724,11 @@
     (padstack Round[A]Pad_2999.74_um
       (shape (circle F.Cu 2999.74))
       (shape (circle B.Cu 2999.74))
+      (attach off)
+    )
+    (padstack Round[A]Pad_3000_um
+      (shape (circle F.Cu 3000))
+      (shape (circle B.Cu 3000))
       (attach off)
     )
     (padstack Round[A]Pad_4064_um
@@ -675,19 +818,18 @@
   )
   (network
     (net KBD_CLOCK
-      (pins AMIGA_KEYBOARD1-1 Q3-3 R12-2 J1-3 J2-1)
+      (pins AMIGA_KEYBOARD1-1 Q3-3 R12-2 J2-1 J1-2)
     )
     (net KBD_DATA
-      (pins AMIGA_KEYBOARD1-2 Q1-3 R8-2 J1-4 J2-2)
+      (pins AMIGA_KEYBOARD1-2 Q1-3 R8-2 J2-2 J1-3)
     )
     (net GND
       (pins AMIGA_KEYBOARD1-4 BOOT1-3 C1-2 C2-2 C3-2 C4-2 C5-2 C6-1 C7-1 C8-1 C9-1
         D1-1 D2-1 DEBUG1-1 EN1-2 P1-2 POWER1-2 POWER1-3 R6-1 RESET1-2 SWDIO/CLK1-1
-        TP1-1 U1-1 U3-12 U3-18 U3-31 U3-47 U3-63 USB1-1 USB_ID1-1 J1-5 J1-8 J1-7 J2-3
-        J2-4)
+        TP1-1 U1-1 U3-12 U3-18 U3-31 U3-47 U3-63 USB1-4 USB_ID1-1 J2-3 J2-4 J1-4)
     )
     (net VCC5V
-      (pins AMIGA_KEYBOARD1-5 L1-2 POWER1-1 R1-1 R8-1 R10-1 R12-1 USB1-4 J1-2 J2-6)
+      (pins AMIGA_KEYBOARD1-5 L1-2 POWER1-1 R1-1 R8-1 R10-1 R12-1 USB1-1 J2-6 J1-1)
     )
     (net VCC3V3
       (pins BOOT1-1 C6-2 C7-2 C8-2 C9-2 D4-2 L2-1 Q1-1 Q2-1 Q3-1 R3-1 R4-1 R5-1 R7-1
@@ -723,12 +865,6 @@
     (net "Net-(D4-Pad1)"
       (pins D4-1 R13-1)
     )
-    (net UART_RX_TTL
-      (pins DEBUG1-2 R5-2 U3-17)
-    )
-    (net UART_TX_TTL
-      (pins DEBUG1-3 R4-2 U3-16)
-    )
     (net "Net-(EN1-Pad1)"
       (pins EN1-1 R3-2 RESET1-1 U3-7)
     )
@@ -760,26 +896,32 @@
       (pins U3-43 USB_ID1-2)
     )
     (net USB_N
-      (pins U3-44 USB1-3)
+      (pins U3-44 USB1-2)
     )
     (net USB_P
-      (pins U3-45 USB1-2)
+      (pins U3-45 USB1-3)
     )
-    (class kicad_default "" +5V BOOT0 GND KBD_3v3_CLOCK KBD_3v3_DATA KBD_3v3_RESET
-      KBD_CLOCK KBD_DATA KBD_RESET "Net-(AMIGA_KEYBOARD1-Pad3)" "Net-(C2-Pad1)"
-      "Net-(C4-Pad1)" "Net-(C5-Pad1)" "Net-(D1-Pad2)" "Net-(D2-Pad2)" "Net-(D3-Pad1)"
-      "Net-(D4-Pad1)" "Net-(EN1-Pad1)" "Net-(H1-Pad1)" "Net-(H2-Pad1)" "Net-(H3-Pad1)"
-      "Net-(H4-Pad1)" "Net-(J1-Pad1)" "Net-(J1-Pad6)" "Net-(U3-Pad1)" "Net-(U3-Pad2)"
-      "Net-(U3-Pad20)" "Net-(U3-Pad21)" "Net-(U3-Pad22)" "Net-(U3-Pad23)"
-      "Net-(U3-Pad24)" "Net-(U3-Pad25)" "Net-(U3-Pad26)" "Net-(U3-Pad27)"
-      "Net-(U3-Pad28)" "Net-(U3-Pad29)" "Net-(U3-Pad3)" "Net-(U3-Pad30)" "Net-(U3-Pad33)"
-      "Net-(U3-Pad34)" "Net-(U3-Pad35)" "Net-(U3-Pad36)" "Net-(U3-Pad37)"
-      "Net-(U3-Pad38)" "Net-(U3-Pad39)" "Net-(U3-Pad4)" "Net-(U3-Pad40)" "Net-(U3-Pad41)"
-      "Net-(U3-Pad42)" "Net-(U3-Pad50)" "Net-(U3-Pad51)" "Net-(U3-Pad52)"
-      "Net-(U3-Pad53)" "Net-(U3-Pad54)" "Net-(U3-Pad55)" "Net-(U3-Pad56)"
-      "Net-(U3-Pad57)" "Net-(U3-Pad58)" "Net-(U3-Pad59)" "Net-(U3-Pad61)"
-      "Net-(U3-Pad62)" "Net-(U3-Pad8)" SWDCLK SWDIO TP1 TP2 UART_RX_TTL UART_TX_TTL
-      USB_ID USB_N USB_P VCC12V VCC3V3 VCC5V
+    (net /USART3_TX
+      (pins R4-2 U3-16)
+    )
+    (net /USART3_RX
+      (pins R5-2 U3-17)
+    )
+    (class kicad_default "" +5V /USART3_RX /USART3_TX BOOT0 GND KBD_3v3_CLOCK
+      KBD_3v3_DATA KBD_3v3_RESET KBD_CLOCK KBD_DATA KBD_RESET "Net-(AMIGA_KEYBOARD1-Pad3)"
+      "Net-(C2-Pad1)" "Net-(C4-Pad1)" "Net-(C5-Pad1)" "Net-(D1-Pad2)" "Net-(D2-Pad2)"
+      "Net-(D3-Pad1)" "Net-(D4-Pad1)" "Net-(EN1-Pad1)" "Net-(H1-Pad1)" "Net-(H2-Pad1)"
+      "Net-(H3-Pad1)" "Net-(H4-Pad1)" "Net-(U3-Pad1)" "Net-(U3-Pad2)" "Net-(U3-Pad20)"
+      "Net-(U3-Pad21)" "Net-(U3-Pad22)" "Net-(U3-Pad23)" "Net-(U3-Pad24)"
+      "Net-(U3-Pad25)" "Net-(U3-Pad26)" "Net-(U3-Pad27)" "Net-(U3-Pad28)"
+      "Net-(U3-Pad29)" "Net-(U3-Pad3)" "Net-(U3-Pad30)" "Net-(U3-Pad33)" "Net-(U3-Pad34)"
+      "Net-(U3-Pad35)" "Net-(U3-Pad36)" "Net-(U3-Pad37)" "Net-(U3-Pad38)"
+      "Net-(U3-Pad39)" "Net-(U3-Pad4)" "Net-(U3-Pad40)" "Net-(U3-Pad41)" "Net-(U3-Pad42)"
+      "Net-(U3-Pad50)" "Net-(U3-Pad51)" "Net-(U3-Pad52)" "Net-(U3-Pad53)"
+      "Net-(U3-Pad54)" "Net-(U3-Pad55)" "Net-(U3-Pad56)" "Net-(U3-Pad57)"
+      "Net-(U3-Pad58)" "Net-(U3-Pad59)" "Net-(U3-Pad61)" "Net-(U3-Pad62)"
+      "Net-(U3-Pad8)" SWDCLK SWDIO TP1 TP2 UART_RX_TTL UART_TX_TTL USB_ID
+      USB_N USB_P VCC12V VCC3V3 VCC5V
       (circuit
         (use_via Via[0-1]_600:400_um)
       )
