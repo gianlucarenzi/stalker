@@ -1,0 +1,13 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 6571R4_PLCC44_MPUKEY_REV
+D Microprocessor Keyboard MPU Amiga 600 (version PLCC 44 pins)
+K MPU U13
+$ENDCMP
+#
+$CMP A1200U13_REV_PLCC44
+D Amiga 1200 Keyboard MPU Socket Reversed(version PLCC 44 pins)
+K A1200U13
+$ENDCMP
+#
+#End Doc Library

@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name RetroBitLab)(type KiCad)(uri "$(KIPRJMOD)/RetroBitLab.pretty")(options "")(descr ""))
+)
