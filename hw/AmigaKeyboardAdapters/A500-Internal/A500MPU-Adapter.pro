@@ -1,4 +1,4 @@
-update=Sun 11 Nov 2018 23:44:40 CET
+update=Sun 23 Dec 2018 01:21:39 CET
 version=1
 last_client=kicad
 [pcbnew]
@@ -58,4 +58,14 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-LibName30=/home/debian/packages/kicad/kicad-symbols/AmigaComponents
+LibName30=/home/debian/AMIGA/projects/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/AmigaComponents
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=Pcbnew
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60

@@ -1,10 +1,10 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,4.0.2+dfsg1-stable*%
-%TF.CreationDate,2018-11-13T00:59:16+01:00*%
+%TF.CreationDate,2018-12-23T01:36:30+01:00*%
 %TF.ProjectId,A500MPU-Adapter,413530304D50552D416461707465722E,rev?*%
 %TF.FileFunction,Legend,Top*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 4.0.2+dfsg1-stable) date Tue 13 Nov 2018 00:59:16 CET*
+G04 Created by KiCad (PCBNEW 4.0.2+dfsg1-stable) date Sun 23 Dec 2018 01:36:30 CET*
 %MOMM*%
 G01*
 G04 APERTURE LIST*
