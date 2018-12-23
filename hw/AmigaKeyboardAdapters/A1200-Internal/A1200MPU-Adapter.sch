@@ -29,6 +29,7 @@ LIBS:atmel
 LIBS:contrib
 LIBS:valves
 LIBS:AmigaComponents
+LIBS:A1200MPU-Adapter-cache
 EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
