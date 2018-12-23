@@ -38,8 +38,8 @@ Sheet 1 1
 Title "Amiga1200 U13 MPU Adapter"
 Date "2018-11-11"
 Rev ""
-Comp ""
-Comment1 ""
+Comp "RetroBit Lab"
+Comment1 "Amiga1200 Internal Connector for STALKB"
 Comment2 ""
 Comment3 ""
 Comment4 ""
@@ -61,7 +61,7 @@ U 1 1 5BE89651
 P 7950 3550
 F 0 "P1" H 7950 3750 50  0000 C CNN
 F 1 "CONN_02X03" H 7950 3350 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x03" H 7950 2350 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x03" H 7950 3900 50  0000 C CNN
 F 3 "" H 7950 2350 50  0000 C CNN
 	1    7950 3550
 	1    0    0    -1  

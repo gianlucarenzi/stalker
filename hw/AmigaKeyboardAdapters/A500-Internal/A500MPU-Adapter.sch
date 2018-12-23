@@ -35,11 +35,11 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev ""
-Comp ""
-Comment1 ""
+Title "Amiga 500 MPU Adapter"
+Date "2018-12-23"
+Rev "1.0"
+Comp "Retrobit Lab"
+Comment1 "J13 Adapter on Amiga 500 Motherboard Lobster"
 Comment2 ""
 Comment3 ""
 Comment4 ""
