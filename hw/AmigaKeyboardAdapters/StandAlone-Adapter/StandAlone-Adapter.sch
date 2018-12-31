@@ -1484,4 +1484,8 @@ Wire Notes Line
 	12150 3600 10600 3600
 Wire Notes Line
 	10600 3600 10600 2600
+Text GLabel 10450 4800 2    47   Input ~ 0
+UART_TX_TTL
+Text GLabel 10450 4900 2    47   Output ~ 0
+UART_RX_TTL
 $EndSCHEMATC
