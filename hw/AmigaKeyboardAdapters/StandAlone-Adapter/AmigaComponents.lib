@@ -141,7 +141,7 @@ X ~MPD 4 -900 -50 300 R 50 50 1 1 B I
 X AUDIO 5 -900 -150 300 R 50 50 1 1 B
 X ~REF 6 -900 -250 300 R 50 50 1 1 B I
 X VCC 7 -900 -350 300 R 50 50 1 1 W
-X RSRVD A 900 250 300 L 50 50 1 1 N
+X RSRVD A 900 250 300 L 50 50 1 1 B
 X ~IRQ B 900 150 300 L 50 50 1 1 B I
 X ~HALT C 900 50 300 L 50 50 1 1 B I
 X A13 D 900 -50 300 L 50 50 1 1 B
@@ -359,6 +359,62 @@ X A5 6 -400 -100 200 R 50 50 1 1 B
 X A6 7 -400 -200 200 R 50 50 1 1 B
 X A7 8 -400 -300 200 R 50 50 1 1 B
 X A8 9 -400 -400 200 R 50 50 1 1 B
+ENDDRAW
+ENDDEF
+#encoding utf-8
+#(c) SnapEDA 2016 (snapeda.com)
+#This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA) with Design Exception 1.0
+#
+# 5530843-2
+#
+DEF 5530843-2 J 0 40 Y Y 1 L N
+F0 "J" -300 820 50 H V L BNN
+F1 "5530843-2" -290 -891 50 H V L BNN
+F2 "TE_5530843-2" 0 0 50 H I L BNN
+F3 "5530843-2" 0 0 50 H I L BNN
+F4 "A31715-ND" 0 0 50 H I L BNN
+F5 "Compliant" 0 0 50 H I L BNN
+F6 "TE Connectivity" 0 0 50 H I L BNN
+F7 "5530843-2" 0 0 50 H I L BNN
+F8 "None" 0 0 50 H I L BNN
+F9 "https://www.digikey.it/product-detail/en/te-connectivity-amp-connectors/5530843-2/A31715-ND/770541?utm_source=snapeda&utm_medium=aggregator&utm_campaign=symbol" 0 0 50 H I L BNN
+F10 "Conn Card Edge SKT 30 POS 2.54mm Solder ST Thru-Hole Box" 0 0 50 H I L BNN
+F11 "https://www.te.com/usa-en/product-5530843-2.html?te_bu=Cor&te_type=disp&te_campaign=seda_glo_cor-seda-global-disp-prtnr-fy19-seda-model-bom-cta_sma-317_1&elqCampaignId=32493" 0 0 50 H I L BNN
+DRAW
+P 2 0 0 10 -300 -800 300 -800 N
+P 2 0 0 10 300 -800 300 800 N
+P 2 0 0 10 300 800 -300 800 N
+P 2 0 0 10 -300 800 -300 -800 N
+X 1 1 -500 700 200 R 40 40 0 0 P
+X 2 2 500 700 200 L 40 40 0 0 P
+X 3 3 -500 600 200 R 40 40 0 0 P
+X 4 4 500 600 200 L 40 40 0 0 P
+X 5 5 -500 500 200 R 40 40 0 0 P
+X 6 6 500 500 200 L 40 40 0 0 P
+X 7 7 -500 400 200 R 40 40 0 0 P
+X 8 8 500 400 200 L 40 40 0 0 P
+X 9 9 -500 300 200 R 40 40 0 0 P
+X 10 10 500 300 200 L 40 40 0 0 P
+X 11 11 -500 200 200 R 40 40 0 0 P
+X 12 12 500 200 200 L 40 40 0 0 P
+X 13 13 -500 100 200 R 40 40 0 0 P
+X 14 14 500 100 200 L 40 40 0 0 P
+X 15 15 -500 0 200 R 40 40 0 0 P
+X 16 16 500 0 200 L 40 40 0 0 P
+X 17 17 -500 -100 200 R 40 40 0 0 P
+X 18 18 500 -100 200 L 40 40 0 0 P
+X 19 19 -500 -200 200 R 40 40 0 0 P
+X 20 20 500 -200 200 L 40 40 0 0 P
+X 21 21 -500 -300 200 R 40 40 0 0 P
+X 22 22 500 -300 200 L 40 40 0 0 P
+X 23 23 -500 -400 200 R 40 40 0 0 P
+X 24 24 500 -400 200 L 40 40 0 0 P
+X 25 25 -500 -500 200 R 40 40 0 0 P
+X 26 26 500 -500 200 L 40 40 0 0 P
+X 27 27 -500 -600 200 R 40 40 0 0 P
+X 28 28 500 -600 200 L 40 40 0 0 P
+X 29 29 -500 -700 200 R 40 40 0 0 P
+X 30 30 500 -700 200 L 40 40 0 0 P
 ENDDRAW
 ENDDEF
 #
