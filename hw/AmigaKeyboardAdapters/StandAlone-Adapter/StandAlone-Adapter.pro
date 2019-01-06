@@ -1,4 +1,4 @@
-update=Sun 06 Jan 2019 10:55:42 CET
+update=Sun 06 Jan 2019 23:51:28 CET
 version=1
 last_client=kicad
 [pcbnew]
@@ -37,7 +37,7 @@ SpiceUseNetNumbers=0
 LabSize=28
 [eeschema]
 version=1
-LibDir=/home/debian/packages/kicad/kicad-symbols;/home/debian/packages/kicad/kicad-footprints;/home/debian/packages/kicad/kicad-packages3D
+LibDir=../../../../../../../packages/kicad/kicad-footprints;../../../../../../../packages/kicad/kicad-packages3D;../../../../../../../packages/kicad/kicad-symbols
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -80,5 +80,4 @@ LibName38=Timer_RTC
 LibName39=Timer_PLL
 LibName40=Timer
 LibName41=Switch
-LibName42=StandAlone-Adapter-cache
-LibName43=AmigaComponents
+LibName42=/home/debian/Progetti/RetroBitLab-Library/AmigaComponents
