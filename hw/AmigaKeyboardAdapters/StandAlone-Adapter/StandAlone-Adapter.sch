@@ -1488,4 +1488,6 @@ Text GLabel 10450 4800 2    47   Input ~ 0
 UART_TX_TTL
 Text GLabel 10450 4900 2    47   Output ~ 0
 UART_RX_TTL
+Text Notes 12450 1550 0    60   ~ 12
+Note: Top view Pin 1 on the left. Like MODEL: UJ2-AH-4-TH from CUI INC.
 $EndSCHEMATC
