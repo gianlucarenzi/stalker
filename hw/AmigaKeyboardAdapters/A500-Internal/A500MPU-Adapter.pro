@@ -1,4 +1,4 @@
-update=Sun 06 Jan 2019 11:04:15 CET
+update=Mon 07 Jan 2019 00:01:22 CET
 version=1
 last_client=kicad
 [pcbnew]
@@ -37,7 +37,7 @@ SpiceUseNetNumbers=0
 LabSize=60
 [eeschema]
 version=1
-LibDir=/home/debian/packages/kicad/kicad-symbols;/home/debian/packages/kicad/kicad-packages3D;/home/debian/packages/kicad/kicad-footprints
+LibDir=../../../../../../../packages/kicad/kicad-footprints;../../../../../../../packages/kicad/kicad-packages3D;../../../../../../../packages/kicad/kicad-symbols
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -68,4 +68,4 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-LibName30=/home/debian/Progetti/AMIGA/projects/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/AmigaComponents
+LibName30=/home/debian/Progetti/RetroBitLab-Library/AmigaComponents
