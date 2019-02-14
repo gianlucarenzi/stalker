@@ -16,7 +16,7 @@ Any Amiga Compatible Computer can use this adapter as well.
 
 # Images
 [![Front](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-f.png "Board Front")](#features)
-[![Back](hw/AmigaKeyboardAdapters/StandAlone-Adatper/images/StandAlone-Adapter-b.png "Board Back")](#features)
+[![Back](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-b.png "Board Back")](#features)
 
 Software & Hardware License
 ---------------------------
