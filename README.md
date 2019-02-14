@@ -15,8 +15,9 @@ simple keyboard adapters with Amiga 1000, Amiga 2000, Amiga 3000 and Amiga 4000)
 Any Amiga Compatible Computer can use this adapter as well.
 
 # Images
-[![Front](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-f.png "Board Front")](#features)
-[![Back](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-b.png "Board Back")](#features)
+Front[![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-f.png "Board Front")](#features)
+Back[![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-b.png "Board Back")](#features)
+Overall[![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter.png "Board Overall")](#features)
 
 Software & Hardware License
 ---------------------------
