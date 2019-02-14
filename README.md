@@ -14,21 +14,14 @@ simple keyboard adapters with Amiga 1000, Amiga 2000, Amiga 3000 and Amiga 4000)
 
 Any Amiga Compatible Computer can use this adapter as well.
 
-Hardware License
-----------------
+# Images
+[![Stand Alone Adapter Front](hw/AmigaKeyboardAdapters/StandAlone-Adatper/images/StandAlone-f.png "Board Front")](#features)
+[![Stand Alone Adapter Back] (hw/AmigaKeyboardAdapters/StandAlone-Adatper/images/StandAlone-b.png "Board Back")](#features)
+
+Software & Hardware License
+---------------------------
 Copyright (C) 2018/2019 Gianluca Renzi <gianlucarenzi@eurek.it> <icjtqr@gmail.com>
 
 The hardware of this project is released as free/open hardware under the
-Creative Commons Attribution Share-Alike license. See `LICENSE.hw` for details.
+GNU GPL v3 License terms. See licence.txt for details.
 
-Firmware License
-----------------
-Copyright (C) 2018/2019 Gianluca Renzi <gianlucarenzi@eurek.it> <icjtqr@gmail.com>
-
-The microcontroller firmware of this project is released as free software,
-under the terms of the GNU General Public License v3, or later.  See
-`LICENSE.sw` for details.
-
-Software License
-----------------
-Copyright (C) 2018/2019 Gianluca Renzi <gianlucarenzi@eurek.it> <icjtqr@gmail.com>
