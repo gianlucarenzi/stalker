@@ -214,6 +214,7 @@ LIBS:Sensor_Proximity
 LIBS:Sensor_Temperature
 LIBS:Sensor_Touch
 LIBS:Sensor_Voltage
+LIBS:StandAlone-Adapter-cache
 EELAYER 25 0
 EELAYER END
 $Descr A3 16535 11693
@@ -917,7 +918,7 @@ U 1 1 5B8AF72F
 P 7200 4300
 F 0 "RESET1" H 7200 4450 50  0000 C CNN
 F 1 "SW_PUSH" H 7200 4220 50  0000 C CNN
-F 2 "Buttons_Switches_SMD:SW_SPST_FSMSM" H 7200 4300 50  0001 C CNN
+F 2 "RetroBitLab:SW_SPST_FSMSM_3D" H 7200 4300 50  0001 C CNN
 F 3 "" H 7200 4300 50  0000 C CNN
 	1    7200 4300
 	0    -1   -1   0   
