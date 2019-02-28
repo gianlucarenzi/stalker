@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/debian/Progetti/AMIGA/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.sch)
-    (date "Thu 21 Feb 2019 23:00:32 CET")
+    (date "Thu 28 Feb 2019 18:46:38 CET")
     (tool "Eeschema 4.0.2+dfsg1-stable")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -317,7 +317,7 @@
       (tstamp 5BE9D433))
     (comp (ref J2)
       (value Conn_02x03_Odd_Even)
-      (footprint Pin_Headers:Pin_Header_Straight_2x03)
+      (footprint Connector_IDC:IDC-Header_2x03_P2.54mm_Vertical)
       (libsource (lib Connector_Generic) (part Conn_02x03_Odd_Even))
       (sheetpath (names /) (tstamps /))
       (tstamp 5BEA22B3))
@@ -632,12 +632,12 @@
       (pins
         (pin (num 1) (name 1) (type passive)))))
   (libraries
-    (library (logical conn)
-      (uri /usr/share/kicad/library/conn.lib))
-    (library (logical device)
-      (uri /usr/share/kicad/library/device.lib))
     (library (logical transistors)
       (uri /usr/share/kicad/library/transistors.lib))
+    (library (logical device)
+      (uri /usr/share/kicad/library/device.lib))
+    (library (logical conn)
+      (uri /usr/share/kicad/library/conn.lib))
     (library (logical AmigaComponents)
       (uri /home/debian/Progetti/RetroBitLab-Library/AmigaComponents.lib))
     (library (logical Connector)
