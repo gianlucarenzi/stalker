@@ -11,7 +11,7 @@
     (via_costs 50)
     (plane_via_costs 5)
     (start_ripup_costs 100)
-    (start_pass_no 335)
+    (start_pass_no 1166)
     (layer_rule F.Cu
       (active on)
       (preferred_direction horizontal)
@@ -90,7 +90,7 @@
     "KBD_CLOCK" "KBD_DATA" GND VCC5V VCC3V3 BOOT0 +5V "Net-(C2-Pad1)"
     "Net-(C4-Pad1)" "Net-(C5-Pad1)" "Net-(D1-Pad2)" "Net-(D2-Pad2)" VCC12V "Net-(D3-Pad1)" "Net-(D4-Pad1)" "Net-(EN1-Pad1)"
     "KBD_RESET" "KBD_3v3_DATA" "KBD_3v3_RESET" "KBD_3v3_CLOCK" TP1 SWDIO SWDCLK TP2
-    "USB_ID" "USB_N" "USB_P" "/USART3_TX" "/USART3_RX"
+    "USB_ID" "USB_N" "USB_P" "UART_RX_TTL" "UART_TX_TTL"
     (clearance_class "kicad_default")
     (via_rule kicad_default)
     (rule
