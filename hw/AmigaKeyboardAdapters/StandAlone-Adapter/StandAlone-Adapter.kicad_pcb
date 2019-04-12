@@ -2065,12 +2065,12 @@
     )
   )
 
-  (module Symbol:Symbol_GNU-GPL_CopperTop_Small (layer F.Cu) (tedit 0) (tstamp 5CB10060)
+  (module Symbol:Symbol_GNU-GPL_CopperTop_Small (layer F.Cu) (tedit 5CB039C8) (tstamp 5CB10060)
     (at 175.768 98.298)
     (descr "Symbol, GNU-GPL, Copper Top, Small,")
     (tags "Symbol, GNU-GPL, Copper Top, Small,")
     (attr virtual)
-    (fp_text reference REF** (at 0.50038 -6.79958) (layer F.SilkS)
+    (fp_text reference GPL (at 0.50038 -6.79958) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value Symbol_GNU-GPL_CopperTop_Small (at -0.09906 6.10108) (layer F.Fab)
