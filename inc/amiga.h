@@ -46,5 +46,6 @@ extern void amikb_startup(void);
 extern led_status_t amikb_process(keyboard_code_t *data);
 extern void amikb_notify(const char *notify);
 extern void amikb_gpio_init(void);
+extern void amikb_ready(int isready);
 
 #endif
