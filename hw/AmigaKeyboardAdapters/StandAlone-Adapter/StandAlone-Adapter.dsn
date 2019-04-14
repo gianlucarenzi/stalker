@@ -33,11 +33,6 @@
     )
   )
   (placement
-    (component Capacitors_SMD:c_elec_4x4.5
-      (place C1 155448 -83820 front 0 (PN 10u))
-      (place C3 142240 -83820 front 180 (PN 47u))
-      (place C2 167640 -91440 front 0 (PN 22u))
-    )
     (component "Housings_QFP:LQFP-64_10x10mm_Pitch0.5mm"
       (place U3 149860 -93980 front 45 (PN STM32F401RCTx))
     )
@@ -68,19 +63,23 @@
       (place D4 119380 -88900 front 180 (PN LED))
     )
     (component Resistors_SMD:R_1206_HandSoldering
-      (place R1 160528 -79248 front 270 (PN 330))
-      (place R2 134620 -88900 front 0 (PN 220))
-      (place R3 126365 -93980 front 270 (PN 10K))
-      (place R4 144780 -104648 front 0 (PN 10k))
-      (place R5 155956 -104140 front 0 (PN 10k))
-      (place R6 175260 -91440 front 0 (PN 1K))
-      (place R7 163195 -104140 front 180 (PN 10k))
-      (place R8 165608 -109220 front 270 (PN 10k))
-      (place R9 144780 -109220 front 0 (PN 10k))
-      (place R10 155956 -108204 front 180 (PN 10k))
-      (place R11 134620 -109220 front 90 (PN 10k))
-      (place R12 137795 -104140 front 180 (PN 10k))
-      (place R13 125984 -88900 front 0 (PN 330))
+      (place R1 160528 -79248 front 270 (PN 1.5K))
+      (place R2 134620 -88900 front 0 (PN 1.5K))
+      (place R3 126365 -93980 front 270 (PN 22K))
+      (place R4 144780 -104648 front 0 (PN 10K))
+      (place R5 155956 -104140 front 0 (PN 10K))
+      (place R6 175260 -91440 front 0 (PN 1.5K))
+      (place R7 163195 -104140 front 180 (PN 10K))
+      (place R8 165608 -109220 front 270 (PN 10K))
+      (place R9 144780 -109220 front 0 (PN 10K))
+      (place R10 155956 -108204 front 180 (PN 10K))
+      (place R11 134620 -109220 front 90 (PN 10K))
+      (place R12 137795 -104140 front 180 (PN 10K))
+      (place R13 125984 -88900 front 0 (PN 1.5K))
+      (place R14 168275 -85725 front 0 (PN 10K))
+      (place R15 168910 -81280 front 0 (PN 10K))
+      (place R16 132715 -115570 front 180 (PN 12))
+      (place R17 140970 -115570 front 180 (PN 12))
     )
     (component RetroBitLab:USB_A_UP
       (place USB1 152400 -78740 front 180 (PN CONN_01x04))
@@ -89,12 +88,17 @@
       (place XT1 131318 -99060 front 0 (PN 8Mhz))
     )
     (component Capacitors_SMD:C_1206_HandSoldering
-      (place C6 160528 -87884 front 0 (PN 100n))
+      (place C6 160528 -86614 front 0 (PN 100n))
       (place C7 162560 -99060 front 90 (PN 100n))
       (place C8 160020 -99060 front 90 (PN 100n))
-      (place C9 160528 -90424 front 0 (PN 100n))
+      (place C9 159004 -89408 front 0 (PN 100n))
       (place C5 143256 -101600 front 0 (PN 22p))
       (place C4 136652 -92964 front 0 (PN 22p))
+      (place C3 142240 -83820 front 180 (PN 100n))
+      (place C10 163195 -114935 front 0 (PN 100n))
+      (place C12 130175 -109220 front 90 (PN 100n))
+      (place C13 169545 -96520 front 0 (PN 4.7u))
+      (place C14 177800 -96520 front 180 (PN 100n))
     )
     (component Pin_Headers:Pin_Header_Angled_1x04
       (place SWDIO/CLK1 119380 -76200 front 90 (PN CONN_01X04))
@@ -102,7 +106,8 @@
     )
     (component Pin_Headers:Pin_Header_Straight_1x03
       (place DEBUG1 119380 -83820 front 90 (PN CONN_01X03))
-      (place BOOT1 137160 -73660 front 270 (PN CONN_01X03))
+      (place BOOT1 137160 -70485 front 270 (PN CONN_01X03))
+      (place BOOT0 137160 -74930 front 270 (PN CONN_01X03))
     )
     (component Pin_Headers:Pin_Header_Straight_1x02
       (place TP1/1 129540 -83820 front 180 (PN CONN_01X02))
@@ -113,55 +118,19 @@
     (component RetroBitLab:SW_SPST_FSMSM_3D
       (place RESET1 114300 -96520 front 90 (PN SW_PUSH))
     )
-    (component "Inductors:SELF-WE-PD3S"
-      (place L2 167640 -84328 front 0 (PN 10uH))
-      (place L1 175260 -71120 front 270 (PN 10uH))
-    )
     (component Pin_Headers:Pin_Header_Angled_1x05
       (place AMIGA_KEYBOARD1 175260 -104140 front 0 (PN CONN_01X05))
     )
     (component "RetroBitLab:IDC-Header_2x03_P2.54mm_Vertical"
       (place J2 121920 -109220 front 0 (PN Conn_02x03_Odd_Even))
     )
-    (component "Symbol:Symbol_GNU-GPL_CopperTop_Small"
-      (place REF** 175768 -98298 front 0 (PN "Symbol_GNU-GPL_CopperTop_Small"))
-    )
-    (component "Symbol:OSHW-Logo_7.5x8mm_Copper"
-      (place OSHW 164465 -118110 front 0 (PN "OSHW-Logo_7.5x8mm_Copper"))
-      (place WB 137160 -111125 back 0 (PN LOGO))
-      (place AMIGA 150495 -86360 back 0 (PN LOGO))
+    (component "Capacitors_Tantalum_SMD:TantalC_SizeA_EIA-3216_HandSoldering"
+      (place C1 155448 -83820 front 0 (PN 10u))
+      (place C2 167894 -90932 front 0 (PN 22u))
+      (place C11 163195 -120015 front 0 (PN 10u))
     )
   )
   (library
-    (image Capacitors_SMD:c_elec_4x4.5
-      (outline (path signal 50  -3350 -2650  3350 -2650))
-      (outline (path signal 50  3350 2650  -3350 2650))
-      (outline (path signal 50  -3350 2650  -3350 -2650))
-      (outline (path signal 50  3350 -2650  3350 2650))
-      (outline (path signal 150  1651 0  889 0))
-      (outline (path signal 150  1270 381  1270 -381))
-      (outline (path signal 150  1524 -2286  -2286 -2286))
-      (outline (path signal 150  2286 1524  2286 -1524))
-      (outline (path signal 150  1524 -2286  2286 -1524))
-      (outline (path signal 150  1524 2286  -2286 2286))
-      (outline (path signal 150  1524 2286  2286 1524))
-      (outline (path signal 150  -2032 -127  -2032 127))
-      (outline (path signal 150  -1905 635  -1905 -635))
-      (outline (path signal 150  -1778 -889  -1778 889))
-      (outline (path signal 150  -1651 -1143  -1651 1143))
-      (outline (path signal 150  -1524 1270  -1524 -1270))
-      (outline (path signal 150  -1397 -1397  -1397 1397))
-      (outline (path signal 150  -1270 1524  -1270 -1524))
-      (outline (path signal 150  -1143 1651  -1143 -1651))
-      (outline (path signal 150  -2286 2286  -2286 -2286))
-      (outline (path signal 150  2032 0  1932.55 -627.923  1643.92 -1194.38  1194.38 -1643.92
-            627.923 -1932.55  0 -2032  -627.923 -1932.55  -1194.38 -1643.92
-            -1643.92 -1194.38  -1932.55 -627.923  -2032 0  -1932.55 627.923
-            -1643.92 1194.38  -1194.38 1643.92  -627.923 1932.55  0 2032
-            627.923 1932.55  1194.38 1643.92  1643.92 1194.38  1932.55 627.923))
-      (pin Rect[T]Pad_2600.96x1600.2_um 1 1800.86 0)
-      (pin Rect[T]Pad_2600.96x1600.2_um 2 -1800.86 0)
-    )
     (image "Housings_QFP:LQFP-64_10x10mm_Pitch0.5mm"
       (outline (path signal 50  -6450 6450  -6450 -6450))
       (outline (path signal 50  6450 6450  6450 -6450))
@@ -470,24 +439,6 @@
       (pin Rect[T]Pad_2180x1600_um 1 -4590 0)
       (pin Rect[T]Pad_2180x1600_um 2 4590 0)
     )
-    (image "Inductors:SELF-WE-PD3S"
-      (outline (path signal 150  0 2540  1016 2540))
-      (outline (path signal 150  1016 2540  3302 1524))
-      (outline (path signal 150  3302 1524  3302 -1524))
-      (outline (path signal 150  3302 -1524  1016 -2540))
-      (outline (path signal 150  1016 -2540  -1016 -2540))
-      (outline (path signal 150  -1016 -2540  -3302 -1524))
-      (outline (path signal 150  -3302 -1524  -3302 1524))
-      (outline (path signal 150  -3302 1524  -1016 2540))
-      (outline (path signal 150  -1016 2540  0 2540))
-      (outline (path signal 150  2540 0  2415.68 -784.903  2054.9 -1492.97  1492.97 -2054.9
-            784.903 -2415.68  0 -2540  -784.903 -2415.68  -1492.97 -2054.9
-            -2054.9 -1492.97  -2415.68 -784.903  -2540 0  -2415.68 784.903
-            -2054.9 1492.97  -1492.97 2054.9  -784.903 2415.68  0 2540  784.903 2415.68
-            1492.97 2054.9  2054.9 1492.97  2415.68 784.903))
-      (pin Rect[T]Pad_1998.98x1998.98_um 1 -3048 0)
-      (pin Rect[T]Pad_1998.98x1998.98_um 2 3048 0)
-    )
     (image Pin_Headers:Pin_Header_Angled_1x05
       (outline (path signal 50  -1500 1750  -1500 -11950))
       (outline (path signal 50  10650 1750  10650 -11950))
@@ -584,57 +535,14 @@
       (pin Oval[A]Pad_1727.2x1727.2_um 5 0 -5080)
       (pin Oval[A]Pad_1727.2x1727.2_um 6 2540 -5080)
     )
-    (image "Symbol:Symbol_GNU-GPL_CopperTop_Small"
-      (outline (path signal 381  2100.58 -299.72  2100.58 -1899.92))
-      (outline (path signal 381  2100.58 -1899.92  3299.46 -1899.92))
-      (outline (path signal 381  -398.78 -1899.92  -398.78 -398.78))
-      (outline (path signal 381  -398.78 -398.78  500.38 -398.78))
-      (outline (path signal 381  500.38 -398.78  701.04 -398.78))
-      (outline (path signal 381  701.04 -398.78  899.16 -500.38))
-      (outline (path signal 381  899.16 -500.38  1000.76 -701.04))
-      (outline (path signal 381  1000.76 -701.04  1000.76 -899.16))
-      (outline (path signal 381  1000.76 -899.16  800.1 -1099.82))
-      (outline (path signal 381  800.1 -1099.82  500.38 -1198.88))
-      (outline (path signal 381  500.38 -1198.88  -398.78 -1198.88))
-      (outline (path signal 381  -1600.2 -500.38  -1800.86 -398.78))
-      (outline (path signal 381  -1800.86 -398.78  -2301.24 -398.78))
-      (outline (path signal 381  -2301.24 -398.78  -2600.96 -500.38))
-      (outline (path signal 381  -2600.96 -500.38  -2799.08 -599.44))
-      (outline (path signal 381  -2799.08 -599.44  -2999.74 -899.16))
-      (outline (path signal 381  -2999.74 -899.16  -2999.74 -1198.88))
-      (outline (path signal 381  -2999.74 -1198.88  -2900.68 -1600.2))
-      (outline (path signal 381  -2900.68 -1600.2  -2600.96 -1800.86))
-      (outline (path signal 381  -2600.96 -1800.86  -2301.24 -1899.92))
-      (outline (path signal 381  -2301.24 -1899.92  -1998.98 -1899.92))
-      (outline (path signal 381  -1998.98 -1899.92  -1501.14 -1800.86))
-      (outline (path signal 381  -1501.14 -1800.86  -1501.14 -1300.48))
-      (outline (path signal 381  -1501.14 -1300.48  -1998.98 -1300.48))
-      (outline (path signal 381  1800.86 2199.64  1800.86 899.16))
-      (outline (path signal 381  1800.86 899.16  2100.58 701.04))
-      (outline (path signal 381  2100.58 701.04  2400.3 701.04))
-      (outline (path signal 381  2400.3 701.04  2799.08 701.04))
-      (outline (path signal 381  2799.08 701.04  3098.8 800.1))
-      (outline (path signal 381  3098.8 800.1  3299.46 899.16))
-      (outline (path signal 381  3299.46 899.16  3299.46 2199.64))
-      (outline (path signal 381  -800.1 701.04  -800.1 2199.64))
-      (outline (path signal 381  -800.1 2199.64  701.04 701.04))
-      (outline (path signal 381  701.04 701.04  701.04 2199.64))
-      (outline (path signal 381  -1998.98 2100.58  -2301.24 2199.64))
-      (outline (path signal 381  -2301.24 2199.64  -2799.08 2100.58))
-      (outline (path signal 381  -2799.08 2100.58  -3200.4 1899.92))
-      (outline (path signal 381  -3200.4 1899.92  -3401.06 1501.14))
-      (outline (path signal 381  -3401.06 1501.14  -3299.46 1099.82))
-      (outline (path signal 381  -3299.46 1099.82  -2999.74 800.1))
-      (outline (path signal 381  -2999.74 800.1  -2499.36 599.44))
-      (outline (path signal 381  -2499.36 599.44  -1800.86 800.1))
-      (outline (path signal 381  -1800.86 800.1  -1800.86 1300.48))
-      (outline (path signal 381  -1800.86 1300.48  -2301.24 1300.48))
-      (outline (path signal 381  -4064 3048  4064 3048))
-      (outline (path signal 381  4064 3048  4064 -2540))
-      (outline (path signal 381  4064 -2540  -4064 -2540))
-      (outline (path signal 381  -4064 -2540  -4064 3048))
-    )
-    (image "Symbol:OSHW-Logo_7.5x8mm_Copper"
+    (image "Capacitors_Tantalum_SMD:TantalC_SizeA_EIA-3216_HandSoldering"
+      (outline (path signal 150  -2600.96 -1198.88  2600.96 -1198.88))
+      (outline (path signal 150  2600.96 1198.88  -2600.96 1198.88))
+      (outline (path signal 150  -4599.94 2298.7  -4599.94 1198.88))
+      (outline (path signal 150  -5199.38 1798.32  -4000.5 1798.32))
+      (outline (path signal 150  -3995.42 1198.88  -3995.42 -1198.88))
+      (pin Rect[T]Pad_2999.74x1501.14_um 2 1998.98 0)
+      (pin Rect[T]Pad_2999.74x1501.14_um 1 -1998.98 0)
     )
     (padstack Round[A]Pad_1270_um
       (shape (circle F.Cu 1270))
@@ -708,8 +616,8 @@
       (shape (rect F.Cu -1090 -800 1090 800))
       (attach off)
     )
-    (padstack Rect[T]Pad_2600.96x1600.2_um
-      (shape (rect F.Cu -1300.48 -800.1 1300.48 800.1))
+    (padstack Rect[T]Pad_2999.74x1501.14_um
+      (shape (rect F.Cu -1499.87 -750.57 1499.87 750.57))
       (attach off)
     )
     (padstack Rect[T]Pad_3657.6x2032_um
@@ -737,10 +645,6 @@
       (shape (rect B.Cu -863.6 -863.6 863.6 863.6))
       (attach off)
     )
-    (padstack Rect[T]Pad_1998.98x1998.98_um
-      (shape (rect F.Cu -999.49 -999.49 999.49 999.49))
-      (attach off)
-    )
     (padstack "Via[0-1]_600:400_um"
       (shape (circle F.Cu 600))
       (shape (circle B.Cu 600))
@@ -755,25 +659,22 @@
       (pins Q1-3 J1-3 R8-2 AMIGA_KEYBOARD1-2 J2-2)
     )
     (net GND
-      (pins C1-2 C3-2 U3-12 U3-18 U3-31 U3-47 U3-63 U1-1 TP1-1 C2-2 J1-4 D1-1 D2-1
-        R6-1 USB1-4 C6-1 C7-1 C8-1 C9-1 C5-2 C4-2 SWDIO/CLK1-1 DEBUG1-1 BOOT1-3 RESET1-2
-        USB_ID1-1 POWER1-2 POWER1-3 AMIGA_KEYBOARD1-4 P1-2 EN1-2 J2-3 J2-4)
-    )
-    (net VCC5V
-      (pins J1-1 R1-1 R8-1 R10-1 R12-1 USB1-1 L1-2 POWER1-1 AMIGA_KEYBOARD1-5 J2-6)
+      (pins U3-12 U3-18 U3-31 U3-47 U3-63 U1-1 TP1-1 J1-4 D1-1 D2-1 R6-1 USB1-4 C6-1
+        C7-1 C8-1 C9-1 C5-2 C4-2 SWDIO/CLK1-1 DEBUG1-1 BOOT1-3 RESET1-2 USB_ID1-1
+        POWER1-2 POWER1-3 AMIGA_KEYBOARD1-4 P1-2 EN1-2 J2-3 J2-4 BOOT0-3 C3-2 C10-2
+        C12-1 C13-2 C14-2 C1-2 C2-2 C11-2)
     )
     (net VCC3V3
-      (pins U3-13 U3-19 U3-32 U3-48 U3-64 Q3-1 Q2-1 Q1-1 D4-2 R3-1 R4-1 R5-1 R7-1
-        R9-1 R11-1 C6-2 C7-2 C8-2 C9-2 SWDIO/CLK1-4 BOOT1-1 L2-1)
+      (pins U3-13 U3-19 U3-32 U3-48 U3-64 U1-2 Q3-1 Q2-1 Q1-1 D4-2 R2-1 R3-2 R4-1
+        R5-1 R7-1 R9-1 R11-1 C6-2 C7-2 C8-2 C9-2 SWDIO/CLK1-4 BOOT1-1 BOOT0-1 C3-1
+        C10-1 C2-1 C11-1)
     )
     (net BOOT0
-      (pins U3-60 BOOT1-2)
+      (pins BOOT0-2 R14-2)
     )
     (net +5V
-      (pins C1-1 U1-3 L1-1)
-    )
-    (net "Net-(C2-Pad1)"
-      (pins C3-1 U1-2 C2-1 R2-1 L2-2)
+      (pins U1-3 J1-1 R1-1 R8-1 R10-1 R12-1 USB1-1 POWER1-1 AMIGA_KEYBOARD1-5 J2-6
+        C14-1 C1-1)
     )
     (net "Net-(C4-Pad1)"
       (pins U3-5 XT1-1 C4-1)
@@ -795,9 +696,6 @@
     )
     (net "Net-(D4-Pad1)"
       (pins D4-1 R13-1)
-    )
-    (net "Net-(EN1-Pad1)"
-      (pins U3-7 R3-2 RESET1-1 EN1-1)
     )
     (net KBD_RESET
       (pins Q2-3 R10-2 P1-1 J2-5)
@@ -827,10 +725,10 @@
       (pins U3-43 USB_ID1-2)
     )
     (net USB_N
-      (pins U3-44 USB1-2)
+      (pins U3-44 R17-1)
     )
     (net USB_P
-      (pins U3-45 USB1-3)
+      (pins U3-45 R16-1)
     )
     (net UART_RX_TTL
       (pins U3-17 R5-2 DEBUG1-2)
@@ -838,21 +736,42 @@
     (net UART_TX_TTL
       (pins U3-16 R4-2 DEBUG1-3)
     )
-    (class kicad_default "" +5V BOOT0 GND KBD_3v3_CLOCK KBD_3v3_DATA KBD_3v3_RESET
-      KBD_CLOCK KBD_DATA KBD_RESET "Net-(AMIGA_KEYBOARD1-Pad3)" "Net-(C2-Pad1)"
-      "Net-(C4-Pad1)" "Net-(C5-Pad1)" "Net-(D1-Pad2)" "Net-(D2-Pad2)" "Net-(D3-Pad1)"
-      "Net-(D4-Pad1)" "Net-(EN1-Pad1)" "Net-(H1-Pad1)" "Net-(H2-Pad1)" "Net-(H3-Pad1)"
-      "Net-(H4-Pad1)" "Net-(U3-Pad1)" "Net-(U3-Pad2)" "Net-(U3-Pad20)" "Net-(U3-Pad21)"
-      "Net-(U3-Pad22)" "Net-(U3-Pad23)" "Net-(U3-Pad24)" "Net-(U3-Pad25)"
-      "Net-(U3-Pad26)" "Net-(U3-Pad27)" "Net-(U3-Pad28)" "Net-(U3-Pad29)"
-      "Net-(U3-Pad3)" "Net-(U3-Pad30)" "Net-(U3-Pad33)" "Net-(U3-Pad34)" "Net-(U3-Pad35)"
-      "Net-(U3-Pad36)" "Net-(U3-Pad37)" "Net-(U3-Pad38)" "Net-(U3-Pad39)"
-      "Net-(U3-Pad4)" "Net-(U3-Pad40)" "Net-(U3-Pad41)" "Net-(U3-Pad42)" "Net-(U3-Pad50)"
-      "Net-(U3-Pad51)" "Net-(U3-Pad52)" "Net-(U3-Pad53)" "Net-(U3-Pad54)"
-      "Net-(U3-Pad55)" "Net-(U3-Pad56)" "Net-(U3-Pad57)" "Net-(U3-Pad58)"
-      "Net-(U3-Pad59)" "Net-(U3-Pad61)" "Net-(U3-Pad62)" "Net-(U3-Pad8)" SWDCLK
-      SWDIO TP1 TP2 UART_RX_TTL UART_TX_TTL USB_ID USB_N USB_P VCC12V VCC3V3
-      VCC5V
+    (net BOOT1
+      (pins BOOT1-2 R15-1)
+    )
+    (net NRST
+      (pins U3-7 R3-1 RESET1-1 EN1-1 C12-2)
+    )
+    (net "Net-(C13-Pad1)"
+      (pins U3-30 C13-1)
+    )
+    (net "Net-(R14-Pad1)"
+      (pins U3-60 R14-1)
+    )
+    (net "Net-(R15-Pad2)"
+      (pins U3-28 R15-2)
+    )
+    (net "Net-(R16-Pad2)"
+      (pins USB1-3 R16-2)
+    )
+    (net "Net-(R17-Pad2)"
+      (pins USB1-2 R17-2)
+    )
+    (class kicad_default "" +5V BOOT0 BOOT1 GND KBD_3v3_CLOCK KBD_3v3_DATA
+      KBD_3v3_RESET KBD_CLOCK KBD_DATA KBD_RESET NRST "Net-(AMIGA_KEYBOARD1-Pad3)"
+      "Net-(C13-Pad1)" "Net-(C4-Pad1)" "Net-(C5-Pad1)" "Net-(D1-Pad2)" "Net-(D2-Pad2)"
+      "Net-(D3-Pad1)" "Net-(D4-Pad1)" "Net-(H1-Pad1)" "Net-(H2-Pad1)" "Net-(H3-Pad1)"
+      "Net-(H4-Pad1)" "Net-(R14-Pad1)" "Net-(R15-Pad2)" "Net-(R16-Pad2)" "Net-(R17-Pad2)"
+      "Net-(U3-Pad1)" "Net-(U3-Pad2)" "Net-(U3-Pad20)" "Net-(U3-Pad21)" "Net-(U3-Pad22)"
+      "Net-(U3-Pad23)" "Net-(U3-Pad24)" "Net-(U3-Pad25)" "Net-(U3-Pad26)"
+      "Net-(U3-Pad27)" "Net-(U3-Pad29)" "Net-(U3-Pad3)" "Net-(U3-Pad33)" "Net-(U3-Pad34)"
+      "Net-(U3-Pad35)" "Net-(U3-Pad36)" "Net-(U3-Pad37)" "Net-(U3-Pad38)"
+      "Net-(U3-Pad39)" "Net-(U3-Pad4)" "Net-(U3-Pad40)" "Net-(U3-Pad41)" "Net-(U3-Pad42)"
+      "Net-(U3-Pad50)" "Net-(U3-Pad51)" "Net-(U3-Pad52)" "Net-(U3-Pad53)"
+      "Net-(U3-Pad54)" "Net-(U3-Pad55)" "Net-(U3-Pad56)" "Net-(U3-Pad57)"
+      "Net-(U3-Pad58)" "Net-(U3-Pad59)" "Net-(U3-Pad61)" "Net-(U3-Pad62)"
+      "Net-(U3-Pad8)" SWDCLK SWDIO TP1 TP2 UART_RX_TTL UART_TX_TTL USB_ID
+      USB_N USB_P VCC12V VCC3V3
       (circuit
         (use_via Via[0-1]_600:400_um)
       )
@@ -875,7 +794,7 @@
         (use_via Via[0-1]_600:400_um)
       )
       (rule
-        (width 300)
+        (width 350)
         (clearance 200.1)
       )
     )

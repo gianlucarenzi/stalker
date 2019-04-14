@@ -11,7 +11,7 @@
     (via_costs 50)
     (plane_via_costs 5)
     (start_ripup_costs 100)
-    (start_pass_no 1166)
+    (start_pass_no 900)
     (layer_rule F.Cu
       (active on)
       (preferred_direction horizontal)
@@ -87,10 +87,11 @@
     )
   )
   (class "kicad_default"
-    "KBD_CLOCK" "KBD_DATA" GND VCC5V VCC3V3 BOOT0 +5V "Net-(C2-Pad1)"
-    "Net-(C4-Pad1)" "Net-(C5-Pad1)" "Net-(D1-Pad2)" "Net-(D2-Pad2)" VCC12V "Net-(D3-Pad1)" "Net-(D4-Pad1)" "Net-(EN1-Pad1)"
-    "KBD_RESET" "KBD_3v3_DATA" "KBD_3v3_RESET" "KBD_3v3_CLOCK" TP1 SWDIO SWDCLK TP2
-    "USB_ID" "USB_N" "USB_P" "UART_RX_TTL" "UART_TX_TTL"
+    "KBD_CLOCK" "KBD_DATA" GND VCC3V3 BOOT0 +5V "Net-(C4-Pad1)" "Net-(C5-Pad1)"
+    "Net-(D1-Pad2)" "Net-(D2-Pad2)" VCC12V "Net-(D3-Pad1)" "Net-(D4-Pad1)" "KBD_RESET" "KBD_3v3_DATA" "KBD_3v3_RESET"
+    "KBD_3v3_CLOCK" TP1 SWDIO SWDCLK TP2 "USB_ID" "USB_N" "USB_P"
+    "UART_RX_TTL" "UART_TX_TTL" BOOT1 NRST "Net-(C13-Pad1)" "Net-(R14-Pad1)" "Net-(R15-Pad2)" "Net-(R16-Pad2)"
+    "Net-(R17-Pad2)"
     (clearance_class "kicad_default")
     (via_rule kicad_default)
     (rule
@@ -114,7 +115,7 @@
     (clearance_class GND)
     (via_rule GND)
     (rule
-      (width 300.0)
+      (width 350.0)
     )
     (circuit 
       (use_layer F.Cu B.Cu)
