@@ -1,5 +1,5 @@
-Drill report for /home/debian/Progetti/Amiga/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.kicad_pcb
-Created on gio 18 apr 2019 17:59:05 CEST
+Drill report for /home/debian/Progetti/AMIGA/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.kicad_pcb
+Created on Thu 18 Apr 2019 20:40:59 CEST
 
 Copper Layer Stackup:
     =============================================================
@@ -23,7 +23,7 @@ Drill file 'StandAlone-Adapter.drl' contains
     Total plated holes count 83
 
 
-Drill file 'StandAlone-Adapter-NPTH.drl' contains
+Not plated through holes are merged with plated holes
     unplated through holes:
     =============================================================
 
