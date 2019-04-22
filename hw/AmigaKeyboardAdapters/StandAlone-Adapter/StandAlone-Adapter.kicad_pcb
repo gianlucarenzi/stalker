@@ -3,7 +3,7 @@
   (general
     (links 125)
     (no_connects 0)
-    (area 109.144999 65.964999 188.035001 124.535001)
+    (area 107.921667 58.11 203.58 128.799001)
     (thickness 1.6)
     (drawings 26)
     (tracks 646)
@@ -2871,11 +2871,11 @@
       (xy 1.307739 4.732367)) (layer B.SilkS) (width 0.01))
   )
 
-  (module RetroBitLab:Symbol_GNU-GPL_SilkScreen_Small (layer F.Cu) (tedit 5CB8C49B) (tstamp 5CB90567)
+  (module RetroBitLab:Symbol_GNU-GPL_SilkScreen_Small (layer F.Cu) (tedit 5CBDF794) (tstamp 5CB90567)
     (at 177.8 99.06)
     (descr "Symbol, GNU-GPL, Copper Top, Small,")
     (tags "Symbol, GNU-GPL, Copper Top, Small,")
-    (fp_text reference GNULOGO (at 0.50038 -6.79958) (layer F.SilkS)
+    (fp_text reference GNULOGO (at 0.50038 -6.79958) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value Symbol_GNU-GPL_CopperTop_Small (at -0.09906 6.10108) (layer F.Fab)
