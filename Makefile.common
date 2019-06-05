@@ -4,9 +4,16 @@
 # building variables
 ######################################
 # debug build?
-DEBUG = 1
-# optimization
-OPT = -Og
+DEBUG = 0
+
+ifeq ($(DEBUG), 1)
+	OPT = -Og
+else
+	# optimization level
+	OPTLVL = -O2
+	#OPTLVL = -O3
+	OPT = $(OPTLVL) -fomit-frame-pointer -funroll-loops
+endif
 
 
 #######################################
