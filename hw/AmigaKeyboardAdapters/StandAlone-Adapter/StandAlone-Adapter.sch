@@ -421,9 +421,9 @@ Text GLabel 15150 2100 2    47   Input ~ 0
 USB_P
 Text GLabel 14900 2300 2    47   Input ~ 0
 VCC5V
-Text Label 9700 4800 2    47   ~ 0
+Text Label 9600 4800 2    39   ~ 0
 USART3_TX
-Text Label 9700 4900 2    47   ~ 0
+Text Label 9600 4900 2    39   ~ 0
 USART3_RX
 $Comp
 L R R4
@@ -510,9 +510,9 @@ F 3 "" H 3350 6150 50  0001 C CNN
 	1    3350 6150
 	1    0    0    -1  
 $EndComp
-Text GLabel 9600 4600 2    47   Output ~ 0
+Text GLabel 9700 4600 2    47   Output ~ 0
 TP1
-Text GLabel 9600 4700 2    47   Output ~ 0
+Text GLabel 9700 4700 2    47   Output ~ 0
 TP2
 $Comp
 L CONN_01X02 TP1/1
@@ -1386,9 +1386,9 @@ Wire Wire Line
 Wire Wire Line
 	7700 5450 7700 5700
 Wire Wire Line
-	9600 4700 9250 4700
+	9250 4700 9700 4700
 Wire Wire Line
-	9600 4600 9250 4600
+	9250 4600 9700 4600
 Connection ~ 3000 5150
 Connection ~ 2700 5750
 Connection ~ 2350 5750
