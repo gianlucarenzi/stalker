@@ -59,18 +59,24 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define KBD_CLOCK_Pin GPIO_PIN_0
-#define KBD_CLOCK_GPIO_Port GPIOC
-#define KBD_DATA_Pin GPIO_PIN_1
-#define KBD_DATA_GPIO_Port GPIOC
-#define KBD_RESET_Pin GPIO_PIN_2
-#define KBD_RESET_GPIO_Port GPIOC
 #ifndef EVALBOARD
+	#define KBD_CLOCK_Pin GPIO_PIN_2
+	#define KBD_CLOCK_GPIO_Port GPIOC
+	#define KBD_DATA_Pin GPIO_PIN_3
+	#define KBD_DATA_GPIO_Port GPIOC
+	#define KBD_RESET_Pin GPIO_PIN_1
+	#define KBD_RESET_GPIO_Port GPIOC
 	#define TP1_Pin GPIO_PIN_0
 	#define TP1_GPIO_Port GPIOA
 	#define TP2_Pin GPIO_PIN_1
 	#define TP2_GPIO_Port GPIOA
 #else
+	#define KBD_CLOCK_Pin GPIO_PIN_0
+	#define KBD_CLOCK_GPIO_Port GPIOC
+	#define KBD_DATA_Pin GPIO_PIN_1
+	#define KBD_DATA_GPIO_Port GPIOC
+	#define KBD_RESET_Pin GPIO_PIN_2
+	#define KBD_RESET_GPIO_Port GPIOC
 	#define TP1_Pin GPIO_PIN_10
 	#define TP1_GPIO_Port GPIOB
 	#define TP2_Pin GPIO_PIN_11
