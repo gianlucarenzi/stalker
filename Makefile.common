@@ -10,8 +10,8 @@ ifeq ($(DEBUG), 1)
 	OPT = -Og
 else
 	# optimization level
-	OPTLVL = -O2
-	#OPTLVL = -O3
+	#OPTLVL = -O2
+	OPTLVL = -O3
 	OPT = $(OPTLVL) -fomit-frame-pointer -funroll-loops
 endif
 
