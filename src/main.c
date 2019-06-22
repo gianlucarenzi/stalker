@@ -66,7 +66,7 @@ static void MX_USART2_UART_Init(int baud);
 
 /* Local variables */
 static int debuglevel = DBG_INFO;
-static const char *fwBuild = "v1.0beta";
+static const char *fwBuild = "v1.0rc";
 static UART_HandleTypeDef huart2;
 
 static void banner(void)
@@ -133,9 +133,8 @@ static void usb_keyboard_led(USBH_HandleTypeDef *usbhost, keyboard_led_t ld)
 
 static void usb_keyboard_led_init(USBH_HandleTypeDef * usbhost)
 {
-	keyboard_led_t led = CAPS_LOCK_LED | NUM_LOCK_LED;
+	keyboard_led_t led = CAPS_LOCK_LED | NUM_LOCK_LED | SCROLL_LOCK_LED;
 	int n;
-	led = 255;
 	DBG_N("Called: led: 0x%02x\r\n", led);
 	if (usbhost != NULL)
 	{
@@ -169,6 +168,7 @@ int main(void)
 	int do_led = 0;
 	USBH_HandleTypeDef * usbhost = NULL;
 	int keyboard_ready = 0;
+	int count = 0;
 
 	_write_ready(SYSCALL_NOTREADY, &huart2);
 
@@ -257,6 +257,16 @@ int main(void)
 								keyboard_led |= NUM_LOCK_LED;
 								do_led = 1;
 								break;
+							case LED_SCROLL_LOCK_OFF:
+								DBG_V("SCROLL LOCK LED OFF\r\n");
+								keyboard_led &= ~SCROLL_LOCK_LED;
+								do_led = 1;
+								break;
+							case LED_SCROLL_LOCK_ON:
+								DBG_V("SCROLL LOCK LED ON\r\n");
+								keyboard_led |= SCROLL_LOCK_LED;
+								do_led = 1;
+								break;
 							case LED_RESET_BLINK:
 								DBG_V("RESET OCCURS FROM AMIGA SIDE\r\n");
 								usb_keyboard_led_init(usbhost);
@@ -291,6 +301,11 @@ int main(void)
 						tp1_toggle();
 						amikb_notify("NOT USB Keyboard. Please Connect - Amiga Is Back!\n");
 						timer_start();
+						if (count++ > 10)
+						{
+							DBG_I("Waiting REAL USB Keyboard - Amiga Is Back!\r\n");
+							count = 0;
+						}
 					}
 				}
 			}
@@ -310,6 +325,11 @@ int main(void)
 					tp1_toggle();
 					amikb_notify("NO HID Device. Please Connect - Amiga Is Back!\n");
 					timer_start();
+					if (count++ > 10)
+					{
+						DBG_I("Waiting USB HID Keyboard - Amiga Is Back!\r\n");
+						count = 0;
+					}
 				}
 			}
 		}
@@ -333,6 +353,11 @@ int main(void)
 				tp1_toggle();
 				amikb_notify("Waiting USB Keyboard - Amiga Is Back!\n");
 				timer_start();
+				if (count++ > 10)
+				{
+					DBG_I("Waiting USB Keyboard - Amiga Is Back!\r\n");
+					count = 0;
+				}
 			}
 		}
 		amikb_ready(keyboard_ready);
