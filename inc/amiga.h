@@ -38,8 +38,9 @@ typedef enum {
 } led_status_t;
 
 typedef enum {
-	NUM_LOCK_LED = 1,
-	CAPS_LOCK_LED = 2,
+	NUM_LOCK_LED = (1 << 0),
+	CAPS_LOCK_LED = (1 << 1),
+	SCROLL_LOCK_LED = (1 << 2),
 } keyboard_led_t;
 
 extern void amikb_startup(void);
