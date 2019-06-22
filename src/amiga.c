@@ -925,7 +925,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 		}
 		else
 		{
-			// a logic 0 is low in hardware
+			// a logic 0 is high in hardware
 			HAL_GPIO_WritePin(GPIOC, KBD_DATA_Pin, GPIO_PIN_SET);
 		}
 		keycode <<= 1;
