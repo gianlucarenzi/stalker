@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <inttypes.h>
+#include <stdbool.h>
 
 #define KEY_PRESSED_MAX 6
 typedef struct {
@@ -48,5 +49,7 @@ extern led_status_t amikb_process(keyboard_code_t *data);
 extern void amikb_notify(const char *notify);
 extern void amikb_gpio_init(void);
 extern void amikb_ready(int isready);
+extern bool amikb_reset_check(void);
+extern void amikb_reset(void);
 
 #endif
