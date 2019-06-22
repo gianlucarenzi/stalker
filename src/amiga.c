@@ -625,6 +625,7 @@ typedef enum {
 static unsigned char prev_keycode = 0xff;
 static unsigned char capslk = 0;
 static unsigned char numlk = 0;
+static unsigned char scrolllk = 0;
 
 static void amikb_direction(kbd_dir dir);
 static led_status_t amikb_send(uint8_t code, int press);
@@ -760,56 +761,70 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 	int i;
 	led_status_t rval = NO_LED;
 
-	DBG_N("Amiga Keycode 0x%02x - %s\r\n", keycode, press ? "PRESSED" : "RELEASED");
-	if (keycode == 0x62 || keycode == 0x68) // Caps Lock or Num Lock Pressed or Released
+	DBG_V("Amiga Keycode 0x%02x - %s\r\n", keycode, press ? "PRESSED" : "RELEASED");
+	if (keycode == 0x62 || keycode == 0x68 || keycode == 0x1c) // Caps Lock, Num Lock or Scroll Lock Pressed or Released
 	{
 		// caps lock doesn't get a key release event when the key is released
 		// but rather when the caps lock is toggled off again
 		// But what about num lock?
 
-		// Check for capslk pressed the first time
-		if (!capslk && keycode == 0x62 && press)
+		switch (keycode)
 		{
-			DBG_V("### SEND TURN-ON CAPS LOCK LED ###\r\n");
-			// Toggle for next time press
-			capslk = 1;
-			rval = LED_CAPS_LOCK_ON;
-		}
-		else
-		// Check for numlock pressed the first time
-		if (!numlk && keycode == 0x68 && press)
-		{
-			DBG_V("### SEND TURN-ON NUM LOCK LED ###\r\n");
-			// Toggle for next time press
-			numlk = 1;
-			rval = LED_NUM_LOCK_ON;
-		}
-		else
-		// Check for capslk pressed the second time
-		if (capslk && keycode == 0x62 && press)
-		{
-			DBG_V("### SEND TURN-OFF CAPS LOCK LED ###\r\n");
-			// capslock on released do nothing
-			capslk = 0;
-			prev_keycode = 0xff;
-			press = !press;
-			rval = LED_CAPS_LOCK_OFF;
-		}
-		else
-		if (numlk && keycode == 0x68 && press)
-		{
-			DBG_V("### SEND TURN-OFF NUM LOCK LED ###\r\n");
-			// numlock on released do nothing
-			numlk = 0;
-			prev_keycode = 0xff;
-			press = !press;
-			rval = LED_NUM_LOCK_OFF;
-		}
-		else
-		{
-			DBG_V("NUMLOCK %d - CAPSLOCK %d - PRESSED: %d\r\n",
-				numlk, capslk, press);
-			return NO_LED;
+			case 0x62: // CAPS LOCK LED
+				if (!capslk && press)
+				{
+					DBG_V("### SEND TURN-ON CAPS LOCK LED ###\r\n");
+					// Toggle for next time press
+					capslk = 1;
+					rval = LED_CAPS_LOCK_ON;
+				}
+				else
+				if (capslk && press)
+				{
+					DBG_V("### SEND TURN-OFF CAPS LOCK LED ###\r\n");
+					capslk = 0;
+					rval = LED_CAPS_LOCK_OFF;
+				}
+				break;
+			case 0x68: // NUM LOCK LED
+				if (!numlk && press)
+				{
+					DBG_V("### SEND TURN-ON NUM LOCK LED ###\r\n");
+					// Toggle for next time press
+					numlk = 1;
+					rval = LED_NUM_LOCK_ON;
+				}
+				else
+				if (numlk && press)
+				{
+					DBG_V("### SEND TURN-OFF NUM LOCK LED ###\r\n");
+					numlk = 0;
+					rval = LED_NUM_LOCK_OFF;
+				}
+				break;
+			case 0x1c: // SCROLL LOCK LED
+				if (!scrolllk && press)
+				{
+					DBG_V("### SEND TURN-ON SCROLL LOCK LED ###\r\n");
+					// Toggle for next time press
+					scrolllk = 1;
+					rval = LED_SCROLL_LOCK_ON;
+				}
+				else
+				if (scrolllk && press)
+				{
+					DBG_V("### SEND TURN-OFF SCROLL LOCK LED ###\r\n");
+					scrolllk = 0;
+					rval = LED_SCROLL_LOCK_OFF;
+				}
+				break;
+			default:
+				{
+					DBG_V("NUMLOCK %d - CAPSLOCK %d - SCROLLLOCK %d - PRESSED: %d\r\n",
+						numlk, capslk, scrolllk, press);
+					return NO_LED;
+				}
+				break;
 		}
 	}
 
@@ -891,7 +906,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 	// lines above... :-/
 	HAL_GPIO_WritePin(GPIOC, KBD_DATA_Pin,  GPIO_PIN_SET); // Set KBD_DATA pin
 	HAL_GPIO_WritePin(GPIOC, KBD_CLOCK_Pin, GPIO_PIN_SET); // Set KBD_CLOCK pin
-	DBG_N("Exit\r\n");
+	DBG_N("Exit: %d\r\n", rval);
 	return rval;
 }
 
@@ -907,6 +922,8 @@ static void amikb_reset(void)
 	HAL_GPIO_WritePin(GPIOC, KBD_CLOCK_Pin, GPIO_PIN_SET);   // Set KBD_CLOCK pin
 	prev_keycode = 0xff;
 	capslk = 0;
+	numlk = 0;
+	scrolllk = 0;
 	DBG_N("Exit\r\n");
 }
 
