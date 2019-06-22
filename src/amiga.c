@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "syscall.h"
 #include "amiga.h"
 #include "debug.h"
@@ -629,7 +630,6 @@ static unsigned char scrolllk = 0;
 
 static void amikb_direction(kbd_dir dir);
 static led_status_t amikb_send(uint8_t code, int press);
-static void amikb_reset(void);
 
 static uint8_t scancode_to_amiga(uint8_t lkey)
 {
@@ -977,7 +977,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 }
 
 // **************************
-static void amikb_reset(void)
+void amikb_reset(void)
 {
 	amikb_direction(DAT_OUTPUT);
 	DBG_N("Enter\r\n");
@@ -991,6 +991,17 @@ static void amikb_reset(void)
 	numlk = 0;
 	scrolllk = 0;
 	DBG_N("Exit\r\n");
+}
+
+// ****************************
+bool amikb_reset_check(void)
+{
+	bool is_low;
+	DBG_N("Enter\r\n");
+	amikb_direction( DAT_INPUT );
+	is_low = HAL_GPIO_ReadPin(GPIOC, KBD_CLOCK_Pin) == GPIO_PIN_RESET ? true : false;
+	DBG_N("KBD_CLOCK is %s\r\n", is_low == false ? "LOW" : "HIGH");
+	return is_low;
 }
 
 #define OK_RESET	3 /* 3 special keys to have a KBRESET */
