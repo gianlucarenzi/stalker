@@ -163,6 +163,7 @@ int main(void)
 {
 	ApplicationTypeDef aState = APPLICATION_DISCONNECT;
 	int timerOneShot = 1;
+	int resetTimer = 0;
 	led_status_t stat;
 	static keyboard_led_t keyboard_led = 0;
 	int do_led = 0;
@@ -282,6 +283,27 @@ int main(void)
 						{
 							DBG_N("USB ASK FOR REPORT: LED: 0x%02x\r\n", keyboard_led);
 							usb_keyboard_led(usbhost, keyboard_led);
+						}
+					}
+					else
+					{
+						if (amikb_reset_check())
+						{
+							// Monitor the CLOCK line to see if some other
+							// is pulling the clock low for more than 500msec
+							// It means a SYS_REQ for a RESET!
+							if (!resetTimer)
+							{
+								resetTimer = 1;
+								timer_start();
+							}
+							if (timer_elapsed(500))
+							{
+								DBG_N("Now it's time for a RESET!\r\n");
+								resetTimer = 0;
+								amikb_reset();
+								amikb_startup();
+							}
 						}
 					}
 				}
