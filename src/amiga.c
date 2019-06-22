@@ -275,7 +275,7 @@ static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 	{KEY_L,                      0x28 }, // L
 	{KEY_SEMICOLON_COLON,        0x29 }, // :;
 	{KEY_SINGLE_AND_DOUBLE_QUOTE,0x2A }, // "'
-	{KEY_ENTER,                  0x2B }, // <Enter>
+	{KEY_ENTER,                  0x44 }, // <Enter>
 	{KEY_KEYPAD_4_LEFT_ARROW,    0x2D }, // NUM 4
 	{KEY_KEYPAD_5,               0x2E }, // NUM 5
 	{KEY_KEYPAD_6_RIGHT_ARROW,   0x2F }, // NUM 6
@@ -298,7 +298,7 @@ static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 	{KEY_BACKSPACE,              0x41 }, // BACKSPACE
 	{KEY_TAB,                    0x42 }, // TAB
 	{KEY_KEYPAD_ENTER,           0x43 }, // ENTER
-	{KEY_RETURN,                 0x44 }, // RETURN
+	{KEY_RETURN,                 0x2B }, // RETURN
 	{KEY_ESCAPE,                 0x45 }, // ESC
 	{KEY_DELETE,                 0x46 }, // DEL
 	{KEY_KEYPAD_MINUS,           0x4A }, // NUM -
@@ -761,7 +761,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 	int i;
 	led_status_t rval = NO_LED;
 
-	DBG_V("Amiga Keycode 0x%02x - %s\r\n", keycode, press ? "PRESSED" : "RELEASED");
+	DBG_N("Amiga Keycode 0x%02x - %s\r\n", keycode, press ? "PRESSED" : "RELEASED");
 	if (keycode == 0x62 || keycode == 0x68 || keycode == 0x1c) // Caps Lock, Num Lock or Scroll Lock Pressed or Released
 	{
 		// caps lock doesn't get a key release event when the key is released
@@ -771,51 +771,114 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 		switch (keycode)
 		{
 			case 0x62: // CAPS LOCK LED
-				if (!capslk && press)
+				if (!capslk)
 				{
-					DBG_V("### SEND TURN-ON CAPS LOCK LED ###\r\n");
-					// Toggle for next time press
-					capslk = 1;
-					rval = LED_CAPS_LOCK_ON;
+					if (press)
+					{
+						DBG_V("### SEND TURN-ON CAPS LOCK LED. ALL UPPERCASE FROM NOW ###\r\n");
+						rval = LED_CAPS_LOCK_ON;
+						prev_keycode = 0;
+						break;
+					}
+					else
+					{
+						DBG_N("### IGNORING RELEASE FOR CAPS LOCK ###\n\r");
+						// Toggle for next time press
+						capslk = 1;
+						prev_keycode = 0;
+						return NO_LED;
+					}
 				}
 				else
-				if (capslk && press)
 				{
-					DBG_V("### SEND TURN-OFF CAPS LOCK LED ###\r\n");
-					capslk = 0;
-					rval = LED_CAPS_LOCK_OFF;
+					if (press)
+					{
+						DBG_V("### IGNORING PRESS FOR CAPS LOCK. IT WAS ALREADY PRESSED ###\r\n");
+						prev_keycode = 0;
+						return NO_LED;
+					}
+					else
+					{
+						DBG_N("### SEND TURN-OFF CAPS LOCK LED. ALL LOWERCASE FROM NOW ###\r\n");
+						capslk = 0;
+						rval = LED_CAPS_LOCK_OFF;
+						prev_keycode = 0;
+						break;
+					}
 				}
 				break;
 			case 0x68: // NUM LOCK LED
-				if (!numlk && press)
+				if (!numlk)
 				{
-					DBG_V("### SEND TURN-ON NUM LOCK LED ###\r\n");
-					// Toggle for next time press
-					numlk = 1;
-					rval = LED_NUM_LOCK_ON;
+					if (press)
+					{
+						DBG_V("### SEND TURN-ON NUM LOCK LED. NUMERIC KEYPAD LOCKED FROM NOW ###\r\n");
+						rval = LED_NUM_LOCK_ON;
+						prev_keycode = 0;
+						break;
+					}
+					else
+					{
+						DBG_N("### IGNORING RELEASE FOR NUM LOCK ###\n\r");
+						// Toggle for next time press
+						numlk = 1;
+						prev_keycode = 0;
+						return NO_LED;
+					}
 				}
 				else
-				if (numlk && press)
 				{
-					DBG_V("### SEND TURN-OFF NUM LOCK LED ###\r\n");
-					numlk = 0;
-					rval = LED_NUM_LOCK_OFF;
+					if (press)
+					{
+						DBG_V("### IGNORING PRESS FOR NUM LOCK. IT WAS ALREADY PRESSED ###\r\n");
+						prev_keycode = 0;
+						return NO_LED;
+					}
+					else
+					{
+						DBG_N("### SEND TURN-OFF NUM LOCK LED. NUMERIC KEYPAD UNLOCKED FROM NOW ###\r\n");
+						numlk = 0;
+						rval = LED_NUM_LOCK_OFF;
+						prev_keycode = 0;
+						break;
+					}
 				}
 				break;
 			case 0x1c: // SCROLL LOCK LED
-				if (!scrolllk && press)
+				if (!scrolllk)
 				{
-					DBG_V("### SEND TURN-ON SCROLL LOCK LED ###\r\n");
-					// Toggle for next time press
-					scrolllk = 1;
-					rval = LED_SCROLL_LOCK_ON;
+					if (press)
+					{
+						DBG_V("### SEND TURN-ON SCROLL LOCK LED. SCROLL IS LOCKED FROM NOW ###\r\n");
+						rval = LED_SCROLL_LOCK_ON;
+						prev_keycode = 0;
+						break;
+					}
+					else
+					{
+						DBG_N("### IGNORING RELEASE FOR SCROLL LOCK ###\n\r");
+						// Toggle for next time press
+						scrolllk = 1;
+						prev_keycode = 0;
+						return NO_LED;
+					}
 				}
 				else
-				if (scrolllk && press)
 				{
-					DBG_V("### SEND TURN-OFF SCROLL LOCK LED ###\r\n");
-					scrolllk = 0;
-					rval = LED_SCROLL_LOCK_OFF;
+					if (press)
+					{
+						DBG_V("### IGNORING PRESS FOR SCROLL LOCK. IT WAS ALREADY PRESSED ###\r\n");
+						prev_keycode = 0;
+						return NO_LED;
+					}
+					else
+					{
+						DBG_N("### SEND TURN-OFF SCROLL LOCK LED. SCROLL IS UNLOCKED FROM NOW ###\r\n");
+						scrolllk = 0;
+						rval = LED_SCROLL_LOCK_OFF;
+						prev_keycode = 0;
+						break;
+					}
 				}
 				break;
 			default:
@@ -831,7 +894,10 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 	// keycode bit transfer order: 6 5 4 3 2 1 0 7 (7 is pressed flag)
 	keycode = (keycode << 1) | (~press & 1);
 	if (keycode == prev_keycode)
+	{
+		DBG_N("NO SENDING THE SAME KEYCODE TWO TIMES IN A ROW\r\n");
 		return NO_LED;
+	}
 
 	prev_keycode = keycode;
 
