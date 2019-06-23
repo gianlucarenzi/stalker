@@ -1,4 +1,3 @@
-
 /**
   ******************************************************************************
   * @file           : main.c
@@ -66,7 +65,7 @@ static void MX_USART2_UART_Init(int baud);
 
 /* Local variables */
 static int debuglevel = DBG_INFO;
-static const char *fwBuild = "v1.0rc";
+static const char *fwBuild = "v1.1rc";
 static UART_HandleTypeDef huart2;
 
 static void banner(void)
@@ -79,7 +78,7 @@ static void banner(void)
 	printf("\r\n\n");
 }
 
-static void tp1_light(int state)
+static void led_light(int state)
 {
 	int tpval = GPIO_PIN_RESET;
 
@@ -94,7 +93,7 @@ static void tp1_light(int state)
 	HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, tpval);
 }
 
-static void tp1_toggle(void)
+static void led_toggle(void)
 {
 	static int tpval = 0;
 	if (tpval == 0)
@@ -105,7 +104,7 @@ static void tp1_toggle(void)
 	{
 		tpval = 0;
 	}
-	tp1_light(tpval);
+	led_light(tpval);
 }
 
 #define USB_REPORT_RETRY    (6)
@@ -222,7 +221,7 @@ int main(void)
 					if ( !keyboard_ready )
 					{
 						DBG_V("### BOARD LED ON ### WAIT 500msec FOR LEDS\r\n");
-						tp1_light(0);
+						led_light(0);
 						if (timer_elapsed(500))
 						{
 							DBG_V("### KEYBOARD LED TOGGLE ###\r\n");
@@ -235,7 +234,9 @@ int main(void)
 					// Get data from keyboard!
 					if (USBH_Keybd(usbhost) == 0)
 					{
+						// Send all received keycode to Amiga
 						stat = amikb_process(USBH_GetScanCode());
+						// ...and manage the keyboard led
 						switch (stat)
 						{
 							case LED_CAPS_LOCK_OFF:
@@ -279,6 +280,7 @@ int main(void)
 								do_led = 0;
 								break;
 						}
+						// ...and let the led management to be done!
 						if (do_led)
 						{
 							DBG_N("USB ASK FOR REPORT: LED: 0x%02x\r\n", keyboard_led);
@@ -287,16 +289,21 @@ int main(void)
 					}
 					else
 					{
+						// In IDLE mode, check if there are some
+						// RESET request on the CLOCK line.
+						// Any EXTERNAL Amiga keyboard will assert low
+						// the clock line for more than 500msec to
+						// obtain the SYSTEM RESET REQUEST, so do we.
 						if (amikb_reset_check())
 						{
-							// Monitor the CLOCK line to see if some other
-							// is pulling the clock low for more than 500msec
-							// It means a SYS_REQ for a RESET!
+							// Is it the first time in IDLE state?
 							if (!resetTimer)
 							{
+								// Yes! Startup the timer
 								resetTimer = 1;
 								timer_start();
 							}
+							// In reset state
 							if (timer_elapsed(500))
 							{
 								DBG_N("Now it's time for a RESET!\r\n");
@@ -304,6 +311,12 @@ int main(void)
 								amikb_reset();
 								amikb_startup();
 							}
+						}
+						else
+						{
+							// If not in CLOCK LOW MODE, reset the
+							// timer for next time...
+							resetTimer = 0;
 						}
 					}
 				}
@@ -320,7 +333,7 @@ int main(void)
 					if (timer_elapsed(100))
 					{
 						DBG_N("UNKNOWN USB DEVICE\r\n");
-						tp1_toggle();
+						led_toggle();
 						amikb_notify("NOT USB Keyboard. Please Connect - Amiga Is Back!\n");
 						timer_start();
 						if (count++ > 10)
@@ -344,7 +357,7 @@ int main(void)
 				if (timer_elapsed(250))
 				{
 					DBG_N("NO HID DEVICE FOUND\r\n");
-					tp1_toggle();
+					led_toggle();
 					amikb_notify("NO HID Device. Please Connect - Amiga Is Back!\n");
 					timer_start();
 					if (count++ > 10)
@@ -359,9 +372,8 @@ int main(void)
 		{
 			keyboard_ready = 0;
 			DBG_N("APPLICATION %d\r\n", aState);
-			// La prima volta (all'accensione tipicamente)
-			// facciamo partire un timer ed ogni mezzo secondo
-			// alziamo il pin TP1
+			// On first run, we start a timer and every 1/2 second we
+			// toggle LED Pin
 			if (timerOneShot)
 			{
 				DBG_N("UNCONNECTED USB HID KEYBOARD. PLEASE CONNECT\r\n");
@@ -372,7 +384,7 @@ int main(void)
 			if (timer_elapsed(500))
 			{
 				DBG_N("WAIT INSERT USB KEYBOARD\r\n");
-				tp1_toggle();
+				led_toggle();
 				amikb_notify("Waiting USB Keyboard - Amiga Is Back!\n");
 				timer_start();
 				if (count++ > 10)
@@ -462,11 +474,11 @@ static void MX_USART2_UART_Init(int baud)
 }
 
 /** Configure pins as
-        * Analog
-        * Input
-        * Output
-        * EVENT_OUT
-        * EXTI
+		* Analog
+		* Input
+		* Output
+		* EVENT_OUT
+		* EXTI
 */
 static void MX_GPIO_Init(void)
 {
