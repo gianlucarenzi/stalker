@@ -47,11 +47,11 @@ int _write(int file, char *data, int len)
 static uint32_t timertick_start_ms = 0;
 void timer_start(void)
 {
-	// Alla partenza del timer assegniamo il valore iniziale
+	// When timer starts get the realtime system tick
 	timertick_start_ms = HAL_GetTick();
 }
-// Restituisce 0 se non e' passato il tempo indicato rispetto alla chiamata
-// precedente di start, altrimenti restituisce 1...
+
+// Returns 0 if it is too early otherwise returns 1, i.e. time is elapsed
 int timer_elapsed(uint32_t msec)
 {
 	int retval;
@@ -65,6 +65,7 @@ int timer_elapsed(uint32_t msec)
 	return retval;
 }
 
+// I hate this delay because they are clockspeed dependent!!!
 #define delayUS_ASM(us) do {\
 	asm volatile (	"MOV R0,%[loops]\n\t"\
 			"1: \n\t"\
