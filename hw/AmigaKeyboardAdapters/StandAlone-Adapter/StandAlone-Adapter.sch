@@ -1,33 +1,19 @@
 EESchema Schematic File Version 2
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
+LIBS:StandAlone-Adapter-rescue
+LIBS:Sensor_Pressure
+LIBS:Sensor_Motion
+LIBS:Memory_ROM
+LIBS:Memory_RAM
+LIBS:Memory_NVRAM
+LIBS:MCU_ST_STM32
+LIBS:MCU_Microchip_AVR
+LIBS:MCU_Microchip_ATtiny
+LIBS:MCU_Microchip_ATmega
+LIBS:MCU_Infineon
 LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
+LIBS:maxim
+LIBS:linear
 LIBS:atmel
-LIBS:contrib
-LIBS:valves
 LIBS:Video
 LIBS:Valve
 LIBS:Triac_Thyristor
@@ -40,179 +26,179 @@ LIBS:Timer_RTC
 LIBS:Timer_PLL
 LIBS:Timer
 LIBS:Switch
-LIBS:AmigaComponents
-LIBS:4xxx
-LIBS:4xxx_IEEE
-LIBS:74xGxx
-LIBS:74xx_IEEE
-LIBS:Amplifier_Audio
-LIBS:Amplifier_Buffer
-LIBS:Amplifier_Current
-LIBS:Amplifier_Difference
-LIBS:Amplifier_Instrumentation
-LIBS:Amplifier_Operational
-LIBS:Amplifier_Video
-LIBS:Analog
-LIBS:Analog_ADC
-LIBS:Analog_DAC
-LIBS:Analog_Switch
-LIBS:Audio
-LIBS:Battery_Management
-LIBS:Comparator
-LIBS:Connector
-LIBS:Connector_Generic
-LIBS:Connector_Generic_MountingPin
-LIBS:Connector_Generic_Shielded
-LIBS:Converter_ACDC
-LIBS:Converter_DCDC
-LIBS:CPLD_Altera
-LIBS:CPLD_Xilinx
-LIBS:CPU
-LIBS:CPU_NXP_6800
-LIBS:CPU_NXP_68000
-LIBS:CPU_PowerPC
-LIBS:Device
-LIBS:Diode
-LIBS:Diode_Bridge
-LIBS:Diode_Laser
-LIBS:Display_Character
-LIBS:Display_Graphic
-LIBS:Driver_Display
-LIBS:Driver_FET
-LIBS:Driver_LED
-LIBS:Driver_Motor
-LIBS:Driver_Relay
-LIBS:DSP_AnalogDevices
-LIBS:DSP_Freescale
-LIBS:DSP_Microchip_DSPIC33
-LIBS:DSP_Motorola
-LIBS:DSP_Texas
-LIBS:Fiber_Optic
-LIBS:Filter
-LIBS:FPGA_Lattice
-LIBS:FPGA_Microsemi
-LIBS:FPGA_Xilinx
-LIBS:FPGA_Xilinx_Artix7
-LIBS:FPGA_Xilinx_Kintex7
-LIBS:FPGA_Xilinx_Spartan6
-LIBS:FPGA_Xilinx_Virtex5
-LIBS:FPGA_Xilinx_Virtex6
-LIBS:FPGA_Xilinx_Virtex7
-LIBS:ft232rl
-LIBS:GPU
-LIBS:Graphic
-LIBS:Interface
-LIBS:Interface_CAN_LIN
-LIBS:Interface_CurrentLoop
-LIBS:Interface_Ethernet
-LIBS:Interface_Expansion
-LIBS:Interface_HID
-LIBS:Interface_LineDriver
-LIBS:Interface_Optical
-LIBS:Interface_Telecom
-LIBS:Interface_UART
-LIBS:Interface_USB
-LIBS:Isolator
-LIBS:Isolator_Analog
-LIBS:Jumper
-LIBS:LED
-LIBS:Logic_LevelTranslator
-LIBS:Logic_Programmable
-LIBS:MCU_AnalogDevices
-LIBS:MCU_Cypress
-LIBS:MCU_Espressif
-LIBS:MCU_Intel
-LIBS:MCU_Microchip_8051
-LIBS:MCU_Microchip_ATmega
-LIBS:MCU_Microchip_ATtiny
-LIBS:MCU_Microchip_AVR
-LIBS:MCU_Microchip_PIC10
-LIBS:MCU_Microchip_PIC12
-LIBS:MCU_Microchip_PIC16
-LIBS:MCU_Microchip_PIC18
-LIBS:MCU_Microchip_PIC24
-LIBS:MCU_Microchip_PIC32
-LIBS:MCU_Microchip_SAMD
-LIBS:MCU_Microchip_SAME
-LIBS:MCU_Microchip_SAML
-LIBS:MCU_Module
-LIBS:MCU_Nordic
-LIBS:MCU_NXP_ColdFire
-LIBS:MCU_NXP_HC11
-LIBS:MCU_NXP_HC12
-LIBS:MCU_NXP_HCS12
-LIBS:MCU_NXP_Kinetis
-LIBS:MCU_NXP_LPC
-LIBS:MCU_NXP_MAC7100
-LIBS:MCU_NXP_MCore
-LIBS:MCU_NXP_S08
-LIBS:MCU_Parallax
-LIBS:MCU_SiFive
-LIBS:MCU_SiliconLabs
-LIBS:MCU_ST_STM8
-LIBS:MCU_ST_STM32F0
-LIBS:MCU_ST_STM32F1
-LIBS:MCU_ST_STM32F2
-LIBS:MCU_ST_STM32F3
-LIBS:MCU_ST_STM32F4
-LIBS:MCU_ST_STM32F7
-LIBS:MCU_ST_STM32H7
-LIBS:MCU_ST_STM32L0
-LIBS:MCU_ST_STM32L1
-LIBS:MCU_ST_STM32L4
-LIBS:MCU_ST_STM32L4+
-LIBS:MCU_Texas
-LIBS:MCU_Texas_MSP430
-LIBS:Mechanical
-LIBS:Memory_EEPROM
-LIBS:Memory_EPROM
-LIBS:Memory_Flash
-LIBS:Memory_NVRAM
-LIBS:Memory_RAM
-LIBS:Memory_ROM
-LIBS:Memory_UniqueID
-LIBS:Motor
-LIBS:Oscillator
-LIBS:Potentiometer_Digital
-LIBS:Power_Management
-LIBS:Power_Protection
-LIBS:Power_Supervisor
-LIBS:pspice
-LIBS:Reference_Current
-LIBS:Reference_Voltage
-LIBS:Regulator_Controller
-LIBS:Regulator_Current
-LIBS:Regulator_Linear
-LIBS:Regulator_SwitchedCapacitor
-LIBS:Regulator_Switching
-LIBS:Relay
-LIBS:Relay_SolidState
-LIBS:RF
-LIBS:RF_AM_FM
-LIBS:RF_Amplifier
-LIBS:RF_Bluetooth
-LIBS:RF_GPS
-LIBS:RF_GSM
-LIBS:RF_Mixer
-LIBS:RF_Module
-LIBS:RF_RFID
-LIBS:RF_Switch
-LIBS:RF_WiFi
-LIBS:RF_ZigBee
-LIBS:Security
-LIBS:Sensor
-LIBS:Sensor_Audio
-LIBS:Sensor_Current
-LIBS:Sensor_Gas
-LIBS:Sensor_Humidity
-LIBS:Sensor_Magnetic
-LIBS:Sensor_Motion
-LIBS:Sensor_Optical
-LIBS:Sensor_Pressure
-LIBS:Sensor_Proximity
-LIBS:Sensor_Temperature
-LIBS:Sensor_Touch
+LIBS:Simulation_SPICE
 LIBS:Sensor_Voltage
+LIBS:Sensor_Touch
+LIBS:Sensor_Temperature
+LIBS:Sensor_Proximity
+LIBS:Sensor_Optical
+LIBS:Sensor_Magnetic
+LIBS:Sensor_Humidity
+LIBS:Sensor_Gas
+LIBS:Sensor_Current
+LIBS:Sensor_Audio
+LIBS:Sensor
+LIBS:Security
+LIBS:RF_ZigBee
+LIBS:RF_WiFi
+LIBS:RF_Switch
+LIBS:RF_RFID
+LIBS:RF_Module
+LIBS:RF_Mixer
+LIBS:RF_GSM
+LIBS:RF_GPS
+LIBS:RF_Filter
+LIBS:RF_Bluetooth
+LIBS:RF_Amplifier
+LIBS:RF_AM_FM
+LIBS:RF
+LIBS:Relay_SolidState
+LIBS:Relay
+LIBS:Regulator_Switching
+LIBS:Regulator_SwitchedCapacitor
+LIBS:Regulator_Linear
+LIBS:Regulator_Current
+LIBS:Regulator_Controller
+LIBS:Reference_Voltage
+LIBS:Reference_Current
+LIBS:pspice
+LIBS:Power_Supervisor
+LIBS:Power_Protection
+LIBS:Power_Management
+LIBS:power
+LIBS:Potentiometer_Digital
+LIBS:Oscillator
+LIBS:Motor
+LIBS:Memory_UniqueID
+LIBS:Memory_Flash
+LIBS:Memory_EPROM
+LIBS:Memory_EEPROM
+LIBS:Mechanical
+LIBS:MCU_Texas_MSP430
+LIBS:MCU_Texas
+LIBS:MCU_ST_STM32L4+
+LIBS:MCU_ST_STM32L4
+LIBS:MCU_ST_STM32L1
+LIBS:MCU_ST_STM32L0
+LIBS:MCU_ST_STM32H7
+LIBS:MCU_ST_STM32F7
+LIBS:MCU_ST_STM32F4
+LIBS:MCU_ST_STM32F3
+LIBS:MCU_ST_STM32F2
+LIBS:MCU_ST_STM32F1
+LIBS:MCU_ST_STM32F0
+LIBS:MCU_ST_STM8
+LIBS:MCU_STC
+LIBS:MCU_SiliconLabs
+LIBS:MCU_SiFive
+LIBS:MCU_Parallax
+LIBS:MCU_NXP_S08
+LIBS:MCU_NXP_MCore
+LIBS:MCU_NXP_MAC7100
+LIBS:MCU_NXP_LPC
+LIBS:MCU_NXP_Kinetis
+LIBS:MCU_NXP_HCS12
+LIBS:MCU_NXP_HC12
+LIBS:MCU_NXP_HC11
+LIBS:MCU_NXP_ColdFire
+LIBS:MCU_Nordic
+LIBS:MCU_Module
+LIBS:MCU_Microchip_SAML
+LIBS:MCU_Microchip_SAME
+LIBS:MCU_Microchip_SAMD
+LIBS:MCU_Microchip_PIC32
+LIBS:MCU_Microchip_PIC24
+LIBS:MCU_Microchip_PIC18
+LIBS:MCU_Microchip_PIC16
+LIBS:MCU_Microchip_PIC12
+LIBS:MCU_Microchip_PIC10
+LIBS:MCU_Microchip_8051
+LIBS:MCU_Intel
+LIBS:MCU_Espressif
+LIBS:MCU_Cypress
+LIBS:MCU_AnalogDevices
+LIBS:Logic_Programmable
+LIBS:Logic_LevelTranslator
+LIBS:LED
+LIBS:Jumper
+LIBS:Isolator_Analog
+LIBS:Isolator
+LIBS:Interface_USB
+LIBS:Interface_UART
+LIBS:Interface_Telecom
+LIBS:Interface_Optical
+LIBS:Interface_LineDriver
+LIBS:Interface_HID
+LIBS:Interface_HDMI
+LIBS:Interface_Expansion
+LIBS:Interface_Ethernet
+LIBS:Interface_CurrentLoop
+LIBS:Interface_CAN_LIN
+LIBS:Interface
+LIBS:Graphic
+LIBS:GPU
+LIBS:ft232rl
+LIBS:FPGA_Xilinx_Virtex7
+LIBS:FPGA_Xilinx_Virtex6
+LIBS:FPGA_Xilinx_Virtex5
+LIBS:FPGA_Xilinx_Spartan6
+LIBS:FPGA_Xilinx_Kintex7
+LIBS:FPGA_Xilinx_Artix7
+LIBS:FPGA_Xilinx
+LIBS:FPGA_Microsemi
+LIBS:FPGA_Lattice
+LIBS:Filter
+LIBS:Fiber_Optic
+LIBS:DSP_Texas
+LIBS:DSP_Motorola
+LIBS:DSP_Microchip_DSPIC33
+LIBS:DSP_Freescale
+LIBS:DSP_AnalogDevices
+LIBS:Driver_Relay
+LIBS:Driver_Motor
+LIBS:Driver_LED
+LIBS:Driver_Haptic
+LIBS:Driver_FET
+LIBS:Driver_Display
+LIBS:Display_Graphic
+LIBS:Display_Character
+LIBS:Diode_Laser
+LIBS:Diode_Bridge
+LIBS:Diode
+LIBS:Device
+LIBS:CPU_PowerPC
+LIBS:CPU_NXP_IMX
+LIBS:CPU_NXP_68000
+LIBS:CPU_NXP_6800
+LIBS:CPU
+LIBS:CPLD_Xilinx
+LIBS:CPLD_Altera
+LIBS:Converter_DCDC
+LIBS:Converter_ACDC
+LIBS:Connector_Generic_Shielded
+LIBS:Connector_Generic_MountingPin
+LIBS:Connector_Generic
+LIBS:Connector
+LIBS:Comparator
+LIBS:Battery_Management
+LIBS:Audio
+LIBS:Analog_Switch
+LIBS:Analog_DAC
+LIBS:Analog_ADC
+LIBS:Analog
+LIBS:Amplifier_Video
+LIBS:Amplifier_Operational
+LIBS:Amplifier_Instrumentation
+LIBS:Amplifier_Difference
+LIBS:Amplifier_Current
+LIBS:Amplifier_Buffer
+LIBS:Amplifier_Audio
+LIBS:74xx_IEEE
+LIBS:74xx
+LIBS:74xGxx
+LIBS:4xxx_IEEE
+LIBS:4xxx
+LIBS:AmigaComponents
 LIBS:StandAlone-Adapter-cache
 EELAYER 25 0
 EELAYER END
@@ -255,7 +241,7 @@ F 3 "" H 7200 5750 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L C C4
+L C-RESCUE-StandAlone-Adapter C4
 U 1 1 5B89B4FF
 P 6800 5450
 F 0 "C4" H 6825 5550 50  0000 L CNN
@@ -266,7 +252,7 @@ F 3 "" H 6800 5450 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L C C5
+L C-RESCUE-StandAlone-Adapter C5
 U 1 1 5B89B578
 P 6800 6050
 F 0 "C5" H 6825 6150 50  0000 L CNN
@@ -288,7 +274,7 @@ F 3 "" H 6350 6200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C6
+L C-RESCUE-StandAlone-Adapter C6
 U 1 1 5B89BAC3
 P 7850 3500
 F 0 "C6" H 7875 3600 50  0000 L CNN
@@ -299,7 +285,7 @@ F 3 "" H 7850 3500 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C7
+L C-RESCUE-StandAlone-Adapter C7
 U 1 1 5B89BB1C
 P 8100 3500
 F 0 "C7" H 8125 3600 50  0000 L CNN
@@ -310,7 +296,7 @@ F 3 "" H 8100 3500 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C8
+L C-RESCUE-StandAlone-Adapter C8
 U 1 1 5B89BB47
 P 8350 3500
 F 0 "C8" H 8375 3600 50  0000 L CNN
@@ -321,7 +307,7 @@ F 3 "" H 8350 3500 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C9
+L C-RESCUE-StandAlone-Adapter C9
 U 1 1 5B89BC11
 P 8600 3500
 F 0 "C9" H 8625 3600 50  0000 L CNN
@@ -426,7 +412,7 @@ USART3_TX
 Text Label 9600 4900 2    39   ~ 0
 USART3_RX
 $Comp
-L R R4
+L R-RESCUE-StandAlone-Adapter R4
 U 1 1 5B89EAF9
 P 10100 4600
 F 0 "R4" V 10200 4600 50  0000 C CNN
@@ -437,7 +423,7 @@ F 3 "" H 10100 4600 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R5
+L R-RESCUE-StandAlone-Adapter R5
 U 1 1 5B89EB30
 P 10300 4600
 F 0 "R5" V 10400 4600 50  0000 C CNN
@@ -478,7 +464,7 @@ F 3 "" H 6500 4400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R2
+L R-RESCUE-StandAlone-Adapter R2
 U 1 1 5B89FB89
 P 3350 5600
 F 0 "R2" V 3450 5600 50  0000 C CNN
@@ -489,7 +475,7 @@ F 3 "" H 3350 5600 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED D2
+L LED-RESCUE-StandAlone-Adapter D2
 U 1 1 5B89FC0A
 P 3350 5950
 F 0 "D2" H 3350 6050 50  0000 C CNN
@@ -739,7 +725,7 @@ F 3 "" H 6150 4450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED D1
+L LED-RESCUE-StandAlone-Adapter D1
 U 1 1 5B8B38D7
 P 1250 5950
 F 0 "D1" H 1250 6050 50  0000 C CNN
@@ -761,7 +747,7 @@ F 3 "" H 1250 6150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R1
+L R-RESCUE-StandAlone-Adapter R1
 U 1 1 5B8B3FCE
 P 1250 5600
 F 0 "R1" V 1330 5600 50  0000 C CNN
@@ -829,7 +815,7 @@ $EndComp
 Text GLabel 13800 1100 2    60   Input ~ 0
 VCC5V
 $Comp
-L LED D3
+L LED-RESCUE-StandAlone-Adapter D3
 U 1 1 5B8BD76A
 P 1950 3050
 F 0 "D3" H 1950 3150 50  0000 C CNN
@@ -840,7 +826,7 @@ F 3 "" H 1950 3050 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L R R6
+L R-RESCUE-StandAlone-Adapter R6
 U 1 1 5B8BD88E
 P 1950 2700
 F 0 "R6" V 2030 2700 50  0000 C CNN
@@ -943,7 +929,7 @@ F 3 "" H 4050 5800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L BSS138 Q1
+L BSS138-RESCUE-StandAlone-Adapter Q1
 U 1 1 5B984E7C
 P 14150 5850
 F 0 "Q1" H 14350 5925 50  0000 L CNN
@@ -954,7 +940,7 @@ F 3 "" H 14150 5850 50  0000 L CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L R R7
+L R-RESCUE-StandAlone-Adapter R7
 U 1 1 5B985F07
 P 13900 5800
 F 0 "R7" V 13980 5800 50  0000 C CNN
@@ -965,7 +951,7 @@ F 3 "" H 13900 5800 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R8
+L R-RESCUE-StandAlone-Adapter R8
 U 1 1 5B985F72
 P 14400 5800
 F 0 "R8" V 14480 5800 50  0000 C CNN
@@ -984,7 +970,7 @@ KBD_3v3_DATA
 Text GLabel 14550 5950 2    60   BiDi ~ 0
 KBD_DATA
 $Comp
-L BSS138 Q2
+L BSS138-RESCUE-StandAlone-Adapter Q2
 U 1 1 5B992221
 P 14150 8200
 F 0 "Q2" H 14350 8275 50  0000 L CNN
@@ -995,7 +981,7 @@ F 3 "" H 14150 8200 50  0000 L CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L R R9
+L R-RESCUE-StandAlone-Adapter R9
 U 1 1 5B992227
 P 13900 8150
 F 0 "R9" V 13980 8150 50  0000 C CNN
@@ -1006,7 +992,7 @@ F 3 "" H 13900 8150 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R10
+L R-RESCUE-StandAlone-Adapter R10
 U 1 1 5B99222D
 P 14400 8150
 F 0 "R10" V 14480 8150 50  0000 C CNN
@@ -1023,7 +1009,7 @@ KBD_3v3_RESET
 Text GLabel 14550 8300 2    60   BiDi ~ 0
 KBD_RESET
 $Comp
-L BSS138 Q3
+L BSS138-RESCUE-StandAlone-Adapter Q3
 U 1 1 5B9960F0
 P 14150 7050
 F 0 "Q3" H 14350 7125 50  0000 L CNN
@@ -1034,7 +1020,7 @@ F 3 "" H 14150 7050 50  0000 L CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L R R11
+L R-RESCUE-StandAlone-Adapter R11
 U 1 1 5B9960F6
 P 13900 7000
 F 0 "R11" V 13980 7000 50  0000 C CNN
@@ -1045,7 +1031,7 @@ F 3 "" H 13900 7000 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R12
+L R-RESCUE-StandAlone-Adapter R12
 U 1 1 5B9960FC
 P 14400 7000
 F 0 "R12" V 14480 7000 50  0000 C CNN
@@ -1075,7 +1061,7 @@ F 3 "" H 8650 6100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R13
+L R-RESCUE-StandAlone-Adapter R13
 U 1 1 5BD63103
 P 6750 8150
 F 0 "R13" V 6830 8150 50  0000 C CNN
@@ -1086,7 +1072,7 @@ F 3 "" H 6750 8150 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L LED D4
+L LED-RESCUE-StandAlone-Adapter D4
 U 1 1 5BD63180
 P 6400 8150
 F 0 "D4" H 6400 8250 50  0000 C CNN

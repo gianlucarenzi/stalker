@@ -1,4 +1,4 @@
-(pcb "/home/debian/Progetti/Amiga/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.dsn"
+(pcb "/home/debian/Progetti/AMIGA/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.dsn"
   (parser
     (string_quote ")
     (space_in_quoted_tokens on)
@@ -24,10 +24,6 @@
       (path pcb 0  109220 -66040  109220 -124460  187960 -124460  187960 -66040
             109220 -66040  109220 -66040)
     )
-    (plane GND (polygon F.Cu 0  186690 -121920  110490 -121920  110490 -67310  186690 -67310
-            186690 -121920))
-    (plane GND (polygon B.Cu 0  186690 -121920  110490 -121920  110490 -67310  186690 -67310
-            186690 -121920))
     (via "Via[0-1]_600:400_um")
     (rule
       (width 300)
@@ -57,9 +53,6 @@
       (place Q2 139954 -107442 front 90 (PN BSS138))
       (place Q1 152146 -107950 front 90 (PN BSS138))
     )
-    (component "RetroBitLab:RJ10-RECEPTACLE-Assmann-ASS-2004-3-4-LP-N-R"
-      (place J1 146050 -110490 front 0 (PN RJ10))
-    )
     (component LEDs:LED_1206
       (place D1 174752 -73406 front 0 (PN LED))
       (place D2 166370 -87630 front 270 (PN LED))
@@ -82,8 +75,8 @@
       (place R13 134366 -82296 front 90 (PN 1.5K))
       (place R14 149352 -83058 front 0 (PN 10K))
       (place R15 153924 -102616 front 180 (PN 10K))
-      (place R16 164592 -92710 front 0 (PN 12))
-      (place R17 164592 -96012 front 0 (PN 12))
+      (place R16 164592 -92710 front 0 (PN 12ohm))
+      (place R17 164592 -96012 front 0 (PN 12ohm))
     )
     (component RetroBitLab:USB_A_UP
       (place USB1 152400 -78740 front 180 (PN CONN_01x04))
@@ -96,8 +89,8 @@
       (place C7 146304 -85852 front 0 (PN 100n))
       (place C8 146304 -102616 front 0 (PN 100n))
       (place C9 158496 -93980 front 270 (PN 100n))
-      (place C5 138684 -103124 front 0 (PN 22p))
-      (place C4 138684 -87376 front 0 (PN 22p))
+      (place C5 138684 -103124 front 0 (PN 20p))
+      (place C4 138684 -87376 front 0 (PN 20p))
       (place C3 170434 -83058 front 270 (PN 100n))
       (place C10 160020 -101600 front 270 (PN 100n))
       (place C12 118745 -97790 front 270 (PN 100n))
@@ -136,6 +129,12 @@
     (component RetroBitLab:amigaWorkBench1
       (place WBLOGO 154940 -104140 back 0 (PN LOGO))
       (place AMIGALOGO 152400 -88900 back 0 (PN LOGO))
+    )
+    (component "RetroBitLab:Symbol_GNU-GPL_SilkScreen_Small"
+      (place GNULOGO 177800 -99060 front 0 (PN "Symbol_GNU-GPL_CopperTop_Small"))
+    )
+    (component "RetroBitLab:RJ10-RECEPTACLE-Assmann-ASS-2004-3-4-LP-N-R"
+      (place J1 146050 -110490 front 0 (PN RJ10))
     )
   )
   (library
@@ -256,18 +255,6 @@
       (pin Rect[T]Pad_800.1x800.1_um 1 -950 -1000.76)
       (pin Rect[T]Pad_800.1x800.1_um 2 950 -1000.76)
       (pin Rect[T]Pad_800.1x800.1_um 3 0 998.22)
-    )
-    (image "RetroBitLab:RJ10-RECEPTACLE-Assmann-ASS-2004-3-4-LP-N-R"
-      (outline (path signal 150  0 -34  11200 -34))
-      (outline (path signal 150  11200 -18034  11200 -34))
-      (outline (path signal 150  0 -18034  0 -34))
-      (outline (path signal 150  0 -18034  11200 -18034))
-      (pin Round[A]Pad_1270_um 3 6235 -3800)
-      (pin Round[A]Pad_1270_um 1 3695 -3800)
-      (pin Round[A]Pad_1270_um 4 7505 -1270)
-      (pin Round[A]Pad_3600_um 5 9410 -10150)
-      (pin Round[A]Pad_3600_um 5@1 1790 -10150)
-      (pin Round[A]Pad_1270_um 2 4965 -1270)
     )
     (image LEDs:LED_1206
       (outline (path signal 150  -2150 -1050  1450 -1050))
@@ -554,6 +541,68 @@
     )
     (image RetroBitLab:amigaWorkBench1
     )
+    (image "RetroBitLab:Symbol_GNU-GPL_SilkScreen_Small"
+      (outline (path signal 381  2100.58 -299.72  2100.58 -1899.92))
+      (outline (path signal 381  2100.58 -1899.92  3299.46 -1899.92))
+      (outline (path signal 381  -398.78 -1899.92  -398.78 -398.78))
+      (outline (path signal 381  -398.78 -398.78  500.38 -398.78))
+      (outline (path signal 381  500.38 -398.78  701.04 -398.78))
+      (outline (path signal 381  701.04 -398.78  899.16 -500.38))
+      (outline (path signal 381  899.16 -500.38  1000.76 -701.04))
+      (outline (path signal 381  1000.76 -701.04  1000.76 -899.16))
+      (outline (path signal 381  1000.76 -899.16  800.1 -1099.82))
+      (outline (path signal 381  800.1 -1099.82  500.38 -1198.88))
+      (outline (path signal 381  500.38 -1198.88  -398.78 -1198.88))
+      (outline (path signal 381  -1600.2 -500.38  -1800.86 -398.78))
+      (outline (path signal 381  -1800.86 -398.78  -2301.24 -398.78))
+      (outline (path signal 381  -2301.24 -398.78  -2600.96 -500.38))
+      (outline (path signal 381  -2600.96 -500.38  -2799.08 -599.44))
+      (outline (path signal 381  -2799.08 -599.44  -2999.74 -899.16))
+      (outline (path signal 381  -2999.74 -899.16  -2999.74 -1198.88))
+      (outline (path signal 381  -2999.74 -1198.88  -2900.68 -1600.2))
+      (outline (path signal 381  -2900.68 -1600.2  -2600.96 -1800.86))
+      (outline (path signal 381  -2600.96 -1800.86  -2301.24 -1899.92))
+      (outline (path signal 381  -2301.24 -1899.92  -1998.98 -1899.92))
+      (outline (path signal 381  -1998.98 -1899.92  -1501.14 -1800.86))
+      (outline (path signal 381  -1501.14 -1800.86  -1501.14 -1300.48))
+      (outline (path signal 381  -1501.14 -1300.48  -1998.98 -1300.48))
+      (outline (path signal 381  1800.86 2199.64  1800.86 899.16))
+      (outline (path signal 381  1800.86 899.16  2100.58 701.04))
+      (outline (path signal 381  2100.58 701.04  2400.3 701.04))
+      (outline (path signal 381  2400.3 701.04  2799.08 701.04))
+      (outline (path signal 381  2799.08 701.04  3098.8 800.1))
+      (outline (path signal 381  3098.8 800.1  3299.46 899.16))
+      (outline (path signal 381  3299.46 899.16  3299.46 2199.64))
+      (outline (path signal 381  -800.1 701.04  -800.1 2199.64))
+      (outline (path signal 381  -800.1 2199.64  701.04 701.04))
+      (outline (path signal 381  701.04 701.04  701.04 2199.64))
+      (outline (path signal 381  -1998.98 2100.58  -2301.24 2199.64))
+      (outline (path signal 381  -2301.24 2199.64  -2799.08 2100.58))
+      (outline (path signal 381  -2799.08 2100.58  -3200.4 1899.92))
+      (outline (path signal 381  -3200.4 1899.92  -3401.06 1501.14))
+      (outline (path signal 381  -3401.06 1501.14  -3299.46 1099.82))
+      (outline (path signal 381  -3299.46 1099.82  -2999.74 800.1))
+      (outline (path signal 381  -2999.74 800.1  -2499.36 599.44))
+      (outline (path signal 381  -2499.36 599.44  -1800.86 800.1))
+      (outline (path signal 381  -1800.86 800.1  -1800.86 1300.48))
+      (outline (path signal 381  -1800.86 1300.48  -2301.24 1300.48))
+      (outline (path signal 381  -4064 3048  4064 3048))
+      (outline (path signal 381  4064 3048  4064 -2540))
+      (outline (path signal 381  4064 -2540  -4064 -2540))
+      (outline (path signal 381  -4064 -2540  -4064 3048))
+    )
+    (image "RetroBitLab:RJ10-RECEPTACLE-Assmann-ASS-2004-3-4-LP-N-R"
+      (outline (path signal 150  0 -34  11200 -34))
+      (outline (path signal 150  11200 -18034  11200 -34))
+      (outline (path signal 150  0 -18034  0 -34))
+      (outline (path signal 150  0 -18034  11200 -18034))
+      (pin Round[A]Pad_1270_um 2 6235 -3800)
+      (pin Round[A]Pad_1270_um 4 3695 -3800)
+      (pin Round[A]Pad_1270_um 1 7505 -1270)
+      (pin Round[A]Pad_3600_um 5 9410 -10150)
+      (pin Round[A]Pad_3600_um 5@1 1790 -10150)
+      (pin Round[A]Pad_1270_um 3 4965 -1270)
+    )
     (padstack Round[A]Pad_1270_um
       (shape (circle F.Cu 1270))
       (shape (circle B.Cu 1270))
@@ -663,16 +712,16 @@
   )
   (network
     (net KBD_CLOCK
-      (pins Q3-3 J1-2 R12-2 AMIGA_KEYBOARD1-1 J2-1)
+      (pins Q3-3 R12-2 AMIGA_KEYBOARD1-1 J2-1 J1-2)
     )
     (net KBD_DATA
-      (pins Q1-3 J1-3 R8-2 AMIGA_KEYBOARD1-2 J2-2)
+      (pins Q1-3 R8-2 AMIGA_KEYBOARD1-2 J2-2 J1-3)
     )
     (net GND
-      (pins U3-12 U3-18 U3-31 U3-47 U3-63 U1-1 TP1-1 J1-4 D1-1 D2-1 R6-1 USB1-4 C6-1
-        C7-1 C8-1 C9-1 C5-2 C4-2 SWDIO/CLK1-1 DEBUG1-1 BOOT1-3 RESET1-2 USB_ID1-1
-        POWER1-2 POWER1-3 AMIGA_KEYBOARD1-4 P1-2 EN1-2 J2-3 J2-4 BOOT0-3 C3-2 C10-2
-        C12-1 C13-2 C14-2 C1-2 C2-2 C11-2)
+      (pins U3-12 U3-18 U3-31 U3-47 U3-63 U1-1 TP1-1 D1-1 D2-1 R6-1 USB1-4 C6-1 C7-1
+        C8-1 C9-1 C5-2 C4-2 SWDIO/CLK1-1 DEBUG1-1 BOOT1-3 RESET1-2 USB_ID1-1 POWER1-2
+        POWER1-3 AMIGA_KEYBOARD1-4 P1-2 EN1-2 J2-3 J2-4 BOOT0-3 C3-2 C10-2 C12-1 C13-2
+        C14-2 C1-2 C2-2 C11-2 J1-4)
     )
     (net VCC3V3
       (pins U3-13 U3-19 U3-32 U3-48 U3-64 U1-2 Q3-1 Q2-1 Q1-1 D4-2 R2-1 R3-2 R4-1
@@ -683,8 +732,8 @@
       (pins BOOT0-2 R14-2)
     )
     (net +5V
-      (pins U1-3 J1-1 R1-1 R8-1 R10-1 R12-1 USB1-1 POWER1-1 AMIGA_KEYBOARD1-5 J2-6
-        C14-1 C1-1)
+      (pins U1-3 R1-1 R8-1 R10-1 R12-1 USB1-1 POWER1-1 AMIGA_KEYBOARD1-5 J2-6 C14-1
+        C1-1 J1-1)
     )
     (net "Net-(C4-Pad1)"
       (pins U3-5 XT1-1 C4-1)
@@ -768,11 +817,20 @@
       (pins USB1-2 R17-2)
     )
     (class kicad_default "" +5V BOOT0 BOOT1 GND KBD_3v3_CLOCK KBD_3v3_DATA
-      KBD_3v3_RESET KBD_CLOCK KBD_DATA KBD_RESET NRST "Net-(C13-Pad1)" "Net-(C4-Pad1)"
-      "Net-(C5-Pad1)" "Net-(D1-Pad2)" "Net-(D2-Pad2)" "Net-(D3-Pad1)" "Net-(D4-Pad1)"
-      "Net-(R14-Pad1)" "Net-(R15-Pad2)" "Net-(R16-Pad2)" "Net-(R17-Pad2)"
-      SWDCLK SWDIO TP1 TP2 UART_RX_TTL UART_TX_TTL USB_ID USB_N USB_P VCC12V
-      VCC3V3
+      KBD_3v3_RESET KBD_CLOCK KBD_DATA KBD_RESET NRST "Net-(AMIGA_KEYBOARD1-Pad3)"
+      "Net-(C13-Pad1)" "Net-(C4-Pad1)" "Net-(C5-Pad1)" "Net-(D1-Pad2)" "Net-(D2-Pad2)"
+      "Net-(D3-Pad1)" "Net-(D4-Pad1)" "Net-(H1-Pad1)" "Net-(H2-Pad1)" "Net-(H3-Pad1)"
+      "Net-(H4-Pad1)" "Net-(R14-Pad1)" "Net-(R15-Pad2)" "Net-(R16-Pad2)" "Net-(R17-Pad2)"
+      "Net-(U3-Pad1)" "Net-(U3-Pad2)" "Net-(U3-Pad20)" "Net-(U3-Pad21)" "Net-(U3-Pad22)"
+      "Net-(U3-Pad23)" "Net-(U3-Pad24)" "Net-(U3-Pad25)" "Net-(U3-Pad26)"
+      "Net-(U3-Pad27)" "Net-(U3-Pad29)" "Net-(U3-Pad3)" "Net-(U3-Pad33)" "Net-(U3-Pad34)"
+      "Net-(U3-Pad35)" "Net-(U3-Pad36)" "Net-(U3-Pad37)" "Net-(U3-Pad38)"
+      "Net-(U3-Pad39)" "Net-(U3-Pad4)" "Net-(U3-Pad40)" "Net-(U3-Pad41)" "Net-(U3-Pad42)"
+      "Net-(U3-Pad50)" "Net-(U3-Pad51)" "Net-(U3-Pad52)" "Net-(U3-Pad53)"
+      "Net-(U3-Pad54)" "Net-(U3-Pad55)" "Net-(U3-Pad56)" "Net-(U3-Pad57)"
+      "Net-(U3-Pad58)" "Net-(U3-Pad59)" "Net-(U3-Pad61)" "Net-(U3-Pad62)"
+      "Net-(U3-Pad8)" SWDCLK SWDIO TP1 TP2 UART_RX_TTL UART_TX_TTL USB_ID
+      USB_N USB_P VCC12V VCC3V3
       (circuit
         (use_via Via[0-1]_600:400_um)
       )
@@ -819,25 +877,18 @@
     )
   )
   (wiring
+    (wire (path B.Cu 300  175260 -104140  175000 -104000  176000 -105000  177000 -105000
+            177000 -112000  179000 -114000  179000 -117000  180000 -118000
+            180000 -121000  173000 -121000  168000 -116000  158000 -116000
+            156000 -114000  152000 -114000  152285 -114290  152000 -114000
+            152000 -116000  120000 -116000  120000 -108000  127000 -101000
+            128000 -101000)(net KBD_CLOCK)(type protect))
+    (wire (path F.Cu 300  128000 -101000  130000 -101000  132000 -103000  132000 -107000
+            133000 -108000  132606 -107696)(net KBD_CLOCK)(type protect))
     (wire (path F.Cu 250  175260 -104140  175260 -105329)(net KBD_CLOCK)(type protect))
     (wire (path F.Cu 250  132606 -107696  132606 -106971)(net KBD_CLOCK)(type protect))
     (wire (path F.Cu 250  133572 -103886  133572 -105061)(net KBD_CLOCK)(type protect))
-    (wire (path F.Cu 250  151015 -111461  151015 -111760)(net KBD_CLOCK)(type protect))
-    (wire (path F.Cu 250  152792 -109684  151015 -111461)(net KBD_CLOCK)(type protect))
-    (wire (path F.Cu 250  161968 -109684  152792 -109684)(net KBD_CLOCK)(type protect))
-    (wire (path F.Cu 250  162418 -109234  161968 -109684)(net KBD_CLOCK)(type protect))
-    (wire (path F.Cu 250  169529 -109234  162418 -109234)(net KBD_CLOCK)(type protect))
-    (wire (path F.Cu 250  173434 -105329  169529 -109234)(net KBD_CLOCK)(type protect))
     (wire (path F.Cu 250  175260 -105329  173434 -105329)(net KBD_CLOCK)(type protect))
-    (wire (path B.Cu 250  151015 -114401  151015 -111760)(net KBD_CLOCK)(type protect))
-    (wire (path B.Cu 250  150153 -115263  151015 -114401)(net KBD_CLOCK)(type protect))
-    (wire (path B.Cu 250  137602 -115263  150153 -115263)(net KBD_CLOCK)(type protect))
-    (wire (path B.Cu 250  135369 -113030  137602 -115263)(net KBD_CLOCK)(type protect))
-    (wire (path B.Cu 250  124027 -113030  135369 -113030)(net KBD_CLOCK)(type protect))
-    (wire (path B.Cu 250  123109 -112112  124027 -113030)(net KBD_CLOCK)(type protect))
-    (wire (path B.Cu 250  123109 -111226  123109 -112112)(net KBD_CLOCK)(type protect))
-    (wire (path B.Cu 250  122292 -110409  123109 -111226)(net KBD_CLOCK)(type protect))
-    (wire (path B.Cu 250  121920 -110409  122292 -110409)(net KBD_CLOCK)(type protect))
     (wire (path B.Cu 250  121920 -109220  121920 -110409)(net KBD_CLOCK)(type protect))
     (wire (path F.Cu 250  124261 -107696  132606 -107696)(net KBD_CLOCK)(type protect))
     (wire (path F.Cu 250  123109 -108848  124261 -107696)(net KBD_CLOCK)(type protect))
@@ -845,16 +896,30 @@
     (wire (path F.Cu 250  121920 -109220  123109 -109220)(net KBD_CLOCK)(type protect))
     (wire (path F.Cu 250  132606 -106028  132606 -106971)(net KBD_CLOCK)(type protect))
     (wire (path F.Cu 250  133572 -105061  132606 -106028)(net KBD_CLOCK)(type protect))
+    (wire (path F.Cu 250  161968 -109684  152792 -109684)(net KBD_CLOCK)(type protect))
+    (wire (path F.Cu 250  162418 -109234  161968 -109684)(net KBD_CLOCK)(type protect))
+    (wire (path F.Cu 250  169529 -109234  162418 -109234)(net KBD_CLOCK)(type protect))
+    (wire (path F.Cu 250  173434 -105329  169529 -109234)(net KBD_CLOCK)(type protect))
+    (wire (path B.Cu 250  121920 -110409  122292 -110409  123109 -111226)(net KBD_CLOCK)(type protect))
+    (wire (path B.Cu 250  152285 -111005  152337 -110953  150619 -109235)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 250  152490 -110800  152561 -110800)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 250  152337 -110953  152490 -110800)(net KBD_DATA)(type protect))
+    (wire (path F.Cu 300  159544 -111760  160000 -112000  159000 -113000  159000 -115000)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 300  159000 -115000  157000 -113000  152000 -113000  152000 -112000
+            151000 -112000  151015 -111760)(net KBD_DATA)(type protect))
+    (wire (path F.Cu 250  151015 -111461  151015 -111760)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 250  151015 -114401  151015 -111760)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 250  150153 -115263  151015 -114401)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 250  137602 -115263  150153 -115263)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 250  135369 -113030  137602 -115263)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 250  124027 -113030  135369 -113030)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 250  123109 -112112  124027 -113030)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 250  123109 -111226  123109 -112112)(net KBD_DATA)(type protect))
     (wire (path F.Cu 250  124460 -109220  125649 -109220)(net KBD_DATA)(type protect))
     (wire (path F.Cu 250  151148 -107950  151148 -108675)(net KBD_DATA)(type protect))
     (wire (path F.Cu 250  150619 -109204  151148 -108675)(net KBD_DATA)(type protect))
     (wire (path F.Cu 250  150619 -109235  150619 -109204)(net KBD_DATA)(type protect))
-    (wire (path B.Cu 250  152285 -111005  152337 -110953)(net KBD_DATA)(type protect))
-    (wire (path B.Cu 250  152285 -114290  152285 -111005)(net KBD_DATA)(type protect))
-    (wire (path B.Cu 250  152337 -110953  150619 -109235)(net KBD_DATA)(type protect))
     (wire (path F.Cu 250  159544 -111760  158219 -111760)(net KBD_DATA)(type protect))
-    (wire (path B.Cu 250  152490 -110800  152561 -110800)(net KBD_DATA)(type protect))
-    (wire (path B.Cu 250  152337 -110953  152490 -110800)(net KBD_DATA)(type protect))
     (wire (path F.Cu 250  157258 -110800  158219 -111760)(net KBD_DATA)(type protect))
     (wire (path F.Cu 250  152561 -110800  157258 -110800)(net KBD_DATA)(type protect))
     (wire (path F.Cu 250  162652 -109977  160869 -111760)(net KBD_DATA)(type protect))
@@ -866,6 +931,19 @@
     (wire (path F.Cu 250  125845 -109416  125649 -109220)(net KBD_DATA)(type protect))
     (wire (path F.Cu 250  150437 -109416  125845 -109416)(net KBD_DATA)(type protect))
     (wire (path F.Cu 250  150619 -109235  150437 -109416)(net KBD_DATA)(type protect))
+    (wire (path B.Cu 300  154364 -110952  157952 -110952)(net GND)(type protect))
+    (wire (path B.Cu 250  154364 -104248  154364 -110952)(net GND)(type protect))
+    (wire (path F.Cu 300  147000 -117000  149710 -114290)(net GND)(type protect))
+    (wire (path B.Cu 300  161000 -117000  147000 -117000)(net GND)(type protect))
+    (wire (path B.Cu 300  162000 -118000  161000 -117000)(net GND)(type protect))
+    (wire (path F.Cu 300  162000 -115000  162000 -118000)(net GND)(type protect))
+    (wire (path B.Cu 300  157952 -110952  162000 -115000)(net GND)(type protect))
+    (wire (path F.Cu 300  149710 -114290  149745 -114290)(net GND)(type protect))
+    (wire (path F.Cu 300  144304 -102616  144000 -103000  143000 -102000  143000 -101000
+            142000 -100000  135000 -100000  134000 -99000)(net GND)(type protect))
+    (wire (path B.Cu 300  134000 -99000  134000 -104000  132000 -106000  132000 -108000
+            131000 -109000  131000 -111000  132000 -112000  137000 -112000
+            139000 -114000  150000 -114000  149745 -114290)(net GND)(type protect))
     (wire (path F.Cu 250  173261 -68834  173261 -69909.9)(net GND)(type protect))
     (wire (path F.Cu 250  124460 -111760  121920 -111760)(net GND)(type protect))
     (wire (path F.Cu 250  173261 -72109.2  173332 -72180.3)(net GND)(type protect))
@@ -886,8 +964,6 @@
     (wire (path F.Cu 250  155416 -85852  155416 -86977.3)(net GND)(type protect))
     (wire (path F.Cu 250  155560 -90730  156385 -90730)(net GND)(type protect))
     (wire (path F.Cu 250  170720 -90732.6  170720 -91295.3)(net GND)(type protect))
-    (wire (path B.Cu 250  154364 -110952  154364 -104248)(net GND)(type protect))
-    (wire (path B.Cu 250  153555 -111760  154364 -110952)(net GND)(type protect))
     (wire (path F.Cu 250  146610 -88280  146610 -89105.3)(net GND)(type protect))
     (wire (path F.Cu 250  132080 -74930  133269 -74930)(net GND)(type protect))
     (wire (path F.Cu 250  145287 -78742.1  146401 -77628.6)(net GND)(type protect))
@@ -1008,6 +1084,9 @@
     (wire (path F.Cu 250  139666 -96306.3  141540 -98180.3)(net GND)(type protect))
     (wire (path F.Cu 250  137832 -96306.3  139666 -96306.3)(net GND)(type protect))
     (wire (path F.Cu 250  137195 -95669  137832 -96306.3)(net GND)(type protect))
+    (wire (path F.Cu 250  144325 -114290  142716 -112681)(net GND)(type protect))
+    (wire (path F.Cu 250  149745 -114290  144325 -114290)(net GND)(type protect))
+    (wire (path F.Cu 250  141097 -114300  142716 -112681)(net GND)(type protect))
     (wire (path F.Cu 250  136067 -77388.9  138938 -80260)(net VCC3V3)(type protect))
     (wire (path F.Cu 250  129378 -77388.9  136067 -77388.9)(net VCC3V3)(type protect))
     (wire (path F.Cu 250  128189 -76200  129378 -77388.9)(net VCC3V3)(type protect))
@@ -1139,12 +1218,15 @@
     (wire (path F.Cu 250  135809 -74930  135809 -75970.3)(net BOOT0)(type protect))
     (wire (path F.Cu 250  134620 -74930  135809 -74930)(net BOOT0)(type protect))
     (wire (path F.Cu 250  151352 -83058  151352 -81882.7)(net BOOT0)(type protect))
+    (wire (path B.Cu 300  153555 -111760  153500 -111750  153250 -111500  153250 -110250
+            151500 -108500  150000 -108500  147000 -111500  145000 -111500)(net +5V)(type protect))
+    (wire (path F.Cu 300  145000 -111500  142750 -111500  142716 -111506)(net +5V)(type protect))
+    (wire (path F.Cu 300  163544 -111760  164000 -112000  163000 -112000  160000 -115000
+            160000 -116000  158000 -116000  154000 -112000  153555 -111760)(net +5V)(type protect))
     (wire (path F.Cu 250  163720 -113111  163544 -112935)(net +5V)(type protect))
     (wire (path F.Cu 250  175260 -113111  163720 -113111)(net +5V)(type protect))
     (wire (path F.Cu 250  175260 -114300  175260 -113111)(net +5V)(type protect))
     (wire (path F.Cu 250  163544 -111760  163544 -112935)(net +5V)(type protect))
-    (wire (path F.Cu 250  144325 -114290  142716 -112681)(net +5V)(type protect))
-    (wire (path F.Cu 250  149745 -114290  144325 -114290)(net +5V)(type protect))
     (wire (path F.Cu 250  142716 -111506  142716 -112681)(net +5V)(type protect))
     (wire (path F.Cu 250  123263 -115497  124460 -114300)(net +5V)(type protect))
     (wire (path F.Cu 250  121404 -115497  123263 -115497)(net +5V)(type protect))
@@ -1152,14 +1234,12 @@
     (wire (path F.Cu 250  120731 -108220  120731 -114824)(net +5V)(type protect))
     (wire (path F.Cu 250  125066 -103886  120731 -108220)(net +5V)(type protect))
     (wire (path F.Cu 250  129572 -103886  125066 -103886)(net +5V)(type protect))
-    (wire (path F.Cu 250  141097 -114300  142716 -112681)(net +5V)(type protect))
     (wire (path F.Cu 250  124460 -114300  141097 -114300)(net +5V)(type protect))
     (wire (path F.Cu 250  174720 -90170  174720 -89716)(net +5V)(type protect))
     (wire (path B.Cu 250  160848 -99887.7  175260 -114300)(net +5V)(type protect))
     (wire (path B.Cu 250  153108 -99887.7  160848 -99887.7)(net +5V)(type protect))
     (wire (path B.Cu 250  153108 -102561  153108 -99887.7)(net +5V)(type protect))
     (wire (path B.Cu 250  149745 -105924  153108 -102561)(net +5V)(type protect))
-    (wire (path B.Cu 250  149745 -114290  149745 -105924)(net +5V)(type protect))
     (wire (path B.Cu 250  153108 -79450.8  152399 -78742.1)(net +5V)(type protect))
     (wire (path B.Cu 250  153108 -99887.7  153108 -79450.8)(net +5V)(type protect))
     (wire (path F.Cu 250  173141 -91295.4  174720 -89716)(net +5V)(type protect))
@@ -1429,14 +1509,21 @@
     (wire (path B.Cu 250  152881 -77628  165746 -90493.4)(net "Net-(R17-Pad2)")(type protect))
     (wire (path B.Cu 250  150973 -77628  152881 -77628)(net "Net-(R17-Pad2)")(type protect))
     (wire (path B.Cu 250  149859 -78742.1  150973 -77628)(net "Net-(R17-Pad2)")(type protect))
-    (via "Via[0-1]_600:400_um"  150619 -109235 (net KBD_DATA)(type protect))
+    (via "Via[0-1]_600:400_um"  128000 -101000 (net KBD_CLOCK)(type protect))
     (via "Via[0-1]_600:400_um"  152561 -110800 (net KBD_DATA)(type protect))
+    (via "Via[0-1]_600:400_um"  159000 -115000 (net KBD_DATA)(type protect))
+    (via "Via[0-1]_600:400_um"  150619 -109235 (net KBD_DATA)(type protect))
+    (via "Via[0-1]_600:400_um"  147000 -117000 (net GND)(type protect))
+    (via "Via[0-1]_600:400_um"  162000 -118000 (net GND)(type protect))
+    (via "Via[0-1]_600:400_um"  162000 -115000 (net GND)(type protect))
+    (via "Via[0-1]_600:400_um"  134000 -99000 (net GND)(type protect))
     (via "Via[0-1]_600:400_um"  154364 -104248 (net GND)(type protect))
     (via "Via[0-1]_600:400_um"  154250 -100585 (net GND)(type protect))
     (via "Via[0-1]_600:400_um"  140684 -86068.3 (net GND)(type protect))
     (via "Via[0-1]_600:400_um"  145169 -96230 (net VCC3V3)(type protect))
     (via "Via[0-1]_600:400_um"  147110 -98283.7 (net VCC3V3)(type protect))
     (via "Via[0-1]_600:400_um"  145411 -87659.5 (net VCC3V3)(type protect))
+    (via "Via[0-1]_600:400_um"  145000 -111500 (net +5V)(type protect))
     (via "Via[0-1]_600:400_um"  136896 -88700.8 (net "Net-(C4-Pad1)")(type protect))
     (via "Via[0-1]_600:400_um"  142964 -92774.6 (net "Net-(C5-Pad1)")(type protect))
     (via "Via[0-1]_600:400_um"  140249 -110541 (net KBD_RESET)(type protect))
