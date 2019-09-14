@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/debian/Progetti/AMIGA/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.sch)
-    (date "Thu 18 Apr 2019 22:56:23 CEST")
+    (date "Sat 14 Sep 2019 10:40:44 CEST")
     (tool "Eeschema 4.0.2+dfsg1-stable")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -706,12 +706,12 @@
       (pins
         (pin (num 1) (name 1) (type passive)))))
   (libraries
-    (library (logical transistors)
-      (uri /usr/share/kicad/library/transistors.lib))
     (library (logical device)
       (uri /usr/share/kicad/library/device.lib))
     (library (logical conn)
       (uri /usr/share/kicad/library/conn.lib))
+    (library (logical transistors)
+      (uri /usr/share/kicad/library/transistors.lib))
     (library (logical AmigaComponents)
       (uri /home/debian/Progetti/RetroBitLab-Library/AmigaComponents.lib))
     (library (logical Connector)
