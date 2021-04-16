@@ -1,2 +1,4 @@
 (fp_lib_table
+  (lib (name RetroBitLab-Library)(type KiCad)(uri /home/debian/Progetti/RetroBitLab-Library)(options "")(descr ""))
+  (lib (name RetroBitLab)(type KiCad)(uri /home/debian/Progetti/RetroBitLab-Library/RetroBitLab.pretty)(options "")(descr ""))
 )

@@ -1,229 +1,14 @@
-EESchema Schematic File Version 2
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
-LIBS:Video
-LIBS:Valve
-LIBS:Triac_Thyristor
-LIBS:Transistor_IGBT
-LIBS:Transistor_FET
-LIBS:Transistor_BJT
-LIBS:Transistor_Array
-LIBS:Transformer
-LIBS:Timer_RTC
-LIBS:Timer_PLL
-LIBS:Timer
-LIBS:Switch
-LIBS:AmigaComponents
-LIBS:4xxx
-LIBS:4xxx_IEEE
-LIBS:74xGxx
-LIBS:74xx_IEEE
-LIBS:Amplifier_Audio
-LIBS:Amplifier_Buffer
-LIBS:Amplifier_Current
-LIBS:Amplifier_Difference
-LIBS:Amplifier_Instrumentation
-LIBS:Amplifier_Operational
-LIBS:Amplifier_Video
-LIBS:Analog
-LIBS:Analog_ADC
-LIBS:Analog_DAC
-LIBS:Analog_Switch
-LIBS:Audio
-LIBS:Battery_Management
-LIBS:Comparator
-LIBS:Connector
-LIBS:Connector_Generic
-LIBS:Connector_Generic_MountingPin
-LIBS:Connector_Generic_Shielded
-LIBS:Converter_ACDC
-LIBS:Converter_DCDC
-LIBS:CPLD_Altera
-LIBS:CPLD_Xilinx
-LIBS:CPU
-LIBS:CPU_NXP_6800
-LIBS:CPU_NXP_68000
-LIBS:CPU_PowerPC
-LIBS:Device
-LIBS:Diode
-LIBS:Diode_Bridge
-LIBS:Diode_Laser
-LIBS:Display_Character
-LIBS:Display_Graphic
-LIBS:Driver_Display
-LIBS:Driver_FET
-LIBS:Driver_LED
-LIBS:Driver_Motor
-LIBS:Driver_Relay
-LIBS:DSP_AnalogDevices
-LIBS:DSP_Freescale
-LIBS:DSP_Microchip_DSPIC33
-LIBS:DSP_Motorola
-LIBS:DSP_Texas
-LIBS:Fiber_Optic
-LIBS:Filter
-LIBS:FPGA_Lattice
-LIBS:FPGA_Microsemi
-LIBS:FPGA_Xilinx
-LIBS:FPGA_Xilinx_Artix7
-LIBS:FPGA_Xilinx_Kintex7
-LIBS:FPGA_Xilinx_Spartan6
-LIBS:FPGA_Xilinx_Virtex5
-LIBS:FPGA_Xilinx_Virtex6
-LIBS:FPGA_Xilinx_Virtex7
-LIBS:ft232rl
-LIBS:GPU
-LIBS:Graphic
-LIBS:Interface
-LIBS:Interface_CAN_LIN
-LIBS:Interface_CurrentLoop
-LIBS:Interface_Ethernet
-LIBS:Interface_Expansion
-LIBS:Interface_HID
-LIBS:Interface_LineDriver
-LIBS:Interface_Optical
-LIBS:Interface_Telecom
-LIBS:Interface_UART
-LIBS:Interface_USB
-LIBS:Isolator
-LIBS:Isolator_Analog
-LIBS:Jumper
-LIBS:LED
-LIBS:Logic_LevelTranslator
-LIBS:Logic_Programmable
-LIBS:MCU_AnalogDevices
-LIBS:MCU_Cypress
-LIBS:MCU_Espressif
-LIBS:MCU_Intel
-LIBS:MCU_Microchip_8051
-LIBS:MCU_Microchip_ATmega
-LIBS:MCU_Microchip_ATtiny
-LIBS:MCU_Microchip_AVR
-LIBS:MCU_Microchip_PIC10
-LIBS:MCU_Microchip_PIC12
-LIBS:MCU_Microchip_PIC16
-LIBS:MCU_Microchip_PIC18
-LIBS:MCU_Microchip_PIC24
-LIBS:MCU_Microchip_PIC32
-LIBS:MCU_Microchip_SAMD
-LIBS:MCU_Microchip_SAME
-LIBS:MCU_Microchip_SAML
-LIBS:MCU_Module
-LIBS:MCU_Nordic
-LIBS:MCU_NXP_ColdFire
-LIBS:MCU_NXP_HC11
-LIBS:MCU_NXP_HC12
-LIBS:MCU_NXP_HCS12
-LIBS:MCU_NXP_Kinetis
-LIBS:MCU_NXP_LPC
-LIBS:MCU_NXP_MAC7100
-LIBS:MCU_NXP_MCore
-LIBS:MCU_NXP_S08
-LIBS:MCU_Parallax
-LIBS:MCU_SiFive
-LIBS:MCU_SiliconLabs
-LIBS:MCU_ST_STM8
-LIBS:MCU_ST_STM32F0
-LIBS:MCU_ST_STM32F1
-LIBS:MCU_ST_STM32F2
-LIBS:MCU_ST_STM32F3
-LIBS:MCU_ST_STM32F4
-LIBS:MCU_ST_STM32F7
-LIBS:MCU_ST_STM32H7
-LIBS:MCU_ST_STM32L0
-LIBS:MCU_ST_STM32L1
-LIBS:MCU_ST_STM32L4
-LIBS:MCU_ST_STM32L4+
-LIBS:MCU_Texas
-LIBS:MCU_Texas_MSP430
-LIBS:Mechanical
-LIBS:Memory_EEPROM
-LIBS:Memory_EPROM
-LIBS:Memory_Flash
-LIBS:Memory_NVRAM
-LIBS:Memory_RAM
-LIBS:Memory_ROM
-LIBS:Memory_UniqueID
-LIBS:Motor
-LIBS:Oscillator
-LIBS:Potentiometer_Digital
-LIBS:Power_Management
-LIBS:Power_Protection
-LIBS:Power_Supervisor
-LIBS:pspice
-LIBS:Reference_Current
-LIBS:Reference_Voltage
-LIBS:Regulator_Controller
-LIBS:Regulator_Current
-LIBS:Regulator_Linear
-LIBS:Regulator_SwitchedCapacitor
-LIBS:Regulator_Switching
-LIBS:Relay
-LIBS:Relay_SolidState
-LIBS:RF
-LIBS:RF_AM_FM
-LIBS:RF_Amplifier
-LIBS:RF_Bluetooth
-LIBS:RF_GPS
-LIBS:RF_GSM
-LIBS:RF_Mixer
-LIBS:RF_Module
-LIBS:RF_RFID
-LIBS:RF_Switch
-LIBS:RF_WiFi
-LIBS:RF_ZigBee
-LIBS:Security
-LIBS:Sensor
-LIBS:Sensor_Audio
-LIBS:Sensor_Current
-LIBS:Sensor_Gas
-LIBS:Sensor_Humidity
-LIBS:Sensor_Magnetic
-LIBS:Sensor_Motion
-LIBS:Sensor_Optical
-LIBS:Sensor_Pressure
-LIBS:Sensor_Proximity
-LIBS:Sensor_Temperature
-LIBS:Sensor_Touch
-LIBS:Sensor_Voltage
-LIBS:StandAlone-Adapter-cache
-EELAYER 25 0
+EESchema Schematic File Version 4
+EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
 encoding utf-8
 Sheet 1 1
 Title "Amiga 1200 USB Keyboard Controller StandAlone"
-Date ""
-Rev "1.0"
+Date "2021-04-16"
+Rev "RBL004.003"
 Comp "Retrobit Lab"
-Comment1 "(C) 2018 Gianluca Renzi <gianlucarenzi@eurek.it>"
+Comment1 "(C) 2021 Gianluca Renzi <gianlucarenzi@eurek.it>"
 Comment2 "USB Keyboard Adapter for Amiga 1000, Amiga 500"
 Comment3 "Amiga 2000, Amiga 3000, Amiga 4000"
 Comment4 "Amiga 1200 and Amiga 600"
@@ -231,10 +16,10 @@ $EndDescr
 NoConn ~ 8450 4400
 NoConn ~ 7950 6000
 $Comp
-L GND #PWR01
+L StandAlone-Adapter-rescue:GND #PWR022
 U 1 1 5B89B3C9
 P 8650 8150
-F 0 "#PWR01" H 8650 7900 50  0001 C CNN
+F 0 "#PWR022" H 8650 7900 50  0001 C CNN
 F 1 "GND" H 8650 8000 50  0000 C CNN
 F 2 "" H 8650 8150 50  0001 C CNN
 F 3 "" H 8650 8150 50  0001 C CNN
@@ -244,7 +29,7 @@ $EndComp
 Text GLabel 3900 5150 2    60   Output ~ 0
 VCC3V3
 $Comp
-L Crystal XT1
+L StandAlone-Adapter-rescue:Crystal XT1
 U 1 1 5B89B43F
 P 7200 5750
 F 0 "XT1" H 7200 5900 50  0000 C CNN
@@ -255,32 +40,32 @@ F 3 "" H 7200 5750 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L C C4
+L StandAlone-Adapter-rescue:C C8
 U 1 1 5B89B4FF
 P 6800 5450
-F 0 "C4" H 6825 5550 50  0000 L CNN
+F 0 "C8" H 6825 5550 50  0000 L CNN
 F 1 "20p" V 6900 5250 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 6838 5300 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 6838 5300 50  0001 C CNN
 F 3 "" H 6800 5450 50  0000 C CNN
 	1    6800 5450
 	0    1    1    0   
 $EndComp
 $Comp
-L C C5
+L StandAlone-Adapter-rescue:C C9
 U 1 1 5B89B578
 P 6800 6050
-F 0 "C5" H 6825 6150 50  0000 L CNN
+F 0 "C9" H 6825 6150 50  0000 L CNN
 F 1 "20p" V 6900 5850 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 6838 5900 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 6838 5900 50  0001 C CNN
 F 3 "" H 6800 6050 50  0000 C CNN
 	1    6800 6050
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR02
+L StandAlone-Adapter-rescue:GND #PWR018
 U 1 1 5B89B5CF
 P 6350 6200
-F 0 "#PWR02" H 6350 5950 50  0001 C CNN
+F 0 "#PWR018" H 6350 5950 50  0001 C CNN
 F 1 "GND" H 6350 6050 50  0000 C CNN
 F 2 "" H 6350 6200 50  0001 C CNN
 F 3 "" H 6350 6200 50  0001 C CNN
@@ -288,54 +73,54 @@ F 3 "" H 6350 6200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C6
+L StandAlone-Adapter-rescue:C C10
 U 1 1 5B89BAC3
 P 7850 3500
-F 0 "C6" H 7875 3600 50  0000 L CNN
+F 0 "C10" H 7875 3600 50  0000 L CNN
 F 1 "100n" H 7875 3400 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 7888 3350 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 7888 3350 50  0001 C CNN
 F 3 "" H 7850 3500 50  0000 C CNN
 	1    7850 3500
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C7
+L StandAlone-Adapter-rescue:C C11
 U 1 1 5B89BB1C
 P 8100 3500
-F 0 "C7" H 8125 3600 50  0000 L CNN
+F 0 "C11" H 8125 3600 50  0000 L CNN
 F 1 "100n" H 8125 3400 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 8138 3350 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 8138 3350 50  0001 C CNN
 F 3 "" H 8100 3500 50  0000 C CNN
 	1    8100 3500
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C8
+L StandAlone-Adapter-rescue:C C12
 U 1 1 5B89BB47
 P 8350 3500
-F 0 "C8" H 8375 3600 50  0000 L CNN
+F 0 "C12" H 8375 3600 50  0000 L CNN
 F 1 "100n" H 8375 3400 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 8388 3350 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 8388 3350 50  0001 C CNN
 F 3 "" H 8350 3500 50  0000 C CNN
 	1    8350 3500
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C9
+L StandAlone-Adapter-rescue:C C13
 U 1 1 5B89BC11
 P 8600 3500
-F 0 "C9" H 8625 3600 50  0000 L CNN
+F 0 "C13" H 8625 3600 50  0000 L CNN
 F 1 "100n" H 8625 3400 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 8638 3350 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 8638 3350 50  0001 C CNN
 F 3 "" H 8600 3500 50  0000 C CNN
 	1    8600 3500
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR03
+L StandAlone-Adapter-rescue:GND #PWR021
 U 1 1 5B89BC6B
 P 7450 3350
-F 0 "#PWR03" H 7450 3100 50  0001 C CNN
+F 0 "#PWR021" H 7450 3100 50  0001 C CNN
 F 1 "GND" H 7450 3200 50  0000 C CNN
 F 2 "" H 7450 3350 50  0001 C CNN
 F 3 "" H 7450 3350 50  0001 C CNN
@@ -345,10 +130,10 @@ $EndComp
 Text GLabel 7450 3650 0    60   Input ~ 0
 VCC3V3
 $Comp
-L GND #PWR04
+L StandAlone-Adapter-rescue:GND #PWR012
 U 1 1 5B89C151
 P 3000 6150
-F 0 "#PWR04" H 3000 5900 50  0001 C CNN
+F 0 "#PWR012" H 3000 5900 50  0001 C CNN
 F 1 "GND" H 3000 6000 50  0000 C CNN
 F 2 "" H 3000 6150 50  0001 C CNN
 F 3 "" H 3000 6150 50  0001 C CNN
@@ -368,81 +153,59 @@ OTG_HS_ID
 Text GLabel 10100 5600 2    39   Output ~ 0
 USB_ID
 $Comp
-L GND #PWR05
+L StandAlone-Adapter-rescue:GND #PWR023
 U 1 1 5B89DB98
 P 13300 2050
-F 0 "#PWR05" H 13300 1800 50  0001 C CNN
+F 0 "#PWR023" H 13300 1800 50  0001 C CNN
 F 1 "GND" H 13300 1900 50  0000 C CNN
 F 2 "" H 13300 2050 50  0001 C CNN
 F 3 "" H 13300 2050 50  0001 C CNN
 	1    13300 2050
 	-1   0    0    1   
 $EndComp
-$Comp
-L CONN_01X02 USB_ID1
-U 1 1 5B89DBC0
-P 13500 2100
-F 0 "USB_ID1" V 13700 2100 50  0000 C CNN
-F 1 "CONN_01X02" V 13600 2100 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x02" H 13500 2100 50  0001 C CNN
-F 3 "" H 13500 2100 50  0000 C CNN
-	1    13500 2100
-	1    0    0    -1  
-$EndComp
 Text GLabel 13300 2350 3    60   Input ~ 0
 USB_ID
 Text Notes 13100 1750 0    60   ~ 0
 CLOSE USBID = HOST / OPEN USBID = DEVICE
 $Comp
-L CONN_01X04 USB1
-U 1 1 5B89DE40
-P 14300 2150
-F 0 "USB1" V 14500 2150 50  0000 C CNN
-F 1 "CONN_01x04" V 14400 2150 50  0000 C CNN
-F 2 "RetroBitLab:USB_A_UP" H 14300 2150 50  0001 C CNN
-F 3 "" H 14300 2150 50  0000 C CNN
-	1    14300 2150
-	-1   0    0    1   
-$EndComp
-$Comp
-L GND #PWR06
+L StandAlone-Adapter-rescue:GND #PWR025
 U 1 1 5B89DF30
-P 14900 2000
-F 0 "#PWR06" H 14900 1750 50  0001 C CNN
-F 1 "GND" H 14900 1850 50  0000 C CNN
-F 2 "" H 14900 2000 50  0001 C CNN
-F 3 "" H 14900 2000 50  0001 C CNN
-	1    14900 2000
+P 14500 2850
+F 0 "#PWR025" H 14500 2600 50  0001 C CNN
+F 1 "GND" H 14500 2700 50  0000 C CNN
+F 2 "" H 14500 2850 50  0001 C CNN
+F 3 "" H 14500 2850 50  0001 C CNN
+	1    14500 2850
 	-1   0    0    1   
 $EndComp
-Text GLabel 15150 2200 2    47   Input ~ 0
+Text GLabel 15050 2550 2    47   Input ~ 0
 USB_N
-Text GLabel 15150 2100 2    47   Input ~ 0
+Text GLabel 15050 2450 2    47   Input ~ 0
 USB_P
-Text GLabel 14900 2300 2    47   Input ~ 0
+Text GLabel 14800 2250 2    47   Input ~ 0
 VCC5V
 Text Label 9600 4800 2    39   ~ 0
 USART3_TX
 Text Label 9600 4900 2    39   ~ 0
 USART3_RX
 $Comp
-L R R4
+L StandAlone-Adapter-rescue:R R8
 U 1 1 5B89EAF9
 P 10100 4600
-F 0 "R4" V 10200 4600 50  0000 C CNN
+F 0 "R8" V 10200 4600 50  0000 C CNN
 F 1 "10K" V 10100 4600 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 10030 4600 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 10030 4600 50  0001 C CNN
 F 3 "" H 10100 4600 50  0000 C CNN
 	1    10100 4600
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R5
+L StandAlone-Adapter-rescue:R R9
 U 1 1 5B89EB30
 P 10300 4600
-F 0 "R5" V 10400 4600 50  0000 C CNN
+F 0 "R9" V 10400 4600 50  0000 C CNN
 F 1 "10K" V 10300 4600 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 10230 4600 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 10230 4600 50  0001 C CNN
 F 3 "" H 10300 4600 50  0000 C CNN
 	1    10300 4600
 	1    0    0    -1  
@@ -456,21 +219,21 @@ KBD_3v3_CLOCK
 Text GLabel 7550 6500 0    47   BiDi ~ 0
 KBD_3v3_DATA
 $Comp
-L CONN_01X02 EN1
+L StandAlone-Adapter-rescue:CONN_01X02 EN1
 U 1 1 5B89F59A
 P 6700 4150
 F 0 "EN1" V 6900 4150 50  0000 C CNN
 F 1 "CONN_01X02" V 6800 4150 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x02" H 6700 4150 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 6700 4150 50  0001 C CNN
 F 3 "" H 6700 4150 50  0000 C CNN
 	1    6700 4150
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR07
+L StandAlone-Adapter-rescue:GND #PWR019
 U 1 1 5B89F643
 P 6500 4400
-F 0 "#PWR07" H 6500 4150 50  0001 C CNN
+F 0 "#PWR019" H 6500 4150 50  0001 C CNN
 F 1 "GND" H 6500 4250 50  0000 C CNN
 F 2 "" H 6500 4400 50  0001 C CNN
 F 3 "" H 6500 4400 50  0001 C CNN
@@ -478,32 +241,32 @@ F 3 "" H 6500 4400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R2
+L StandAlone-Adapter-rescue:R R3
 U 1 1 5B89FB89
 P 3350 5600
-F 0 "R2" V 3450 5600 50  0000 C CNN
+F 0 "R3" V 3450 5600 50  0000 C CNN
 F 1 "1.5K" V 3350 5600 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 3280 5600 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3280 5600 50  0001 C CNN
 F 3 "" H 3350 5600 50  0000 C CNN
 	1    3350 5600
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED D2
+L StandAlone-Adapter-rescue:LED D3
 U 1 1 5B89FC0A
 P 3350 5950
-F 0 "D2" H 3350 6050 50  0000 C CNN
+F 0 "D3" H 3350 6050 50  0000 C CNN
 F 1 "LED" H 3350 5850 50  0000 C CNN
-F 2 "LEDs:LED_1206" H 3350 5950 50  0001 C CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 3350 5950 50  0001 C CNN
 F 3 "" H 3350 5950 50  0000 C CNN
 	1    3350 5950
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR08
+L StandAlone-Adapter-rescue:GND #PWR013
 U 1 1 5B89FC5B
 P 3350 6150
-F 0 "#PWR08" H 3350 5900 50  0001 C CNN
+F 0 "#PWR013" H 3350 5900 50  0001 C CNN
 F 1 "GND" H 3350 6000 50  0000 C CNN
 F 2 "" H 3350 6150 50  0001 C CNN
 F 3 "" H 3350 6150 50  0001 C CNN
@@ -514,17 +277,6 @@ Text GLabel 9700 4600 2    47   Output ~ 0
 TP1
 Text GLabel 9700 4700 2    47   Output ~ 0
 TP2
-$Comp
-L CONN_01X02 TP1/1
-U 1 1 5B8A0AC1
-P 6950 8450
-F 0 "TP1/1" V 7100 8450 50  0000 C CNN
-F 1 "CONN_01X02" V 7050 8450 50  0001 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x02" H 6950 8450 50  0001 C CNN
-F 3 "" H 6950 8450 50  0000 C CNN
-	1    6950 8450
-	0    1    1    0   
-$EndComp
 Text Label 6900 8000 3    47   ~ 0
 TP1
 Text Label 7000 8000 3    47   ~ 0
@@ -534,12 +286,12 @@ TP1
 Text GLabel 7000 7950 1    47   Input ~ 0
 TP2
 $Comp
-L TEST_1P TP1
+L StandAlone-Adapter-rescue:TEST_1P TP1
 U 1 1 5B8A0CDB
 P 3000 6000
 F 0 "TP1" H 3000 6270 50  0000 C CNN
 F 1 "GND" H 3000 6200 50  0000 C CNN
-F 2 "Wire_Pads:SolderWirePad_single_0-8mmDrill" H 3200 6000 50  0001 C CNN
+F 2 "TestPoint:TestPoint_Pad_D2.0mm" H 3200 6000 50  0001 C CNN
 F 3 "" H 3200 6000 50  0000 C CNN
 	1    3000 6000
 	0    -1   -1   0   
@@ -568,19 +320,19 @@ NoConn ~ 9250 6600
 NoConn ~ 9250 6400
 NoConn ~ 9250 6300
 $Comp
-L GND #PWR09
+L StandAlone-Adapter-rescue:GND #PWR014
 U 1 1 5B8A20F9
-P 3300 7300
-F 0 "#PWR09" H 3300 7050 50  0001 C CNN
-F 1 "GND" H 3300 7150 50  0000 C CNN
-F 2 "" H 3300 7300 50  0001 C CNN
-F 3 "" H 3300 7300 50  0001 C CNN
-	1    3300 7300
+P 3600 7300
+F 0 "#PWR014" H 3600 7050 50  0001 C CNN
+F 1 "GND" H 3600 7150 50  0000 C CNN
+F 2 "" H 3600 7300 50  0001 C CNN
+F 3 "" H 3600 7300 50  0001 C CNN
+	1    3600 7300
 	1    0    0    -1  
 $EndComp
-Text GLabel 3300 7200 2    47   Output ~ 0
+Text GLabel 3600 7200 2    47   Output ~ 0
 UART_RX_TTL
-Text GLabel 3300 7100 2    47   Input ~ 0
+Text GLabel 3600 7100 2    47   Input ~ 0
 UART_TX_TTL
 NoConn ~ 7950 6200
 Text GLabel 7100 5100 0    47   Input ~ 0
@@ -596,21 +348,21 @@ NoConn ~ 9250 7400
 NoConn ~ 9250 7600
 NoConn ~ 9250 7700
 $Comp
-L AZ1117-3.3 U1
+L StandAlone-Adapter-rescue:AZ1117-3.3 U1
 U 1 1 5B8A8A4E
 P 2350 5150
 F 0 "U1" H 2200 5275 50  0000 C CNN
 F 1 "AZ1117-3.3" H 2350 5275 50  0000 L CNN
-F 2 "TO_SOT_Packages_SMD:SOT-223" H 2350 5400 50  0001 C CIN
+F 2 "Package_TO_SOT_SMD:SOT-223" H 2350 5400 50  0001 C CIN
 F 3 "" H 2350 5150 50  0001 C CNN
 	1    2350 5150
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR010
+L StandAlone-Adapter-rescue:GND #PWR09
 U 1 1 5B8A8C98
 P 2350 5750
-F 0 "#PWR010" H 2350 5500 50  0001 C CNN
+F 0 "#PWR09" H 2350 5500 50  0001 C CNN
 F 1 "GND" H 2350 5600 50  0000 C CNN
 F 2 "" H 2350 5750 50  0001 C CNN
 F 3 "" H 2350 5750 50  0001 C CNN
@@ -618,23 +370,23 @@ F 3 "" H 2350 5750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CP1 C2
+L StandAlone-Adapter-rescue:CP1 C2
 U 1 1 5B8A8E23
 P 2700 5450
 F 0 "C2" H 2725 5550 50  0000 L CNN
 F 1 "22u" H 2725 5350 50  0000 L CNN
-F 2 "Capacitors_Tantalum_SMD:TantalC_SizeA_EIA-3216_HandSoldering" H 2700 5450 50  0001 C CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-12_Kemet-S_Pad1.58x1.35mm_HandSolder" H 2700 5450 50  0001 C CNN
 F 3 "" H 2700 5450 50  0000 C CNN
 	1    2700 5450
 	1    0    0    -1  
 $EndComp
 $Comp
-L CP1 C1
+L StandAlone-Adapter-rescue:CP1 C1
 U 1 1 5B8A8F1B
 P 2000 5600
 F 0 "C1" H 2025 5700 50  0000 L CNN
 F 1 "10u" H 2025 5500 50  0000 L CNN
-F 2 "Capacitors_Tantalum_SMD:TantalC_SizeA_EIA-3216_HandSoldering" H 2000 5600 50  0001 C CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-12_Kemet-S_Pad1.58x1.35mm_HandSolder" H 2000 5600 50  0001 C CNN
 F 3 "" H 2000 5600 50  0000 C CNN
 	1    2000 5600
 	1    0    0    -1  
@@ -642,10 +394,10 @@ $EndComp
 Text GLabel 1200 5150 0    60   Input ~ 0
 VCC5V
 $Comp
-L VCC #PWR011
+L StandAlone-Adapter-rescue:VCC #PWR02
 U 1 1 5B8AA46E
 P 1250 4750
-F 0 "#PWR011" H 1250 4600 50  0001 C CNN
+F 0 "#PWR02" H 1250 4600 50  0001 C CNN
 F 1 "VCC" H 1250 4900 50  0000 C CNN
 F 2 "" H 1250 4750 50  0001 C CNN
 F 3 "" H 1250 4750 50  0001 C CNN
@@ -661,21 +413,10 @@ SWDIO
 Text GLabel 10450 6000 2    47   Output ~ 0
 SWDCLK
 $Comp
-L CONN_01X04 SWDIO/CLK1
-U 1 1 5B8AD3AE
-P 2200 7400
-F 0 "SWDIO/CLK1" V 2400 7400 50  0000 C CNN
-F 1 "CONN_01X04" V 2300 7400 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Angled_1x04" H 2200 7400 50  0001 C CNN
-F 3 "" H 2200 7400 50  0000 C CNN
-	1    2200 7400
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR012
+L StandAlone-Adapter-rescue:GND #PWR07
 U 1 1 5B8AD646
 P 2000 7250
-F 0 "#PWR012" H 2000 7000 50  0001 C CNN
+F 0 "#PWR07" H 2000 7000 50  0001 C CNN
 F 1 "GND" H 2000 7100 50  0000 C CNN
 F 2 "" H 2000 7250 50  0001 C CNN
 F 3 "" H 2000 7250 50  0001 C CNN
@@ -693,10 +434,10 @@ BOOT0
 Text GLabel 1600 1450 0    47   Input ~ 0
 BOOT0
 $Comp
-L GND #PWR013
+L StandAlone-Adapter-rescue:GND #PWR04
 U 1 1 5B8AF3F3
 P 1600 1550
-F 0 "#PWR013" H 1600 1300 50  0001 C CNN
+F 0 "#PWR04" H 1600 1300 50  0001 C CNN
 F 1 "GND" H 1600 1400 50  0000 C CNN
 F 2 "" H 1600 1550 50  0001 C CNN
 F 3 "" H 1600 1550 50  0001 C CNN
@@ -706,18 +447,7 @@ $EndComp
 Text GLabel 1600 1350 0    47   Input ~ 0
 VCC3V3
 $Comp
-L CONN_01X03 BOOT0
-U 1 1 5B8B0434
-P 1800 1450
-F 0 "BOOT0" V 2000 1450 50  0000 C CNN
-F 1 "CONN_01X03" V 1900 1450 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x03" H 1800 1450 50  0001 C CNN
-F 3 "" H 1800 1450 50  0000 C CNN
-	1    1800 1450
-	1    0    0    -1  
-$EndComp
-$Comp
-L SW_PUSH RESET1
+L StandAlone-Adapter-rescue:SW_PUSH RESET1
 U 1 1 5B8AF72F
 P 5850 4200
 F 0 "RESET1" H 5850 4350 50  0000 C CNN
@@ -728,10 +458,10 @@ F 3 "" H 5850 4200 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR014
+L StandAlone-Adapter-rescue:GND #PWR017
 U 1 1 5B8AF7C4
 P 6150 4450
-F 0 "#PWR014" H 6150 4200 50  0001 C CNN
+F 0 "#PWR017" H 6150 4200 50  0001 C CNN
 F 1 "GND" H 6150 4300 50  0000 C CNN
 F 2 "" H 6150 4450 50  0001 C CNN
 F 3 "" H 6150 4450 50  0001 C CNN
@@ -739,21 +469,21 @@ F 3 "" H 6150 4450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED D1
+L StandAlone-Adapter-rescue:LED D1
 U 1 1 5B8B38D7
 P 1250 5950
 F 0 "D1" H 1250 6050 50  0000 C CNN
 F 1 "LED" H 1250 5850 50  0000 C CNN
-F 2 "LEDs:LED_1206" H 1250 5950 50  0001 C CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 1250 5950 50  0001 C CNN
 F 3 "" H 1250 5950 50  0000 C CNN
 	1    1250 5950
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR015
+L StandAlone-Adapter-rescue:GND #PWR03
 U 1 1 5B8B3F49
 P 1250 6150
-F 0 "#PWR015" H 1250 5900 50  0001 C CNN
+F 0 "#PWR03" H 1250 5900 50  0001 C CNN
 F 1 "GND" H 1250 6000 50  0000 C CNN
 F 2 "" H 1250 6150 50  0001 C CNN
 F 3 "" H 1250 6150 50  0001 C CNN
@@ -761,65 +491,23 @@ F 3 "" H 1250 6150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R1
+L StandAlone-Adapter-rescue:R R1
 U 1 1 5B8B3FCE
 P 1250 5600
 F 0 "R1" V 1330 5600 50  0000 C CNN
 F 1 "1.5K" V 1250 5600 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 1180 5600 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 1180 5600 50  0001 C CNN
 F 3 "" H 1250 5600 50  0000 C CNN
 	1    1250 5600
 	1    0    0    -1  
 $EndComp
-NoConn ~ 8650 4700
-NoConn ~ 8650 4800
-NoConn ~ 8650 4900
-NoConn ~ 8650 5000
-NoConn ~ 8650 5100
-NoConn ~ 8650 5200
-NoConn ~ 8650 5300
-NoConn ~ 8650 5400
-NoConn ~ 8650 5650
-NoConn ~ 8650 5750
-NoConn ~ 8650 5850
-NoConn ~ 8650 5950
-NoConn ~ 8650 6050
-NoConn ~ 8650 6150
-NoConn ~ 8650 6250
-NoConn ~ 8650 4700
-NoConn ~ 8650 4800
-NoConn ~ 8650 4900
-NoConn ~ 8650 5000
-NoConn ~ 8650 5100
-NoConn ~ 8650 5200
-NoConn ~ 8650 5300
-NoConn ~ 8650 5400
-NoConn ~ 8650 5650
-NoConn ~ 8650 5750
-NoConn ~ 8650 5850
-NoConn ~ 8650 5950
-NoConn ~ 8650 6050
-NoConn ~ 8650 6150
-NoConn ~ 8650 6250
-NoConn ~ 8650 7500
-$Comp
-L CONN_01X04 POWER1
-U 1 1 5B8BCF02
-P 13350 950
-F 0 "POWER1" V 13550 950 50  0000 C CNN
-F 1 "CONN_01X04" V 13450 950 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Angled_1x04" H 13350 950 50  0001 C CNN
-F 3 "" H 13350 950 50  0000 C CNN
-	1    13350 950 
-	-1   0    0    1   
-$EndComp
 Text GLabel 13800 800  2    60   Input ~ 0
 VCC12V
 $Comp
-L GND #PWR016
+L StandAlone-Adapter-rescue:GND #PWR024
 U 1 1 5B8BD636
 P 14300 1000
-F 0 "#PWR016" H 14300 750 50  0001 C CNN
+F 0 "#PWR024" H 14300 750 50  0001 C CNN
 F 1 "GND" H 14300 850 50  0000 C CNN
 F 2 "" H 14300 1000 50  0001 C CNN
 F 3 "" H 14300 1000 50  0001 C CNN
@@ -829,32 +517,32 @@ $EndComp
 Text GLabel 13800 1100 2    60   Input ~ 0
 VCC5V
 $Comp
-L LED D3
+L StandAlone-Adapter-rescue:LED D2
 U 1 1 5B8BD76A
 P 1950 3050
-F 0 "D3" H 1950 3150 50  0000 C CNN
+F 0 "D2" H 1950 3150 50  0000 C CNN
 F 1 "LED" H 1950 2950 50  0000 C CNN
-F 2 "LEDs:LED_1206" H 1950 3050 50  0001 C CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 1950 3050 50  0001 C CNN
 F 3 "" H 1950 3050 50  0000 C CNN
 	1    1950 3050
 	0    1    1    0   
 $EndComp
 $Comp
-L R R6
+L StandAlone-Adapter-rescue:R R2
 U 1 1 5B8BD88E
 P 1950 2700
-F 0 "R6" V 2030 2700 50  0000 C CNN
+F 0 "R2" V 2030 2700 50  0000 C CNN
 F 1 "1.5K" V 1950 2700 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 1880 2700 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 1880 2700 50  0001 C CNN
 F 3 "" H 1950 2700 50  0000 C CNN
 	1    1950 2700
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR017
+L StandAlone-Adapter-rescue:GND #PWR06
 U 1 1 5B8BD8FB
 P 1950 2550
-F 0 "#PWR017" H 1950 2300 50  0001 C CNN
+F 0 "#PWR06" H 1950 2300 50  0001 C CNN
 F 1 "GND" H 1950 2400 50  0000 C CNN
 F 2 "" H 1950 2550 50  0001 C CNN
 F 3 "" H 1950 2550 50  0001 C CNN
@@ -863,40 +551,18 @@ F 3 "" H 1950 2550 50  0001 C CNN
 $EndComp
 Text GLabel 1950 3250 3    60   Input ~ 0
 VCC12V
-$Comp
-L CONN_01X03 DEBUG1
-U 1 1 5B8BF6B9
-P 2800 7200
-F 0 "DEBUG1" V 3000 7200 50  0000 C CNN
-F 1 "CONN_01X03" V 2900 7200 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x03" H 2800 7200 50  0001 C CNN
-F 3 "" H 2800 7200 50  0000 C CNN
-	1    2800 7200
-	-1   0    0    1   
-$EndComp
 Text Notes 850  6950 0    60   ~ 0
 As for FTDI-232-RPi  1- GND BLACK - 2- ORANGE RXD - 3- YELLOW TXD
-$Comp
-L CONN_01X05 AMIGA_KEYBOARD1
-U 1 1 5B8BFAF2
-P 2300 8550
-F 0 "AMIGA_KEYBOARD1" V 2500 8550 50  0000 C CNN
-F 1 "CONN_01X05" V 2400 8550 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Angled_1x05" H 2300 8550 50  0001 C CNN
-F 3 "" H 2300 8550 50  0000 C CNN
-	1    2300 8550
-	1    0    0    -1  
-$EndComp
 NoConn ~ 2100 8550
 Text GLabel 1950 8350 0    43   BiDi ~ 0
 KBD_CLOCK
 Text GLabel 1950 8450 0    43   BiDi ~ 0
 KBD_DATA
 $Comp
-L GND #PWR018
+L StandAlone-Adapter-rescue:GND #PWR05
 U 1 1 5B8BFF75
 P 1650 8650
-F 0 "#PWR018" H 1650 8400 50  0001 C CNN
+F 0 "#PWR05" H 1650 8400 50  0001 C CNN
 F 1 "GND" H 1650 8500 50  0000 C CNN
 F 2 "" H 1650 8650 50  0001 C CNN
 F 3 "" H 1650 8650 50  0001 C CNN
@@ -906,10 +572,10 @@ $EndComp
 Text GLabel 1950 8750 0    43   Input ~ 0
 VCC5V
 $Comp
-L PWR_FLAG #FLG019
+L StandAlone-Adapter-rescue:PWR_FLAG #FLG01
 U 1 1 5B8F3505
 P 1250 4900
-F 0 "#FLG019" H 1250 4975 50  0001 C CNN
+F 0 "#FLG01" H 1250 4975 50  0001 C CNN
 F 1 "PWR_FLAG" H 1250 5050 50  0000 C CNN
 F 2 "" H 1250 4900 50  0001 C CNN
 F 3 "" H 1250 4900 50  0001 C CNN
@@ -917,10 +583,10 @@ F 3 "" H 1250 4900 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L PWR_FLAG #FLG020
+L StandAlone-Adapter-rescue:PWR_FLAG #FLG02
 U 1 1 5B8F374F
 P 3650 4850
-F 0 "#FLG020" H 3650 4925 50  0001 C CNN
+F 0 "#FLG02" H 3650 4925 50  0001 C CNN
 F 1 "PWR_FLAG" H 3650 5000 50  0000 C CNN
 F 2 "" H 3650 4850 50  0001 C CNN
 F 3 "" H 3650 4850 50  0001 C CNN
@@ -932,10 +598,10 @@ Text GLabel 2000 5000 1    60   Output ~ 0
 Text GLabel 3850 5800 0    60   Input ~ 0
 +5V
 $Comp
-L PWR_FLAG #FLG021
+L StandAlone-Adapter-rescue:PWR_FLAG #FLG03
 U 1 1 5B917AF1
 P 4050 5800
-F 0 "#FLG021" H 4050 5875 50  0001 C CNN
+F 0 "#FLG03" H 4050 5875 50  0001 C CNN
 F 1 "PWR_FLAG" H 4050 5950 50  0000 C CNN
 F 2 "" H 4050 5800 50  0001 C CNN
 F 3 "" H 4050 5800 50  0001 C CNN
@@ -943,34 +609,34 @@ F 3 "" H 4050 5800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L BSS138 Q1
+L StandAlone-Adapter-rescue:BSS138 Q1
 U 1 1 5B984E7C
 P 14150 5850
 F 0 "Q1" H 14350 5925 50  0000 L CNN
 F 1 "BSS138" H 14350 5850 50  0000 L CNN
-F 2 "TO_SOT_Packages_SMD:SOT-23" H 14350 5775 50  0001 L CIN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 14350 5775 50  0001 L CIN
 F 3 "" H 14150 5850 50  0000 L CNN
 	1    14150 5850
 	0    1    1    0   
 $EndComp
 $Comp
-L R R7
+L StandAlone-Adapter-rescue:R R10
 U 1 1 5B985F07
 P 13900 5800
-F 0 "R7" V 13980 5800 50  0000 C CNN
+F 0 "R10" V 13980 5800 50  0000 C CNN
 F 1 "10K" V 13900 5800 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 13830 5800 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 13830 5800 50  0001 C CNN
 F 3 "" H 13900 5800 50  0000 C CNN
 	1    13900 5800
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R8
+L StandAlone-Adapter-rescue:R R13
 U 1 1 5B985F72
 P 14400 5800
-F 0 "R8" V 14480 5800 50  0000 C CNN
+F 0 "R13" V 14480 5800 50  0000 C CNN
 F 1 "10K" V 14400 5800 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 14330 5800 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 14330 5800 50  0001 C CNN
 F 3 "" H 14400 5800 50  0000 C CNN
 	1    14400 5800
 	1    0    0    -1  
@@ -984,34 +650,34 @@ KBD_3v3_DATA
 Text GLabel 14550 5950 2    60   BiDi ~ 0
 KBD_DATA
 $Comp
-L BSS138 Q2
+L StandAlone-Adapter-rescue:BSS138 Q3
 U 1 1 5B992221
 P 14150 8200
-F 0 "Q2" H 14350 8275 50  0000 L CNN
+F 0 "Q3" H 14350 8275 50  0000 L CNN
 F 1 "BSS138" H 14350 8200 50  0000 L CNN
-F 2 "TO_SOT_Packages_SMD:SOT-23" H 14350 8125 50  0001 L CIN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 14350 8125 50  0001 L CIN
 F 3 "" H 14150 8200 50  0000 L CNN
 	1    14150 8200
 	0    1    1    0   
 $EndComp
 $Comp
-L R R9
+L StandAlone-Adapter-rescue:R R12
 U 1 1 5B992227
 P 13900 8150
-F 0 "R9" V 13980 8150 50  0000 C CNN
+F 0 "R12" V 13980 8150 50  0000 C CNN
 F 1 "10K" V 13900 8150 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 13830 8150 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 13830 8150 50  0001 C CNN
 F 3 "" H 13900 8150 50  0000 C CNN
 	1    13900 8150
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R10
+L StandAlone-Adapter-rescue:R R15
 U 1 1 5B99222D
 P 14400 8150
-F 0 "R10" V 14480 8150 50  0000 C CNN
+F 0 "R15" V 14480 8150 50  0000 C CNN
 F 1 "10K" V 14400 8150 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 14330 8150 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 14330 8150 50  0001 C CNN
 F 3 "" H 14400 8150 50  0000 C CNN
 	1    14400 8150
 	1    0    0    -1  
@@ -1023,34 +689,34 @@ KBD_3v3_RESET
 Text GLabel 14550 8300 2    60   BiDi ~ 0
 KBD_RESET
 $Comp
-L BSS138 Q3
+L StandAlone-Adapter-rescue:BSS138 Q2
 U 1 1 5B9960F0
 P 14150 7050
-F 0 "Q3" H 14350 7125 50  0000 L CNN
+F 0 "Q2" H 14350 7125 50  0000 L CNN
 F 1 "BSS138" H 14350 7050 50  0000 L CNN
-F 2 "TO_SOT_Packages_SMD:SOT-23" H 14350 6975 50  0001 L CIN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 14350 6975 50  0001 L CIN
 F 3 "" H 14150 7050 50  0000 L CNN
 	1    14150 7050
 	0    1    1    0   
 $EndComp
 $Comp
-L R R11
+L StandAlone-Adapter-rescue:R R11
 U 1 1 5B9960F6
 P 13900 7000
 F 0 "R11" V 13980 7000 50  0000 C CNN
 F 1 "10K" V 13900 7000 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 13830 7000 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 13830 7000 50  0001 C CNN
 F 3 "" H 13900 7000 50  0000 C CNN
 	1    13900 7000
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R12
+L StandAlone-Adapter-rescue:R R14
 U 1 1 5B9960FC
 P 14400 7000
-F 0 "R12" V 14480 7000 50  0000 C CNN
+F 0 "R14" V 14480 7000 50  0000 C CNN
 F 1 "10K" V 14400 7000 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 14330 7000 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 14330 7000 50  0001 C CNN
 F 3 "" H 14400 7000 50  0000 C CNN
 	1    14400 7000
 	1    0    0    -1  
@@ -1064,58 +730,36 @@ KBD_3v3_CLOCK
 Text GLabel 14550 7150 2    60   BiDi ~ 0
 KBD_CLOCK
 $Comp
-L STM32F401RCTx U3
-U 1 1 5BBD3BEE
-P 8650 6100
-F 0 "U3" H 8050 7750 50  0000 L CNN
-F 1 "STM32F401RCTx" H 8950 7750 50  0000 L CNN
-F 2 "Housings_QFP:LQFP-64_10x10mm_Pitch0.5mm" H 8050 4400 50  0001 R CNN
-F 3 "" H 8650 6100 50  0001 C CNN
-	1    8650 6100
-	1    0    0    -1  
-$EndComp
-$Comp
-L R R13
+L StandAlone-Adapter-rescue:R R5
 U 1 1 5BD63103
 P 6750 8150
-F 0 "R13" V 6830 8150 50  0000 C CNN
+F 0 "R5" V 6830 8150 50  0000 C CNN
 F 1 "1.5K" V 6750 8150 50  0000 C CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" V 6680 8150 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 6680 8150 50  0001 C CNN
 F 3 "" H 6750 8150 50  0000 C CNN
 	1    6750 8150
 	0    -1   -1   0   
 $EndComp
 $Comp
-L LED D4
+L StandAlone-Adapter-rescue:LED D4
 U 1 1 5BD63180
 P 6400 8150
 F 0 "D4" H 6400 8250 50  0000 C CNN
 F 1 "LED" H 6400 8050 50  0000 C CNN
-F 2 "LEDs:LED_1206" H 6400 8150 50  0001 C CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 6400 8150 50  0001 C CNN
 F 3 "" H 6400 8150 50  0000 C CNN
 	1    6400 8150
 	-1   0    0    1   
 $EndComp
 Text GLabel 6200 8150 0    60   Input ~ 0
 VCC3V3
-$Comp
-L CONN_01X02 P1
-U 1 1 5BD659D0
-P 4900 2800
-F 0 "P1" H 4900 2950 50  0000 C CNN
-F 1 "CONN_01X02" V 5000 2800 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x02" H 4900 2800 50  0001 C CNN
-F 3 "" H 4900 2800 50  0000 C CNN
-	1    4900 2800
-	1    0    0    -1  
-$EndComp
 Text GLabel 4700 2750 0    60   BiDi ~ 0
 KBD_RESET
 $Comp
-L GND #PWR022
+L StandAlone-Adapter-rescue:GND #PWR016
 U 1 1 5BD65AB0
 P 4700 2850
-F 0 "#PWR022" H 4700 2600 50  0001 C CNN
+F 0 "#PWR016" H 4700 2600 50  0001 C CNN
 F 1 "GND" H 4700 2700 50  0000 C CNN
 F 2 "" H 4700 2850 50  0001 C CNN
 F 3 "" H 4700 2850 50  0001 C CNN
@@ -1145,10 +789,10 @@ VCC5V
 Text GLabel 2050 9450 2    43   BiDi ~ 0
 KBD_CLOCK
 $Comp
-L GND #PWR023
+L StandAlone-Adapter-rescue:GND #PWR08
 U 1 1 5BE96EE4
 P 2050 9100
-F 0 "#PWR023" H 2050 8850 50  0001 C CNN
+F 0 "#PWR08" H 2050 8850 50  0001 C CNN
 F 1 "GND" H 2050 8950 50  0000 C CNN
 F 2 "" H 2050 9100 50  0001 C CNN
 F 3 "" H 2050 9100 50  0001 C CNN
@@ -1158,45 +802,45 @@ $EndComp
 Text Notes 1900 10850 0    60   ~ 12
 KEYBOARD CONNECTIONS
 $Comp
-L CONN_01X01 H1
+L StandAlone-Adapter-rescue:CONN_01X01 H1
 U 1 1 5BE9D0FF
 P 13650 3700
 F 0 "H1" H 13650 3800 50  0000 C CNN
 F 1 "CONN_01X01" V 13750 3700 50  0000 C CNN
-F 2 "Connect:1pin" H 13650 3700 50  0001 C CNN
+F 2 "RetroBitLab:MountingHole" H 13650 3700 50  0001 C CNN
 F 3 "" H 13650 3700 50  0000 C CNN
 	1    13650 3700
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X01 H2
+L StandAlone-Adapter-rescue:CONN_01X01 H2
 U 1 1 5BE9D29A
 P 14050 3700
 F 0 "H2" H 14050 3800 50  0000 C CNN
 F 1 "CONN_01X01" V 14150 3700 50  0000 C CNN
-F 2 "Connect:1pin" H 14050 3700 50  0001 C CNN
+F 2 "RetroBitLab:MountingHole" H 14050 3700 50  0001 C CNN
 F 3 "" H 14050 3700 50  0000 C CNN
 	1    14050 3700
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X01 H3
+L StandAlone-Adapter-rescue:CONN_01X01 H3
 U 1 1 5BE9D34B
 P 14450 3700
 F 0 "H3" H 14450 3800 50  0000 C CNN
 F 1 "CONN_01X01" V 14550 3700 50  0000 C CNN
-F 2 "Connect:1pin" H 14450 3700 50  0001 C CNN
+F 2 "RetroBitLab:MountingHole" H 14450 3700 50  0001 C CNN
 F 3 "" H 14450 3700 50  0000 C CNN
 	1    14450 3700
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X01 H4
+L StandAlone-Adapter-rescue:CONN_01X01 H4
 U 1 1 5BE9D433
 P 14850 3700
 F 0 "H4" H 14850 3800 50  0000 C CNN
 F 1 "CONN_01X01" V 14950 3700 50  0000 C CNN
-F 2 "Connect:1pin" H 14850 3700 50  0001 C CNN
+F 2 "RetroBitLab:MountingHole" H 14850 3700 50  0001 C CNN
 F 3 "" H 14850 3700 50  0000 C CNN
 	1    14850 3700
 	1    0    0    -1  
@@ -1206,10 +850,10 @@ NoConn ~ 14250 3700
 NoConn ~ 13850 3700
 NoConn ~ 13450 3700
 $Comp
-L Conn_02x03_Odd_Even J2
+L StandAlone-Adapter-rescue:Conn_02x03_Odd_Even J3
 U 1 1 5BEA22B3
 P 1800 10300
-F 0 "J2" H 1850 10500 50  0000 C CNN
+F 0 "J3" H 1850 10500 50  0000 C CNN
 F 1 "Conn_02x03_Odd_Even" H 1850 10100 50  0001 C CNN
 F 2 "RetroBitLab:IDC-Header_2x03_P2.54mm_Vertical" H 1800 10300 50  0001 C CNN
 F 3 "" H 1800 10300 50  0001 C CNN
@@ -1225,10 +869,10 @@ KBD_RESET
 Text GLabel 2100 10400 2    43   Input ~ 0
 VCC5V
 $Comp
-L GND #PWR024
+L StandAlone-Adapter-rescue:GND #PWR011
 U 1 1 5BEA4FF4
 P 2500 10450
-F 0 "#PWR024" H 2500 10200 50  0001 C CNN
+F 0 "#PWR011" H 2500 10200 50  0001 C CNN
 F 1 "GND" H 2500 10300 50  0000 C CNN
 F 2 "" H 2500 10450 50  0001 C CNN
 F 3 "" H 2500 10450 50  0001 C CNN
@@ -1236,10 +880,10 @@ F 3 "" H 2500 10450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR025
+L StandAlone-Adapter-rescue:GND #PWR01
 U 1 1 5BEA509B
 P 950 10500
-F 0 "#PWR025" H 950 10250 50  0001 C CNN
+F 0 "#PWR01" H 950 10250 50  0001 C CNN
 F 1 "GND" H 950 10350 50  0000 C CNN
 F 2 "" H 950 10500 50  0001 C CNN
 F 3 "" H 950 10500 50  0001 C CNN
@@ -1251,7 +895,7 @@ DIN 5 Pinout (Straight)
 Text Notes 14650 4100 0    60   ~ 12
 MOUNTING HOLES
 $Comp
-L RJ10 J1
+L StandAlone-Adapter-rescue:RJ10 J1
 U 1 1 5C1EBC98
 P 1500 9450
 F 0 "J1" H 1740 9860 50  0000 C CNN
@@ -1270,12 +914,12 @@ Note: Top view Pin 1 on the left. Like MODEL: UJ2-AH-4-TH from CUI INC.
 Text GLabel 2050 9350 2    43   BiDi ~ 0
 KBD_DATA
 $Comp
-L C_Small C3
+L StandAlone-Adapter-rescue:C_Small C3
 U 1 1 5CB35AD1
 P 3000 5450
 F 0 "C3" H 3010 5520 50  0000 L CNN
 F 1 "100n" H 3010 5370 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 3000 5450 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 3000 5450 50  0001 C CNN
 F 3 "" H 3000 5450 50  0000 C CNN
 	1    3000 5450
 	1    0    0    -1  
@@ -1283,16 +927,16 @@ $EndComp
 Wire Wire Line
 	8550 7900 8550 8050
 Wire Wire Line
-	8450 8050 8850 8050
+	8450 8050 8550 8050
 Wire Wire Line
-	8650 7900 8650 8150
+	8650 7900 8650 8050
 Wire Wire Line
 	8750 8050 8750 7900
 Connection ~ 8650 8050
 Wire Wire Line
 	7200 5900 7200 6050
 Wire Wire Line
-	6950 6050 7700 6050
+	6950 6050 7200 6050
 Connection ~ 7200 6050
 Wire Wire Line
 	6350 6050 6650 6050
@@ -1303,7 +947,7 @@ Connection ~ 8350 3350
 Connection ~ 8100 3350
 Connection ~ 7850 3350
 Wire Wire Line
-	2650 5150 3900 5150
+	2650 5150 2700 5150
 Wire Wire Line
 	7850 3650 7850 4300
 Wire Wire Line
@@ -1337,11 +981,9 @@ Wire Wire Line
 Wire Wire Line
 	13300 2150 13300 2350
 Wire Wire Line
-	14500 2300 14900 2300
+	9250 4800 10100 4800
 Wire Wire Line
-	9250 4800 10450 4800
-Wire Wire Line
-	9250 4900 10450 4900
+	9250 4900 10300 4900
 Wire Wire Line
 	10100 4750 10100 4800
 Connection ~ 10100 4800
@@ -1356,18 +998,18 @@ Connection ~ 10100 4450
 Wire Wire Line
 	6500 4200 6500 4400
 Wire Wire Line
-	3000 5550 3000 6150
+	3000 5550 3000 5750
 Connection ~ 3000 6000
 Wire Wire Line
-	3000 7300 3300 7300
+	3300 7300 3600 7300
 Wire Wire Line
-	3000 7200 3300 7200
+	3300 7200 3600 7200
 Wire Wire Line
-	3000 7100 3300 7100
+	3300 7100 3600 7100
 Wire Wire Line
-	8600 3650 7450 3650
+	8600 3650 8350 3650
 Wire Wire Line
-	7450 3350 8600 3350
+	7450 3350 7850 3350
 Connection ~ 8600 3650
 Wire Wire Line
 	8450 8050 8450 7900
@@ -1395,29 +1037,29 @@ Connection ~ 2350 5750
 Wire Wire Line
 	2350 5450 2350 5750
 Wire Wire Line
-	2000 5000 2000 5450
+	2000 5000 2000 5150
 Connection ~ 2700 5150
 Wire Wire Line
 	3350 5450 3350 5150
 Connection ~ 2000 5150
 Wire Wire Line
-	7700 5450 6950 5450
+	7700 5450 7200 5450
 Connection ~ 7200 5450
 Wire Wire Line
 	6350 5450 6650 5450
 Wire Wire Line
-	1250 4750 1250 5450
+	1250 4750 1250 4900
 Connection ~ 1250 5150
 Wire Wire Line
 	7200 5600 7200 5450
 Wire Wire Line
-	6350 5450 6350 6200
+	6350 5450 6350 6050
 Connection ~ 6350 6050
 Wire Wire Line
-	1200 5150 2050 5150
+	1200 5150 1250 5150
 Connection ~ 3000 5750
 Wire Wire Line
-	2000 5750 3000 5750
+	2000 5750 2350 5750
 Wire Wire Line
 	1250 7450 2000 7450
 Wire Wire Line
@@ -1431,7 +1073,7 @@ Wire Wire Line
 Wire Wire Line
 	13550 1100 13800 1100
 Wire Wire Line
-	14300 1000 13550 1000
+	14300 1000 13800 1000
 Wire Wire Line
 	13550 900  13800 900 
 Wire Wire Line
@@ -1440,7 +1082,7 @@ Wire Wire Line
 	13800 900  13800 1000
 Connection ~ 13800 1000
 Wire Wire Line
-	14900 2000 14500 2000
+	14500 2850 14100 2850
 Wire Wire Line
 	2100 8750 1950 8750
 Wire Wire Line
@@ -1459,9 +1101,9 @@ Wire Wire Line
 Wire Wire Line
 	3850 5800 4050 5800
 Wire Wire Line
-	13950 5950 13750 5950
+	13950 5950 13900 5950
 Wire Wire Line
-	14350 5950 14550 5950
+	14350 5950 14400 5950
 Connection ~ 14400 5950
 Connection ~ 13900 5950
 Wire Wire Line
@@ -1472,9 +1114,9 @@ Connection ~ 13900 5650
 Wire Wire Line
 	14400 5450 14400 5650
 Wire Wire Line
-	13950 8300 13750 8300
+	13950 8300 13900 8300
 Wire Wire Line
-	14350 8300 14550 8300
+	14350 8300 14400 8300
 Connection ~ 14400 8300
 Connection ~ 13900 8300
 Wire Wire Line
@@ -1485,9 +1127,9 @@ Connection ~ 13900 8000
 Wire Wire Line
 	14400 7800 14400 8000
 Wire Wire Line
-	13950 7150 13750 7150
+	13950 7150 13900 7150
 Wire Wire Line
-	14350 7150 14550 7150
+	14350 7150 14400 7150
 Connection ~ 14400 7150
 Connection ~ 13900 7150
 Wire Wire Line
@@ -1500,7 +1142,7 @@ Wire Wire Line
 Wire Wire Line
 	7000 7950 7000 8250
 Wire Wire Line
-	6900 7950 6900 8250
+	6900 7950 6900 8150
 Connection ~ 6900 8150
 Wire Notes Line
 	800  6750 4500 6750
@@ -1541,15 +1183,11 @@ Wire Wire Line
 Wire Wire Line
 	2500 10300 2500 10450
 Wire Notes Line
-	800  10800 800  8150
-Wire Notes Line
 	800  8150 3100 8150
 Wire Notes Line
 	3100 8150 3100 10900
 Wire Notes Line
 	3100 10900 800  10900
-Wire Notes Line
-	800  10900 800  10750
 Wire Notes Line
 	13050 3250 15500 3250
 Wire Notes Line
@@ -1563,15 +1201,11 @@ Wire Notes Line
 Wire Wire Line
 	2050 9550 2050 9650
 Wire Notes Line
-	850  2300 2300 2300
-Wire Notes Line
 	2300 2300 2300 3800
 Wire Notes Line
 	2300 3800 800  3800
 Wire Notes Line
 	800  3800 800  2300
-Wire Notes Line
-	800  2300 900  2300
 Wire Notes Line
 	3600 2450 5150 2450
 Wire Notes Line
@@ -1581,15 +1215,11 @@ Wire Notes Line
 Wire Notes Line
 	3600 3300 3600 2450
 Wire Notes Line
-	12900 4800 15250 4800
-Wire Notes Line
 	15250 4800 15250 8750
 Wire Notes Line
 	15250 8750 12850 8750
 Wire Notes Line
 	12850 8750 12850 4800
-Wire Notes Line
-	12850 4800 13000 4800
 Wire Notes Line
 	5700 7700 7250 7700
 Wire Notes Line
@@ -1610,12 +1240,12 @@ Wire Wire Line
 	1900 9550 2050 9550
 Connection ~ 3350 5150
 $Comp
-L R_Small R14
+L StandAlone-Adapter-rescue:R_Small R6
 U 1 1 5CB3789B
 P 7600 4800
-F 0 "R14" V 7700 4800 50  0000 L CNN
+F 0 "R6" V 7700 4800 50  0000 L CNN
 F 1 "10K" V 7500 4750 50  0000 L CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" H 7600 4800 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" H 7600 4800 50  0001 C CNN
 F 3 "" H 7600 4800 50  0000 C CNN
 	1    7600 4800
 	0    1    1    0   
@@ -1623,76 +1253,73 @@ $EndComp
 Wire Wire Line
 	7450 4800 7500 4800
 $Comp
-L C_Small C14
+L StandAlone-Adapter-rescue:C_Small C14
 U 1 1 5CB3A094
-P 14650 2450
-F 0 "C14" H 14660 2520 50  0000 L CNN
-F 1 "100n" H 14660 2370 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 14650 2450 50  0001 C CNN
-F 3 "" H 14650 2450 50  0000 C CNN
-	1    14650 2450
+P 14550 2100
+F 0 "C14" H 14560 2170 50  0000 L CNN
+F 1 "100n" H 14560 2020 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 14550 2100 50  0001 C CNN
+F 3 "" H 14550 2100 50  0000 C CNN
+	1    14550 2100
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR026
+L StandAlone-Adapter-rescue:GND #PWR026
 U 1 1 5CB3A11F
-P 14650 2550
-F 0 "#PWR026" H 14650 2300 50  0001 C CNN
-F 1 "GND" H 14650 2400 50  0000 C CNN
-F 2 "" H 14650 2550 50  0001 C CNN
-F 3 "" H 14650 2550 50  0001 C CNN
-	1    14650 2550
-	1    0    0    -1  
+P 14550 2000
+F 0 "#PWR026" H 14550 1750 50  0001 C CNN
+F 1 "GND" H 14550 1850 50  0000 C CNN
+F 2 "" H 14550 2000 50  0001 C CNN
+F 3 "" H 14550 2000 50  0001 C CNN
+	1    14550 2000
+	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	14650 2350 14650 2300
-Connection ~ 14650 2300
 $Comp
-L R_Small R16
+L StandAlone-Adapter-rescue:R_Small R16
 U 1 1 5CB3A498
-P 14800 2100
-F 0 "R16" V 14750 2250 50  0000 L CNN
-F 1 "12ohm" V 14750 1900 50  0000 L CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" H 14800 2100 50  0001 C CNN
-F 3 "" H 14800 2100 50  0000 C CNN
-	1    14800 2100
+P 14700 2450
+F 0 "R16" V 14650 2600 50  0000 L CNN
+F 1 "12ohm" V 14600 2300 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" H 14700 2450 50  0001 C CNN
+F 3 "" H 14700 2450 50  0000 C CNN
+	1    14700 2450
 	0    1    1    0   
 $EndComp
 $Comp
-L R_Small R17
+L StandAlone-Adapter-rescue:R_Small R17
 U 1 1 5CB3A55B
-P 14800 2200
-F 0 "R17" V 14750 2350 50  0000 L CNN
-F 1 "12ohm" V 14750 2000 50  0000 L CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" H 14800 2200 50  0001 C CNN
-F 3 "" H 14800 2200 50  0000 C CNN
-	1    14800 2200
+P 14700 2550
+F 0 "R17" V 14650 2700 50  0000 L CNN
+F 1 "12ohm" V 14800 2400 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" H 14700 2550 50  0001 C CNN
+F 3 "" H 14700 2550 50  0000 C CNN
+	1    14700 2550
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	14500 2100 14700 2100
+	14400 2450 14600 2450
 Wire Wire Line
-	14900 2100 15150 2100
+	14800 2450 15050 2450
 Wire Wire Line
-	15150 2200 14900 2200
+	15050 2550 14800 2550
 Wire Wire Line
-	14700 2200 14500 2200
+	14600 2550 14400 2550
 $Comp
-L C_Small C13
+L StandAlone-Adapter-rescue:C_Small C7
 U 1 1 5CB3B205
 P 6800 4900
-F 0 "C13" H 6810 4970 50  0000 L CNN
+F 0 "C7" H 6810 4970 50  0000 L CNN
 F 1 "4.7u" H 6810 4820 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 6800 4900 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 6800 4900 50  0001 C CNN
 F 3 "" H 6800 4900 50  0000 C CNN
 	1    6800 4900
 	-1   0    0    1   
 $EndComp
 $Comp
-L GND #PWR027
+L StandAlone-Adapter-rescue:GND #PWR020
 U 1 1 5CB3B2CE
 P 6800 4800
-F 0 "#PWR027" H 6800 4550 50  0001 C CNN
+F 0 "#PWR020" H 6800 4550 50  0001 C CNN
 F 1 "GND" H 6800 4650 50  0000 C CNN
 F 2 "" H 6800 4800 50  0001 C CNN
 F 3 "" H 6800 4800 50  0001 C CNN
@@ -1708,10 +1335,10 @@ VSSA
 Text Label 4700 1550 2    39   ~ 0
 VSSA
 $Comp
-L GND #PWR028
+L StandAlone-Adapter-rescue:GND #PWR015
 U 1 1 5CB3BD5F
 P 4700 1600
-F 0 "#PWR028" H 4700 1350 50  0001 C CNN
+F 0 "#PWR015" H 4700 1350 50  0001 C CNN
 F 1 "GND" H 4700 1450 50  0000 C CNN
 F 2 "" H 4700 1600 50  0001 C CNN
 F 3 "" H 4700 1600 50  0001 C CNN
@@ -1721,12 +1348,12 @@ $EndComp
 Text Label 4700 1150 0    39   ~ 0
 VDDA
 $Comp
-L C_Small C10
+L StandAlone-Adapter-rescue:C_Small C4
 U 1 1 5CB3C23D
 P 4800 1400
-F 0 "C10" H 4810 1470 50  0000 L CNN
+F 0 "C4" H 4810 1470 50  0000 L CNN
 F 1 "100n" H 4810 1320 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 4800 1400 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 4800 1400 50  0001 C CNN
 F 3 "" H 4800 1400 50  0000 C CNN
 	1    4800 1400
 	1    0    0    -1  
@@ -1734,12 +1361,12 @@ $EndComp
 Wire Wire Line
 	4800 1550 4800 1500
 $Comp
-L CP1_Small C11
+L StandAlone-Adapter-rescue:CP1_Small C5
 U 1 1 5CB3C4D9
 P 5050 1400
-F 0 "C11" H 5060 1470 50  0000 L CNN
+F 0 "C5" H 5060 1470 50  0000 L CNN
 F 1 "10u" H 5060 1320 50  0000 L CNN
-F 2 "Capacitors_Tantalum_SMD:TantalC_SizeA_EIA-3216_HandSoldering" H 5050 1400 50  0001 C CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder" H 5050 1400 50  0001 C CNN
 F 3 "" H 5050 1400 50  0000 C CNN
 	1    5050 1400
 	1    0    0    -1  
@@ -1753,11 +1380,11 @@ Wire Wire Line
 	5050 1550 5050 1500
 Connection ~ 4800 1550
 Wire Wire Line
-	4700 1550 5050 1550
+	4700 1550 4800 1550
 Wire Wire Line
 	4700 1550 4700 1600
 Wire Wire Line
-	5050 1200 4700 1200
+	5050 1200 4800 1200
 Wire Wire Line
 	4700 1200 4700 1150
 Wire Notes Line
@@ -1771,12 +1398,12 @@ Wire Notes Line
 Text Notes 4100 1050 0    59   ~ 12
 INTERNAL VOLTAGE STABILIZER
 $Comp
-L R_Small R15
+L StandAlone-Adapter-rescue:R_Small R7
 U 1 1 5CB3D7A6
 P 9600 6500
-F 0 "R15" V 9500 6450 50  0000 L CNN
+F 0 "R7" V 9500 6450 50  0000 L CNN
 F 1 "10K" V 9700 6450 50  0000 L CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" H 9600 6500 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" H 9600 6500 50  0001 C CNN
 F 3 "" H 9600 6500 50  0000 C CNN
 	1    9600 6500
 	0    1    1    0   
@@ -1786,21 +1413,10 @@ Wire Wire Line
 Wire Wire Line
 	9250 6500 9500 6500
 $Comp
-L CONN_01X03 BOOT1
-U 1 1 5CB3E26D
-P 2600 1450
-F 0 "BOOT1" V 2800 1450 50  0000 C CNN
-F 1 "CONN_01X03" V 2700 1450 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x03" H 2600 1450 50  0001 C CNN
-F 3 "" H 2600 1450 50  0000 C CNN
-	1    2600 1450
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR029
+L StandAlone-Adapter-rescue:GND #PWR010
 U 1 1 5CB3E42D
 P 2400 1550
-F 0 "#PWR029" H 2400 1300 50  0001 C CNN
+F 0 "#PWR010" H 2400 1300 50  0001 C CNN
 F 1 "GND" H 2400 1400 50  0000 C CNN
 F 2 "" H 2400 1550 50  0001 C CNN
 F 3 "" H 2400 1550 50  0001 C CNN
@@ -1822,12 +1438,12 @@ Wire Wire Line
 Text GLabel 5100 3900 0    60   Input ~ 0
 VCC3V3
 $Comp
-L R_Small R3
+L StandAlone-Adapter-rescue:R_Small R4
 U 1 1 5CB3F469
 P 5350 3900
-F 0 "R3" V 5450 3900 50  0000 L CNN
+F 0 "R4" V 5450 3900 50  0000 L CNN
 F 1 "22K" V 5250 3850 50  0000 L CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" H 5350 3900 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" H 5350 3900 50  0001 C CNN
 F 3 "" H 5350 3900 50  0000 C CNN
 	1    5350 3900
 	0    1    1    0   
@@ -1835,16 +1451,16 @@ $EndComp
 Wire Wire Line
 	5100 3900 5250 3900
 Wire Wire Line
-	5450 3900 6950 3900
+	5450 3900 5550 3900
 Wire Wire Line
 	5550 3900 5550 4200
 $Comp
-L C_Small C12
+L StandAlone-Adapter-rescue:C_Small C6
 U 1 1 5CB3F83B
 P 6150 4050
-F 0 "C12" H 5900 4050 50  0000 L CNN
+F 0 "C6" H 5900 4050 50  0000 L CNN
 F 1 "100n" H 6160 3970 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 6150 4050 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 6150 4050 50  0001 C CNN
 F 3 "" H 6150 4050 50  0000 C CNN
 	1    6150 4050
 	-1   0    0    1   
@@ -1853,7 +1469,7 @@ Wire Wire Line
 	6150 3900 6150 3950
 Connection ~ 5550 3900
 Wire Wire Line
-	6150 4150 6150 4450
+	6150 4150 6150 4200
 Connection ~ 6150 4200
 Connection ~ 6150 3900
 Text GLabel 6950 3900 2    47   BiDi ~ 0
@@ -1863,15 +1479,11 @@ NRST
 Wire Wire Line
 	7950 4600 7700 4600
 Wire Notes Line
-	800  1000 800  2000
-Wire Notes Line
 	800  2000 3250 2000
 Wire Notes Line
 	3250 2000 3250 700 
 Wire Notes Line
 	3250 700  800  700 
-Wire Notes Line
-	800  700  800  1050
 Text Notes 900  850  0    59   ~ 12
 BOOT SELECTION
 Wire Wire Line
@@ -1879,8 +1491,289 @@ Wire Wire Line
 Wire Wire Line
 	6500 3900 6500 4100
 Connection ~ 6500 3900
-Text GLabel 3800 4850 2    60   Input ~ 0
-VCC3V3
 Wire Wire Line
-	3650 4850 3800 4850
+	8650 8050 8750 8050
+Wire Wire Line
+	8650 8050 8650 8150
+Wire Wire Line
+	7200 6050 7700 6050
+Wire Wire Line
+	7850 3650 7450 3650
+Wire Wire Line
+	8100 3650 7850 3650
+Wire Wire Line
+	8350 3650 8100 3650
+Wire Wire Line
+	8350 3350 8600 3350
+Wire Wire Line
+	8100 3350 8350 3350
+Wire Wire Line
+	7850 3350 8100 3350
+Wire Wire Line
+	10100 4800 10450 4800
+Wire Wire Line
+	10300 4900 10450 4900
+Wire Wire Line
+	3000 6000 3000 6150
+Wire Wire Line
+	8550 8050 8650 8050
+Wire Wire Line
+	8750 8050 8850 8050
+Wire Wire Line
+	3000 5150 3350 5150
+Wire Wire Line
+	2700 5750 3000 5750
+Wire Wire Line
+	2350 5750 2700 5750
+Wire Wire Line
+	2700 5150 3000 5150
+Wire Wire Line
+	2000 5150 2000 5450
+Wire Wire Line
+	2000 5150 2050 5150
+Wire Wire Line
+	7200 5450 6950 5450
+Wire Wire Line
+	1250 5150 1250 5450
+Wire Wire Line
+	1250 5150 2000 5150
+Wire Wire Line
+	6350 6050 6350 6200
+Wire Wire Line
+	3000 5750 3000 6000
+Wire Wire Line
+	13800 1000 13550 1000
+Wire Wire Line
+	1250 4900 1250 5150
+Wire Wire Line
+	14400 5950 14550 5950
+Wire Wire Line
+	13900 5950 13750 5950
+Wire Wire Line
+	14400 8300 14550 8300
+Wire Wire Line
+	13900 8300 13750 8300
+Wire Wire Line
+	14400 7150 14550 7150
+Wire Wire Line
+	13900 7150 13750 7150
+Wire Wire Line
+	6900 8150 6900 8250
+Wire Wire Line
+	3350 5150 3650 5150
+Wire Wire Line
+	4800 1200 4700 1200
+Wire Wire Line
+	4800 1550 5050 1550
+Wire Wire Line
+	5550 3900 6150 3900
+Wire Wire Line
+	6150 4200 6150 4450
+Wire Wire Line
+	6150 3900 6500 3900
+Wire Wire Line
+	6500 3900 6950 3900
+Wire Notes Line
+	800  8150 800  10900
+Wire Notes Line
+	800  2300 2300 2300
+Wire Notes Line
+	12850 4800 15250 4800
+Wire Notes Line
+	800  700  800  2000
+$Comp
+L Connector:TestPoint TP2
+U 1 1 60802EF8
+P 6300 9750
+F 0 "TP2" H 6400 9900 50  0000 L CNN
+F 1 "amigaWorkbench" H 6250 9650 50  0000 L CNN
+F 2 "RetroBitLab:amigaWorkBench1" H 6500 9750 50  0001 C CNN
+F 3 "~" H 6500 9750 50  0001 C CNN
+	1    6300 9750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP3
+U 1 1 6080444A
+P 7000 9750
+F 0 "TP3" H 7100 9900 50  0000 L CNN
+F 1 "amigaLogo" H 7000 9650 50  0000 L CNN
+F 2 "RetroBitLab:amigaLogo_BW_31x12mm" H 7200 9750 50  0001 C CNN
+F 3 "~" H 7200 9750 50  0001 C CNN
+	1    7000 9750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP4
+U 1 1 60804689
+P 7600 9750
+F 0 "TP4" H 7700 9900 50  0000 L CNN
+F 1 "GNU-GPL" H 7550 9650 50  0000 L CNN
+F 2 "RetroBitLab:Symbol_GNU-GPL_SilkScreen_Small" H 7800 9750 50  0001 C CNN
+F 3 "~" H 7800 9750 50  0001 C CNN
+	1    7600 9750
+	1    0    0    -1  
+$EndComp
+NoConn ~ 7600 9750
+NoConn ~ 7000 9750
+NoConn ~ 6300 9750
+Wire Notes Line
+	6100 10250 8200 10250
+Wire Notes Line
+	8200 10250 8200 9050
+Wire Notes Line
+	8200 9050 6100 9050
+Wire Notes Line
+	6100 9050 6100 10250
+Text Notes 6150 9200 0    79   ~ 16
+SILKSCREEN LOGOS
+$Comp
+L Connector:USB_A USB1
+U 1 1 60798564
+P 14100 2450
+F 0 "USB1" H 14200 2950 50  0000 C CNN
+F 1 "USB_A" H 14200 2850 50  0000 C CNN
+F 2 "RetroBitLab:CUI_UJ2-AH-4-TH" H 14250 2400 50  0001 C CNN
+F 3 " ~" H 14250 2400 50  0001 C CNN
+	1    14100 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	14400 2250 14550 2250
+Wire Wire Line
+	14550 2200 14550 2250
+Connection ~ 14550 2250
+Wire Wire Line
+	14550 2250 14800 2250
+Wire Wire Line
+	14000 2850 14100 2850
+Connection ~ 14100 2850
+Wire Wire Line
+	3650 4850 3650 5150
+Connection ~ 3650 5150
+Wire Wire Line
+	3650 5150 3900 5150
+$Comp
+L Connector_Generic:Conn_01x04 J4
+U 1 1 608224DE
+P 2200 7350
+F 0 "J4" H 2300 7350 50  0000 L CNN
+F 1 "Conn_01x04" H 2300 7250 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal" H 2200 7350 50  0001 C CNN
+F 3 "~" H 2200 7350 50  0001 C CNN
+	1    2200 7350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x03 J7
+U 1 1 60825D29
+P 3100 7200
+F 0 "J7" H 3250 7200 50  0000 C CNN
+F 1 "Conn_01x03" H 3050 7450 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 3100 7200 50  0001 C CNN
+F 3 "~" H 3100 7200 50  0001 C CNN
+	1    3100 7200
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x05 J5
+U 1 1 60837BC4
+P 2300 8550
+F 0 "J5" H 2400 8550 50  0000 L CNN
+F 1 "Conn_01x05" H 2400 8500 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Horizontal" H 2300 8550 50  0001 C CNN
+F 3 "~" H 2300 8550 50  0001 C CNN
+	1    2300 8550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J9
+U 1 1 6083E1AF
+P 7000 8450
+F 0 "J9" V 6900 8550 50  0000 L CNN
+F 1 "Conn_01x02" V 6950 8550 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 7000 8450 50  0001 C CNN
+F 3 "~" H 7000 8450 50  0001 C CNN
+	1    7000 8450
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J11
+U 1 1 60845522
+P 13500 2050
+F 0 "J11" H 13600 2000 50  0000 L CNN
+F 1 "Conn_01x02" H 13600 1950 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 13500 2050 50  0001 C CNN
+F 3 "~" H 13500 2050 50  0001 C CNN
+	1    13500 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x04 J10
+U 1 1 60847709
+P 13350 1000
+F 0 "J10" H 13500 800 50  0000 C CNN
+F 1 "Conn_01x04" H 13250 650 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal" H 13350 1000 50  0001 C CNN
+F 3 "~" H 13350 1000 50  0001 C CNN
+	1    13350 1000
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x03 J2
+U 1 1 6084C54B
+P 1800 1450
+F 0 "J2" H 1900 1450 50  0000 L CNN
+F 1 "Conn_01x03" H 1900 1400 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 1800 1450 50  0001 C CNN
+F 3 "~" H 1800 1450 50  0001 C CNN
+	1    1800 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x03 J6
+U 1 1 6084DD8C
+P 2600 1450
+F 0 "J6" H 2700 1450 50  0000 L CNN
+F 1 "Conn_01x03" H 2700 1400 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 2600 1450 50  0001 C CNN
+F 3 "~" H 2600 1450 50  0001 C CNN
+	1    2600 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J8
+U 1 1 60851BAF
+P 4900 2750
+F 0 "J8" H 5000 2700 50  0000 L CNN
+F 1 "Conn_01x02" H 5000 2650 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4900 2750 50  0001 C CNN
+F 3 "~" H 4900 2750 50  0001 C CNN
+	1    4900 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L AmigaComponents:STM32F401RBTx U2
+U 1 1 60858D17
+P 8650 6100
+F 0 "U2" H 7950 7800 50  0000 C CNN
+F 1 "STM32F401RBTx" H 9250 7800 50  0000 C CNN
+F 2 "Package_QFP:LQFP-64_10x10mm_P0.5mm" H 8050 4400 50  0001 R CNN
+F 3 "" H 8650 6100 50  0001 C CNN
+	1    8650 6100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP5
+U 1 1 60926773
+P 7650 9300
+F 0 "TP5" H 7750 9450 50  0000 L CNN
+F 1 "USBLOGO" H 7600 9200 50  0000 L CNN
+F 2 "RetroBitLab:USB_PLUG_15x15mm" H 7850 9300 50  0001 C CNN
+F 3 "~" H 7850 9300 50  0001 C CNN
+	1    7650 9300
+	1    0    0    -1  
+$EndComp
+Text Notes 9450 7350 0    79   ~ 16
+BOTH STM32F401RBT6 or STM32F401RCT6\ncan be used here. The first has 128k FLASH\nand the latter has 256K FLASH
 $EndSCHEMATC

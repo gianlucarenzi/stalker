@@ -5,13 +5,13 @@
   )
   (autoroute_settings
     (fanout off)
-    (autoroute on)
+    (eu.mihosoft.freerouting.autoroute on)
     (postroute on)
     (vias on)
     (via_costs 50)
     (plane_via_costs 5)
     (start_ripup_costs 100)
-    (start_pass_no 164)
+    (start_pass_no 4697)
     (layer_rule F.Cu
       (active on)
       (preferred_direction horizontal)
@@ -87,11 +87,16 @@
     )
   )
   (class "kicad_default"
-    "KBD_CLOCK" "KBD_DATA" GND VCC3V3 BOOT0 +5V "Net-(C4-Pad1)" "Net-(C5-Pad1)"
-    "Net-(D1-Pad2)" "Net-(D2-Pad2)" VCC12V "Net-(D3-Pad1)" "Net-(D4-Pad1)" "KBD_RESET" "KBD_3v3_DATA" "KBD_3v3_RESET"
-    "KBD_3v3_CLOCK" TP1 SWDIO SWDCLK TP2 "USB_ID" "USB_N" "USB_P"
-    "UART_RX_TTL" "UART_TX_TTL" BOOT1 NRST "Net-(C13-Pad1)" "Net-(R14-Pad1)" "Net-(R15-Pad2)" "Net-(R16-Pad2)"
-    "Net-(R17-Pad2)"
+    "KBD_CLOCK" "KBD_DATA" GND VCC3V3 BOOT0 +5V "Net-(D1-Pad2)" VCC12V
+    "Net-(D4-Pad1)" "KBD_RESET" "KBD_3v3_DATA" "KBD_3v3_RESET" "KBD_3v3_CLOCK" TP1 SWDIO SWDCLK
+    TP2 "USB_ID" "USB_N" "USB_P" "UART_RX_TTL" "UART_TX_TTL" BOOT1 NRST
+    "Net-(R16-Pad2)" "Net-(R17-Pad2)" "Net-(H1-Pad1)" "Net-(H2-Pad1)" "Net-(H3-Pad1)" "Net-(H4-Pad1)" "Net-(C7-Pad1)" "Net-(C8-Pad1)"
+    "Net-(C9-Pad1)" "Net-(D2-Pad1)" "Net-(D3-Pad2)" "Net-(J5-Pad3)" "Net-(R6-Pad1)" "Net-(R7-Pad2)" "Net-(U2-Pad1)" "Net-(U2-Pad2)"
+    "Net-(U2-Pad3)" "Net-(U2-Pad4)" "Net-(U2-Pad8)" "Net-(U2-Pad20)" "Net-(U2-Pad21)" "Net-(U2-Pad22)" "Net-(U2-Pad23)" "Net-(U2-Pad24)"
+    "Net-(U2-Pad25)" "Net-(U2-Pad26)" "Net-(U2-Pad27)" "Net-(U2-Pad29)" "Net-(U2-Pad33)" "Net-(U2-Pad34)" "Net-(U2-Pad35)" "Net-(U2-Pad36)"
+    "Net-(U2-Pad37)" "Net-(U2-Pad38)" "Net-(U2-Pad39)" "Net-(U2-Pad40)" "Net-(U2-Pad41)" "Net-(U2-Pad42)" "Net-(U2-Pad50)" "Net-(U2-Pad51)"
+    "Net-(U2-Pad52)" "Net-(U2-Pad53)" "Net-(U2-Pad54)" "Net-(U2-Pad55)" "Net-(U2-Pad56)" "Net-(U2-Pad57)" "Net-(U2-Pad58)" "Net-(U2-Pad59)"
+    "Net-(U2-Pad61)" "Net-(U2-Pad62)"
     (clearance_class "kicad_default")
     (via_rule kicad_default)
     (rule
@@ -105,7 +110,7 @@
     (clearance_class +5V)
     (via_rule +5V)
     (rule
-      (width 300.0)
+      (width 350.0)
     )
     (circuit 
       (use_layer F.Cu B.Cu)
@@ -115,7 +120,7 @@
     (clearance_class GND)
     (via_rule GND)
     (rule
-      (width 350.0)
+      (width 400.0)
     )
     (circuit 
       (use_layer F.Cu B.Cu)
@@ -125,7 +130,7 @@
     (clearance_class VCC3V3)
     (via_rule VCC3V3)
     (rule
-      (width 300.0)
+      (width 350.0)
     )
     (circuit 
       (use_layer F.Cu B.Cu)
@@ -135,7 +140,7 @@
     (clearance_class VCC5V)
     (via_rule VCC5V)
     (rule
-      (width 300.0)
+      (width 350.0)
     )
     (circuit 
       (use_layer F.Cu B.Cu)
