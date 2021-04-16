@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name StandAlone-Adapter-rescue)(type Legacy)(uri ${KIPRJMOD}/StandAlone-Adapter-rescue.lib)(options "")(descr ""))
+  (lib (name AmigaComponents)(type Legacy)(uri /home/debian/Progetti/RetroBitLab-Library/AmigaComponents.lib)(options "")(descr ""))
+)
