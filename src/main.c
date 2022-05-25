@@ -64,7 +64,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(int baud);
 
 /* Local variables */
-static int debuglevel = DBG_INFO;
+static int debuglevel = DBG_NOISY;
 static const char *fwBuild = "v1.1rc";
 static UART_HandleTypeDef huart2;
 
@@ -332,7 +332,7 @@ int main(void)
 					}
 					if (timer_elapsed(100))
 					{
-						DBG_N("UNKNOWN USB DEVICE\r\n");
+						DBG_N("UNKNOWN USB DEVICE count: %d\r\n", count);
 						led_toggle();
 						amikb_notify("NOT USB Keyboard. Please Connect - Amiga Is Back!\n");
 						timer_start();
@@ -383,12 +383,12 @@ int main(void)
 			// slow blink on no device connected
 			if (timer_elapsed(500))
 			{
-				DBG_N("WAIT INSERT USB KEYBOARD\r\n");
+				DBG_N("WAIT INSERT USB KEYBOARD count: %d\r\n", count);
 				led_toggle();
-				amikb_notify("Waiting USB Keyboard - Amiga Is Back!\n");
 				timer_start();
 				if (count++ > 10)
 				{
+					amikb_notify("Waiting USB Keyboard - Amiga Is Back!\n");
 					DBG_I("Waiting USB Keyboard - Amiga Is Back!\r\n");
 					count = 0;
 				}
