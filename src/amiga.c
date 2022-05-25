@@ -1254,6 +1254,7 @@ void amikb_notify(const char *ptr)
 	DBG_N("Enter\r\n");
 	if (ptr != NULL)
 	{
+		DBG_V("String %s\n\r", ptr);
 		upper = malloc(strlen(ptr));
 		if (upper != NULL)
 		{
