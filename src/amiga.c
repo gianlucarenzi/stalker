@@ -1,3 +1,11 @@
+/**
+ * Amiga housekeeping as MPU.
+ * Written by Gianluca Renzi R.G.
+ * License for this code: LGPLv3
+ * Please refer to this license at GNU Web Site
+ * https://www.gnu.org/licenses/lgpl-3.0.html
+ * 
+ **/
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -601,9 +609,9 @@ static const uint8_t asciiscancode[KEYCODE_TAB_SIZE][2] =
 	   +-------+-------+-------+-------+-------+-------+-------+
 
 	About Hard Reset.
-	   -----------------
-	   Hard Reset happens after  Reset Warning . Valid for all keyboards
-	   except the Amiga 500.
+	-----------------
+	Hard Reset happens after  Reset Warning . Valid for all keyboards
+	except the Amiga 500.
 
 	The keyboard Hard Resets the Amiga by pulling KCLK low and starting a 500
 	millisecond timer.   When one or more of the keys is released and 500
@@ -614,7 +622,7 @@ static const uint8_t asciiscancode[KEYCODE_TAB_SIZE][2] =
 
 	After releasing KCLK, the keyboard jumps to its start-up code (internal
 	RESET).  This will initialize the keyboard in the same way as cold
-	 power-on .
+	power-on .
 
  **/
 
@@ -1005,7 +1013,16 @@ bool amikb_reset_check(void)
 }
 
 #define OK_RESET	3 /* 3 special keys to have a KBRESET */
-
+/*
+ * We can have 3 combinations for RESET:
+ * 
+ * LCTRL + LGUI + RGUI ---> Amiga Standard
+ * LCRTL + LALT + RALT ---> Another combo
+ * LCRTL + LALT + DEL  ---> PC Standard
+ * 
+ * ...and any other combination of those keys!
+ * 
+ */
 led_status_t amikb_process(keyboard_code_t *data)
 {
 	static int maybe_reset = 0;
@@ -1147,6 +1164,14 @@ led_status_t amikb_process(keyboard_code_t *data)
 		DBG_V("RIGHT KEYALT %s\r\n",
 			prevkeycode.raltpressed == 1 ? "PRESSED" : "RELEASED");
 		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTALT), prevkeycode.raltpressed);
+		if (prevkeycode.raltpressed == 1)
+		{
+			maybe_reset++;
+			DBG_V("MAY BE RESET (RIGHT ALT)??? %d\r\n", maybe_reset);
+		}
+		else
+		if (maybe_reset > 0)
+			maybe_reset--;
 	}
 
 	// RIGHT CTRL
@@ -1206,7 +1231,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 					rval |= amikb_send(scancode_to_amiga(data->keys[i]), 1 /* Pressed */);
 					if (data->keys[i] == KEY_DELETE)
 					{
-						DBG_V("MAY BE RESET (KEY DELETE) ??? %d\r\n", maybe_reset);
+						DBG_V("MAY BE RESET (KEY DELETE AS PC) ??? %d\r\n", maybe_reset);
 						maybe_reset++;
 					}
 					else
