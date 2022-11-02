@@ -5,10 +5,10 @@ $Descr A3 16535 11693
 encoding utf-8
 Sheet 1 1
 Title "Amiga 1200 USB Keyboard Controller StandAlone"
-Date ""
-Rev "1.0"
+Date "2021-04-16"
+Rev "RBL004.003"
 Comp "Retrobit Lab"
-Comment1 "(C) 2018 Gianluca Renzi <gianlucarenzi@eurek.it>"
+Comment1 "(C) 2021 Gianluca Renzi <gianlucarenzi@eurek.it>"
 Comment2 "USB Keyboard Adapter for Amiga 1000, Amiga 500"
 Comment3 "Amiga 2000, Amiga 3000, Amiga 4000"
 Comment4 "Amiga 1200 and Amiga 600"
@@ -232,12 +232,12 @@ $EndComp
 $Comp
 L StandAlone-Adapter-rescue:GND #PWR019
 U 1 1 5B89F643
-P 6500 4400
-F 0 "#PWR019" H 6500 4150 50  0001 C CNN
-F 1 "GND" H 6500 4250 50  0000 C CNN
-F 2 "" H 6500 4400 50  0001 C CNN
-F 3 "" H 6500 4400 50  0001 C CNN
-	1    6500 4400
+P 6500 4410
+F 0 "#PWR019" H 6500 4160 50  0001 C CNN
+F 1 "GND" H 6500 4260 50  0000 C CNN
+F 2 "" H 6500 4410 50  0001 C CNN
+F 3 "" H 6500 4410 50  0001 C CNN
+	1    6500 4410
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -882,12 +882,12 @@ $EndComp
 $Comp
 L StandAlone-Adapter-rescue:GND #PWR01
 U 1 1 5BEA509B
-P 950 10500
-F 0 "#PWR01" H 950 10250 50  0001 C CNN
-F 1 "GND" H 950 10350 50  0000 C CNN
-F 2 "" H 950 10500 50  0001 C CNN
-F 3 "" H 950 10500 50  0001 C CNN
-	1    950  10500
+P 950 10300
+F 0 "#PWR01" H 950 10050 50  0001 C CNN
+F 1 "GND" H 950 10150 50  0000 C CNN
+F 2 "" H 950 10300 50  0001 C CNN
+F 3 "" H 950 10300 50  0001 C CNN
+	1    950  10300
 	1    0    0    -1  
 $EndComp
 Text Notes 850  8250 0    39   Italic 0
@@ -995,8 +995,6 @@ Wire Wire Line
 Wire Wire Line
 	10100 4450 10100 4350
 Connection ~ 10100 4450
-Wire Wire Line
-	6500 4200 6500 4400
 Wire Wire Line
 	3000 5550 3000 5750
 Connection ~ 3000 6000
@@ -1177,8 +1175,6 @@ Wire Notes Line
 Wire Wire Line
 	1600 10300 950  10300
 Wire Wire Line
-	950  10300 950  10500
-Wire Wire Line
 	2100 10300 2500 10300
 Wire Wire Line
 	2500 10300 2500 10450
@@ -1307,27 +1303,25 @@ Wire Wire Line
 $Comp
 L StandAlone-Adapter-rescue:C_Small C7
 U 1 1 5CB3B205
-P 6800 4900
-F 0 "C7" H 6810 4970 50  0000 L CNN
-F 1 "4.7u" H 6810 4820 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 6800 4900 50  0001 C CNN
-F 3 "" H 6800 4900 50  0000 C CNN
-	1    6800 4900
+P 6800 4865
+F 0 "C7" H 6810 4935 50  0000 L CNN
+F 1 "4.7u" H 6810 4785 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 6800 4865 50  0001 C CNN
+F 3 "" H 6800 4865 50  0000 C CNN
+	1    6800 4865
 	-1   0    0    1   
 $EndComp
 $Comp
 L StandAlone-Adapter-rescue:GND #PWR020
 U 1 1 5CB3B2CE
-P 6800 4800
-F 0 "#PWR020" H 6800 4550 50  0001 C CNN
-F 1 "GND" H 6800 4650 50  0000 C CNN
-F 2 "" H 6800 4800 50  0001 C CNN
-F 3 "" H 6800 4800 50  0001 C CNN
-	1    6800 4800
+P 6800 4725
+F 0 "#PWR020" H 6800 4475 50  0001 C CNN
+F 1 "GND" H 6800 4575 50  0000 C CNN
+F 2 "" H 6800 4725 50  0001 C CNN
+F 3 "" H 6800 4725 50  0001 C CNN
+	1    6800 4725
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	6800 5000 7950 5000
 Text Label 7700 5100 0    39   ~ 0
 VDDA
 Text Label 8850 8050 1    39   ~ 0
@@ -1582,52 +1576,6 @@ Wire Notes Line
 Wire Notes Line
 	800  700  800  2000
 $Comp
-L Connector:TestPoint TP2
-U 1 1 60802EF8
-P 6300 9750
-F 0 "TP2" H 6400 9900 50  0000 L CNN
-F 1 "amigaWorkbench" H 6250 9650 50  0000 L CNN
-F 2 "RetroBitLab:amigaWorkBench1" H 6500 9750 50  0001 C CNN
-F 3 "~" H 6500 9750 50  0001 C CNN
-	1    6300 9750
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP3
-U 1 1 6080444A
-P 7000 9750
-F 0 "TP3" H 7100 9900 50  0000 L CNN
-F 1 "amigaLogo" H 7000 9650 50  0000 L CNN
-F 2 "RetroBitLab:amigaLogo_BW_31x12mm" H 7200 9750 50  0001 C CNN
-F 3 "~" H 7200 9750 50  0001 C CNN
-	1    7000 9750
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP4
-U 1 1 60804689
-P 7600 9750
-F 0 "TP4" H 7700 9900 50  0000 L CNN
-F 1 "GNU-GPL" H 7550 9650 50  0000 L CNN
-F 2 "RetroBitLab:Symbol_GNU-GPL_SilkScreen_Small" H 7800 9750 50  0001 C CNN
-F 3 "~" H 7800 9750 50  0001 C CNN
-	1    7600 9750
-	1    0    0    -1  
-$EndComp
-NoConn ~ 7600 9750
-NoConn ~ 7000 9750
-NoConn ~ 6300 9750
-Wire Notes Line
-	6100 10250 8200 10250
-Wire Notes Line
-	8200 10250 8200 9050
-Wire Notes Line
-	8200 9050 6100 9050
-Wire Notes Line
-	6100 9050 6100 10250
-Text Notes 6150 9200 0    79   ~ 16
-SILKSCREEN LOGOS
-$Comp
 L Connector:USB_A USB1
 U 1 1 60798564
 P 14100 2450
@@ -1763,15 +1711,36 @@ F 3 "" H 8650 6100 50  0001 C CNN
 	1    8650 6100
 	1    0    0    -1  
 $EndComp
+Text Notes 9450 7350 0    79   ~ 16
+BOTH STM32F401RBT6 or STM32F401RCT6\ncan be used here. The first has 128k FLASH\nand the latter has 256K FLASH
+Wire Wire Line
+	6800 5000 7950 5000
+Wire Wire Line
+	6800 4965 6800 5000
+Wire Wire Line
+	6800 4725 6800 4765
+Wire Wire Line
+	6500 4200 6500 4410
 $Comp
-L Connector:TestPoint TP5
-U 1 1 60926773
-P 7650 9300
-F 0 "TP5" H 7750 9450 50  0000 L CNN
-F 1 "USBLOGO" H 7600 9200 50  0000 L CNN
-F 2 "RetroBitLab:USB_PLUG_15x15mm" H 7850 9300 50  0001 C CNN
-F 3 "~" H 7850 9300 50  0001 C CNN
-	1    7650 9300
+L AmigaComponents:LOGO LOGO1
+U 1 1 6368B065
+P 6135 9240
+F 0 "LOGO1" H 6200 9330 59  0000 L CNN
+F 1 "USB" H 6200 9230 59  0000 L CNN
+F 2 "RetroBitLab:USB_PLUG_15x15mm" H 6135 9240 59  0001 C CNN
+F 3 "" H 6135 9240 59  0001 C CNN
+	1    6135 9240
+	1    0    0    -1  
+$EndComp
+$Comp
+L AmigaComponents:LOGO LOGO2
+U 1 1 6368CBB3
+P 6570 9235
+F 0 "LOGO2" H 6630 9330 59  0000 L CNN
+F 1 "GPL" H 6635 9235 59  0000 L CNN
+F 2 "Symbol:KiCad-Logo2_12mm_SilkScreen" H 6570 9235 59  0001 C CNN
+F 3 "" H 6570 9235 59  0001 C CNN
+	1    6570 9235
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC

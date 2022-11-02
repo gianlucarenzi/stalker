@@ -1,6 +1,17 @@
 EESchema-LIBRARY Version 2.4
 #encoding utf-8
 #
+# AmigaComponents_LOGO
+#
+DEF AmigaComponents_LOGO L 0 40 Y Y 1 F N
+F0 "L" 0 0 59 H V C CNN
+F1 "AmigaComponents_LOGO" 0 0 59 H V C CNN
+F2 "" 0 0 59 H I C CNN
+F3 "" 0 0 59 H I C CNN
+DRAW
+ENDDRAW
+ENDDEF
+#
 # AmigaComponents_STM32F401RBTx
 #
 DEF AmigaComponents_STM32F401RBTx U 0 20 Y Y 1 F N
@@ -166,23 +177,6 @@ X Pin_2 2 -200 100 150 R 50 50 1 1 P
 X Pin_3 3 -200 0 150 R 50 50 1 1 P
 X Pin_4 4 -200 -100 150 R 50 50 1 1 P
 X Pin_5 5 -200 -200 150 R 50 50 1 1 P
-ENDDRAW
-ENDDEF
-#
-# Connector_TestPoint
-#
-DEF Connector_TestPoint TP 0 30 N N 1 F N
-F0 "TP" 0 270 50 H V C CNN
-F1 "Connector_TestPoint" 0 200 50 H V C CNN
-F2 "" 200 0 50 H I C CNN
-F3 "" 200 0 50 H I C CNN
-$FPLIST
- Pin*
- Test*
-$ENDFPLIST
-DRAW
-C 0 130 30 0 1 0 N
-X 1 1 0 0 100 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
