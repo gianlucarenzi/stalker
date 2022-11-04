@@ -1,4 +1,4 @@
-STm32-to-Amiga-Local-KeyBoard Adapter
+STm32-to-Amiga-Local-Keyboard adaptER
 =====================================
 
 STM32 Usb Based firmware microcontroller for any Amiga internal keyboard adapter
@@ -21,7 +21,7 @@ Any Amiga Compatible Computer can use this adapter as well.
 
 Software & Hardware License
 ---------------------------
-Copyright (C) 2018/2019 Gianluca Renzi <gianlucarenzi@eurek.it> <icjtqr@gmail.com>
+Copyright (C) 2018/2019/2022 Gianluca Renzi <gianlucarenzi@eurek.it> <icjtqr@gmail.com>
 
 The hardware of this project is released as free/open hardware under the
 GNU GPL v3 License terms. See licence.txt for details.
