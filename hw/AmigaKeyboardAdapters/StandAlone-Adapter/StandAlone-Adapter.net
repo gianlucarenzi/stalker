@@ -1,7 +1,7 @@
 (export (version D)
   (design
-    (source /home/debian/Progetti/AMIGA/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.sch)
-    (date "Wed 02 Nov 2022 04:05:39 PM CET")
+    (source /home/gianluca/Progetti-CVS/Amiga/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.sch)
+    (date "Fri 04 Nov 2022 03:14:59 PM CET")
     (tool "Eeschema 5.1.9+dfsg1-1+deb11u1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -402,7 +402,13 @@
       (footprint RetroBitLab:Symbol_GNU-GPL_SilkScreen_Small)
       (libsource (lib AmigaComponents) (part LOGO) (description "Any valid LOGO Images can be placed here"))
       (sheetpath (names /) (tstamps /))
-      (tstamp 63696ADE)))
+      (tstamp 63696ADE))
+    (comp (ref LOGO4)
+      (value "Stalker Logo")
+      (footprint RetroBitLab:Stalker_16.1x17.3mm)
+      (libsource (lib AmigaComponents) (part LOGO) (description "Any valid LOGO Images can be placed here"))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 6365EFCE)))
   (libparts
     (libpart (lib AmigaComponents) (part LOGO)
       (description "Any valid LOGO Images can be placed here")
@@ -741,7 +747,7 @@
     (library (logical Connector_Generic)
       (uri /usr/share/kicad/library/Connector_Generic.lib))
     (library (logical StandAlone-Adapter-rescue)
-      (uri /home/debian/Progetti/AMIGA/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter-rescue.lib)))
+      (uri /home/gianluca/Progetti-CVS/Amiga/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter-rescue.lib)))
   (nets
     (net (code 1) (name GND)
       (node (ref U2) (pin 18))
