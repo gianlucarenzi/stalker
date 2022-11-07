@@ -7,7 +7,7 @@
       "Application": "Pcbnew",
       "Version":     "5.1.9+dfsg1-1+deb11u1"
     },
-    "CreationDate":  "2022-11-02T16:06:54+01:00"
+    "CreationDate":  "2022-11-07T14:16:16+01:00"
   },
   "GeneralSpecs":
   {
@@ -15,7 +15,7 @@
     {
       "Name": "StandAlone-Adapter",
       "GUID": "5374616e-6441-46c6-9f6e-652d41646170",
-      "Revision": "rev?"
+      "Revision": "SMD Production"
     },
     "Size":
     {
