@@ -235,13 +235,23 @@ static int debuglevel = DBG_INFO;
 #define KEY_RIGHTALT                           0xE6
 #define KEY_RIGHT_GUI                          0xE7
 
-#define KEYCODE_TAB_SIZE      117
+/* 
+ * Custom defined codes, just to be sure the table is scan from the
+ * beginning to the end, without a duplicate
+ */
+#define KEY_LMOUSE_BUTTON                      0xE8
+#define KEY_RMOUSE_BUTTON                      0xE9
+#define KEY_MMOUSE_BUTTON                      0xEA
+
+
+#define KEYCODE_TAB_SIZE      121
 
 static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 {
  	// SCANCODE USB to AMIGA
  	// --------------------------------------------------------------
  	// Need the real scancode by testing all keys on a real keyboard.
+ 	// --------------------------------------------------------------
  	// Keycodes from: https://wiki.amigaos.net/wiki/Keymap_Library
  	// --------------------------------------------------------------
 	{KEY_GRAVE_ACCENT_AND_TILDE, 0x00 }, // ~
@@ -258,7 +268,7 @@ static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 	{KEY_MINUS_UNDERSCORE,       0x0B }, // -_
 	{KEY_EQUAL_PLUS,             0x0C }, // +=
 	{KEY_BACKSLASH_VERTICAL_BAR, 0x0D }, // |
-	{KEY_INTERNATIONAL1,         0x0E }, // Intl1 3 Yen
+	{KEY_INTERNATIONAL3,         0x0E }, // Intl 3 Yen
 	{KEY_KEYPAD_0_INSERT,        0x0F }, // NUM 0
 	{KEY_Q,                      0x10 }, // Q
 	{KEY_W,                      0x11 }, // W
@@ -272,7 +282,7 @@ static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 	{KEY_P,                      0x19 }, // P
 	{KEY_OBRACKET_AND_OBRACE,    0x1A }, // [{
 	{KEY_CBRACKET_AND_CBRACE,    0x1B }, // }]
-	{KEY_INTERNATIONAL2,         0x1C }, // undefined Intl 2
+	{KEY_INTERNATIONAL5,         0x1C }, // undefined Intl 5
 	{KEY_KEYPAD_1_END,           0x1D }, // NUM 1
 	{KEY_KEYPAD_2_DOWN_ARROW,    0x1E }, // NUM 2
 	{KEY_KEYPAD_3_PAGEDN,        0x1F }, // NUM 3
@@ -287,12 +297,12 @@ static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 	{KEY_L,                      0x28 }, // L
 	{KEY_SEMICOLON_COLON,        0x29 }, // :;
 	{KEY_SINGLE_AND_DOUBLE_QUOTE,0x2A }, // "'
-	{KEY_INTERNATIONAL3,         0x2B }, // Intl 3
-	{KEY_PAUSE,                  0x2C }, // SPARE
+	{KEY_INTERNATIONAL1,         0x2B }, // undefined Intl 1
+	{KEY_INTERNATIONAL4,         0x2C }, // undefined Intl 4
 	{KEY_KEYPAD_4_LEFT_ARROW,    0x2D }, // NUM 4
 	{KEY_KEYPAD_5,               0x2E }, // NUM 5
 	{KEY_KEYPAD_6_RIGHT_ARROW,   0x2F }, // NUM 6
-	{KEY_INTERNATIONAL4,         0x30 }, // <SHIFT> international? Intl 4
+	{KEY_INTERNATIONAL2,         0x30 }, // <SHIFT> international? Intl 2
 	{KEY_Z,                      0x31 }, // Z
 	{KEY_X,                      0x32 }, // X
 	{KEY_C,                      0x33 }, // C
@@ -303,7 +313,7 @@ static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 	{KEY_COMMA_AND_LESS,         0x38 }, // <,
 	{KEY_DOT_GREATER,            0x39 }, // >.
 	{KEY_SLASH_QUESTION,         0x3A }, // ?/
-	{KEY_INTERNATIONAL5,         0x3B }, // Intl 5
+	{KEY_INTERNATIONAL6,         0x3B }, // undefined Intl 6
 	{KEY_KEYPAD_DECIMAL_SEPARATOR_DELETE, 0x3C }, // KEYPAD '.'
 	{KEY_KEYPAD_7_HOME,          0x3D }, // NUM 7
 	{KEY_KEYPAD_8_UP_ARROW,      0x3E }, // NUM 8
@@ -311,14 +321,14 @@ static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 	{KEY_SPACEBAR,               0x40 }, // SPACE
 	{KEY_BACKSPACE,              0x41 }, // BACKSPACE
 	{KEY_TAB,                    0x42 }, // TAB
-	{KEY_KEYPAD_ENTER,           0x43 }, // ENTER
-	{KEY_ENTER,                  0x44 }, // <Enter>
-	{KEY_RETURN,                 0x44 }, // RETURN
+	{KEY_ENTER,                  0x43 }, // ENTER
+	{KEY_RETURN,                 0x43 }, // RETURN
+	{KEY_KEYPAD_ENTER,           0x44 }, // NUM Enter
 	{KEY_ESCAPE,                 0x45 }, // ESC
 	{KEY_DELETE,                 0x46 }, // DEL
-	{KEY_INSERT,                 0x47 }, // INS
-	{KEY_PAGEUP,                 0x48 }, // PAGEUP
-	{KEY_PAGEDOWN,               0x49 }, // PAGEDOWN
+	{KEY_INSERT,                 0x47 }, // INS (usually undefined)
+	{KEY_PAGEUP,                 0x48 }, // PAGEUP (usually undefined)
+	{KEY_PAGEDOWN,               0x49 }, // PAGEDOWN (usually undefined)
 	{KEY_KEYPAD_MINUS,           0x4A }, // NUM -
 	{KEY_F11,                    0x4B }, // F11
 	{KEY_UPARROW,                0x4C }, // CURSOR U
@@ -346,11 +356,14 @@ static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 	{KEY_RIGHTSHIFT,             0x61 }, // RSHIFT
 	{KEY_CAPS_LOCK,              0x62 }, // CAPS
 	{KEY_LEFTCONTROL,            0x63 }, // LCTRL
+	{KEY_RIGHTCONTROL,           0x63 }, // RCTRL
 	{KEY_LEFTALT,                0x64 }, // LALT
 	{KEY_RIGHTALT,               0x65 }, // RALT
 	{KEY_LEFT_GUI,               0x66 }, // LWIN
 	{KEY_RIGHT_GUI,              0x67 }, // RWIN
-	// 0x68, 0x69, 0x6A ---> LBUTTON, RBUTTON, MBUTTON
+	{KEY_LMOUSE_BUTTON,          0x68 }, // LMOUSE BUTTON
+	{KEY_RMOUSE_BUTTON,          0x69 }, // RMOUSE BUTTON
+	{KEY_MMOUSE_BUTTON,          0x6A }, // MMOUSE BUTTON
 	{KEY_MENU,                   0x6B }, // MENU, GUI, COMPOSE (mappable to RAmiga in Firmware)
 	{KEY_KEYPAD_COMMA,           0x6C }, // Brazil NP . (named "Keypad ," in USB specs)
 	{KEY_PRINTSCREEN,            0x6D }, // PrintScreen/SysReq (mappable to Help in Firmware)
@@ -470,6 +483,15 @@ static const uint8_t asciiscancode[KEYCODE_TAB_SIZE][2] =
 	{KEY_RIGHTALT,               ' ' }, // RALT
 	{KEY_LEFT_GUI,               ' ' }, // LWIN
 	{KEY_RIGHT_GUI,              ' ' }, // RWIN
+	{KEY_NONE,                   ' ' }, // STUB
+	{KEY_NONE,                   ' ' }, // STUB
+	{KEY_NONE,                   ' ' }, // STUB
+	{KEY_NONE,                   ' ' }, // STUB
+	{KEY_NONE,                   ' ' }, // STUB
+	{KEY_NONE,                   ' ' }, // STUB
+	{KEY_NONE,                   ' ' }, // STUB
+	{KEY_NONE,                   ' ' }, // STUB
+	{KEY_NONE,                   ' ' }, // STUB
 	{KEY_NONE,                   ' ' }, // STUB
 	{KEY_NONE,                   ' ' }, // STUB
 	{KEY_NONE,                   ' ' }, // STUB
