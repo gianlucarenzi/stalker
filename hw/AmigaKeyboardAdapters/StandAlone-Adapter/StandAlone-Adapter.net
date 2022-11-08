@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/gianluca/Progetti-CVS/Amiga/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.sch)
-    (date "Mon 07 Nov 2022 01:42:30 PM CET")
+    (date "Tue 08 Nov 2022 08:56:05 AM CET")
     (tool "Eeschema 5.1.9+dfsg1-1+deb11u1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -38,7 +38,7 @@
       (footprint Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder)
       (datasheet https://datasheet.lcsc.com/lcsc/1811071223_FH-Guangdong-Fenghua-Advanced-Tech-1206CG220J500NT_C1896.pdf)
       (fields
-        (field (name Field4) C1896))
+        (field (name LCSC) C1896))
       (libsource (lib StandAlone-Adapter-rescue) (part C) (description ""))
       (sheetpath (names /) (tstamps /))
       (tstamp 5B89B578))
