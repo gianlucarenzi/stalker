@@ -1,5 +1,5 @@
 Drill report for /home/gianluca/Progetti-CVS/Amiga/stalkb/hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.kicad_pcb
-Created on Tue 08 Nov 2022 08:48:44 AM CET
+Created on Wed 09 Nov 2022 12:01:24 PM CET
 
 Copper Layer Stackup:
     =============================================================
@@ -10,14 +10,14 @@ Copper Layer Stackup:
 Drill file 'StandAlone-Adapter-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0.40mm  0.016"  (15 holes)
+    T1  0.40mm  0.016"  (23 holes)
     T2  0.90mm  0.035"  (4 holes)
-    T3  1.00mm  0.039"  (30 holes)
+    T3  1.00mm  0.039"  (36 holes)
     T4  1.02mm  0.040"  (6 holes)
     T5  3.00mm  0.118"  (4 holes)
     T6  3.20mm  0.126"  (2 holes)
 
-    Total plated holes count 61
+    Total plated holes count 75
 
 
 Drill file 'StandAlone-Adapter-NPTH.drl' contains
