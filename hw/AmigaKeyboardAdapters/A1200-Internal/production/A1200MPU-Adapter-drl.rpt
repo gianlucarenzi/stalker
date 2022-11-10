@@ -1,5 +1,5 @@
-Drill report for /home/debian/Progetti/AMIGA/stalkb/hw/AmigaKeyboardAdapters/A1200-Internal/A1200MPU-Adapter.kicad_pcb
-Created on Fri 01 Mar 2019 15:19:49 CET
+Drill report for /home/gianluca/Progetti-CVS/Amiga/stalkb/hw/AmigaKeyboardAdapters/A1200-Internal/A1200MPU-Adapter.kicad_pcb
+Created on Thu 10 Nov 2022 09:50:49 AM CET
 
 Copper Layer Stackup:
     =============================================================
@@ -7,17 +7,16 @@ Copper Layer Stackup:
     L2 :  B.Cu                      back
 
 
-Drill file 'A1200MPU-Adapter.drl' contains
+Drill file 'A1200MPU-Adapter-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0,40mm  0,016"  (4 holes)
-    T2  0,81mm  0,032"  (44 holes)
-    T3  1,02mm  0,040"  (6 holes)
+    T1  0.80mm  0.031"  (44 holes)
+    T2  1.00mm  0.039"  (6 holes)
 
-    Total plated holes count 54
+    Total plated holes count 50
 
 
-Not plated through holes are merged with plated holes
+Drill file 'A1200MPU-Adapter-NPTH.drl' contains
     unplated through holes:
     =============================================================
 
