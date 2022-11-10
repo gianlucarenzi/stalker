@@ -1,0 +1,7 @@
+Comment,Designator,Footprint,LCSC
+"10uF","C1,C2","Capacitor_Tantalum_SMD:CP_EIA-3216-12_Kemet-S_Pad1.58x1.35mm_HandSolder","C108529"
+"100nF","C3,C4","Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder","C24497"
+"RED","D1","LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder","C93133"
+"Conn_02x03_Odd_Even","P1","Connector_IDC:IDC-Header_2x03_P2.54mm_Vertical",""
+"330R","R1","Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder","C245520"
+"A1200U13_REV_PLCC44","U1","RetroBitLab:PLCC-44_THT-Socket_3D",""
