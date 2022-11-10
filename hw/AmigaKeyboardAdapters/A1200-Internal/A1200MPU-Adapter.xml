@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <export version="D">
   <design>
-    <source>/home/debian/AMIGA/projects/AmigaKeyboardAdapters/A1200-Internal/A1200MPU-Adapter.sch</source>
-    <date>Wed 14 Nov 2018 22:29:52 CET</date>
-    <tool>Eeschema 4.0.2+dfsg1-stable</tool>
+    <source>/home/gianluca/Progetti-CVS/Amiga/stalkb/hw/AmigaKeyboardAdapters/A1200-Internal/A1200MPU-Adapter.sch</source>
+    <date>Thu 10 Nov 2022 09:57:48 AM CET</date>
+    <tool>Eeschema 5.1.9+dfsg1-1+deb11u1</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>Amiga1200 U13 MPU Adapter</title>
-        <company/>
-        <rev/>
-        <date>2018-11-11</date>
+        <company>RetroBit Lab</company>
+        <rev>2.0</rev>
+        <date>2022-11-10</date>
         <source>A1200MPU-Adapter.sch</source>
-        <comment number="1" value=""/>
-        <comment number="2" value=""/>
+        <comment number="1" value="Amiga1200 Internal Connector for STALKER"/>
+        <comment number="2" value="From Kicad 4 to Kicad 5"/>
         <comment number="3" value=""/>
         <comment number="4" value=""/>
       </title_block>
@@ -21,59 +21,84 @@
   <components>
     <comp ref="U1">
       <value>A1200U13_REV_PLCC44</value>
-      <footprint>Sockets:PLCC44</footprint>
-      <libsource lib="AmigaComponents" part="A1200U13_REV_PLCC44"/>
+      <footprint>RetroBitLab:PLCC-44_THT-Socket_3D</footprint>
+      <libsource lib="AmigaComponents" part="A1200U13_REV_PLCC44" description="Amiga 1200 Keyboard MPU Socket Reversed(version PLCC 44 pins)"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>5BE895D2</tstamp>
     </comp>
-    <comp ref="P1">
-      <value>CONN_02X03</value>
-      <footprint>Pin_Headers:Pin_Header_Straight_2x03</footprint>
-      <libsource lib="conn" part="CONN_02X03"/>
-      <sheetpath names="/" tstamps="/"/>
-      <tstamp>5BE89651</tstamp>
-    </comp>
-    <comp ref="C2">
-      <value>10uF</value>
-      <footprint>SMD_Packages:SMD-1206_Pol</footprint>
-      <libsource lib="device" part="CP1_Small"/>
-      <sheetpath names="/" tstamps="/"/>
-      <tstamp>5BE89B1D</tstamp>
-    </comp>
     <comp ref="C1">
       <value>10uF</value>
-      <footprint>SMD_Packages:SMD-1206_Pol</footprint>
-      <libsource lib="device" part="CP1_Small"/>
+      <footprint>Capacitor_Tantalum_SMD:CP_EIA-3216-12_Kemet-S_Pad1.58x1.35mm_HandSolder</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/1811151641_Sunlord-TC212A106K016Y_C108529.pdf</datasheet>
+      <fields>
+        <field name="LCSC">C108529</field>
+      </fields>
+      <libsource lib="Device" part="CP1_Small" description="Polarized capacitor, small US symbol"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>5BE89BB8</tstamp>
     </comp>
     <comp ref="R1">
-      <value>330</value>
-      <footprint>Resistors_SMD:R_1206_HandSoldering</footprint>
-      <libsource lib="device" part="R_Small"/>
+      <value>330R</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/1811141443_Ever-Ohms-Tech-CR1206F330RP05Z_C245520.pdf</datasheet>
+      <fields>
+        <field name="LCSC">C245520</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>5BE8AFFD</tstamp>
     </comp>
-    <comp ref="D1">
-      <value>Led_Small</value>
-      <footprint>SMD_Packages:SMD-1206_Pol</footprint>
-      <libsource lib="device" part="Led_Small"/>
-      <sheetpath names="/" tstamps="/"/>
-      <tstamp>5BE8B056</tstamp>
-    </comp>
     <comp ref="C3">
       <value>100nF</value>
-      <footprint>Capacitors_SMD:C_1206_HandSoldering</footprint>
-      <libsource lib="device" part="C_Small"/>
+      <footprint>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/1810221109_Samsung-Electro-Mechanics-CL31B104KBCNNNC_C24497.pdf</datasheet>
+      <fields>
+        <field name="LCSC">C24497</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>5BE8B488</tstamp>
     </comp>
+    <comp ref="P1">
+      <value>Conn_02x03_Odd_Even</value>
+      <footprint>Connector_IDC:IDC-Header_2x03_P2.54mm_Vertical</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Connector_Generic" part="Conn_02x03_Odd_Even" description="Generic connector, double row, 02x03, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>636CBEED</tstamp>
+    </comp>
+    <comp ref="D1">
+      <value>RED</value>
+      <footprint>LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/1811151241_Everlight-Elec-15-21-R6C-FQ1R1B-2T_C93133.pdf</datasheet>
+      <fields>
+        <field name="LCSC">C93133</field>
+      </fields>
+      <libsource lib="Device" part="LED" description="Light emitting diode"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>636D4F4F</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>10uF</value>
+      <footprint>Capacitor_Tantalum_SMD:CP_EIA-3216-12_Kemet-S_Pad1.58x1.35mm_HandSolder</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/1811151641_Sunlord-TC212A106K016Y_C108529.pdf</datasheet>
+      <fields>
+        <field name="LCSC">C108529</field>
+      </fields>
+      <libsource lib="Device" part="CP1_Small" description="Polarized capacitor, small US symbol"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>636E678B</tstamp>
+    </comp>
     <comp ref="C4">
       <value>100nF</value>
-      <footprint>Capacitors_SMD:C_1206_HandSoldering</footprint>
-      <libsource lib="device" part="C_Small"/>
+      <footprint>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/1810221109_Samsung-Electro-Mechanics-CL31B104KBCNNNC_C24497.pdf</datasheet>
+      <fields>
+        <field name="LCSC">C24497</field>
+      </fields>
+      <libsource lib="Device" part="C_Small" description="Unpolarized capacitor, small symbol"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamp>5BE8B4DE</tstamp>
+      <tstamp>636E7056</tstamp>
     </comp>
   </components>
   <libparts>
@@ -95,36 +120,30 @@
         <pin num="44" name="~KB_DATA" type="BiDi"/>
       </pins>
     </libpart>
-    <libpart lib="conn" part="CONN_02X03">
-      <description>Connector 02x03</description>
+    <libpart lib="Connector_Generic" part="Conn_02x03_Odd_Even">
+      <description>Generic connector, double row, 02x03, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
       <footprints>
-        <fp>Pin_Header_Straight_2X03</fp>
-        <fp>Pin_Header_Angled_2X03</fp>
-        <fp>Socket_Strip_Straight_2X03</fp>
-        <fp>Socket_Strip_Angled_2X03</fp>
+        <fp>Connector*:*_2x??_*</fp>
       </footprints>
       <fields>
-        <field name="Reference">P</field>
-        <field name="Value">CONN_02X03</field>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_02x03_Odd_Even</field>
       </fields>
       <pins>
-        <pin num="1" name="P1" type="passive"/>
-        <pin num="2" name="P2" type="passive"/>
-        <pin num="3" name="P3" type="passive"/>
-        <pin num="4" name="P4" type="passive"/>
-        <pin num="5" name="P5" type="passive"/>
-        <pin num="6" name="P6" type="passive"/>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
       </pins>
     </libpart>
-    <libpart lib="device" part="CP1_Small">
-      <description>Polarised capacitor</description>
+    <libpart lib="Device" part="CP1_Small">
+      <description>Polarized capacitor, small US symbol</description>
+      <docs>~</docs>
       <footprints>
-        <fp>CP*</fp>
-        <fp>Elko*</fp>
-        <fp>TantalC*</fp>
-        <fp>C*elec</fp>
-        <fp>c_elec*</fp>
-        <fp>SMD*_Pol</fp>
+        <fp>CP_*</fp>
       </footprints>
       <fields>
         <field name="Reference">C</field>
@@ -135,14 +154,11 @@
         <pin num="2" name="~" type="passive"/>
       </pins>
     </libpart>
-    <libpart lib="device" part="C_Small">
-      <description>Unpolarized capacitor</description>
+    <libpart lib="Device" part="C_Small">
+      <description>Unpolarized capacitor, small symbol</description>
+      <docs>~</docs>
       <footprints>
-        <fp>C?</fp>
-        <fp>C_????_*</fp>
-        <fp>C_????</fp>
-        <fp>SMD*_c</fp>
-        <fp>Capacitor*</fp>
+        <fp>C_*</fp>
       </footprints>
       <fields>
         <field name="Reference">C</field>
@@ -153,25 +169,27 @@
         <pin num="2" name="~" type="passive"/>
       </pins>
     </libpart>
-    <libpart lib="device" part="Led_Small">
-      <description>Led</description>
+    <libpart lib="Device" part="LED">
+      <description>Light emitting diode</description>
+      <docs>~</docs>
       <footprints>
-        <fp>CP*</fp>
-        <fp>SM*</fp>
+        <fp>LED*</fp>
+        <fp>LED_SMD:*</fp>
+        <fp>LED_THT:*</fp>
       </footprints>
       <fields>
         <field name="Reference">D</field>
-        <field name="Value">Led_Small</field>
+        <field name="Value">LED</field>
       </fields>
       <pins>
         <pin num="1" name="K" type="passive"/>
         <pin num="2" name="A" type="passive"/>
       </pins>
     </libpart>
-    <libpart lib="device" part="R_Small">
-      <description>Resistor</description>
+    <libpart lib="Device" part="R_Small">
+      <description>Resistor, small symbol</description>
+      <docs>~</docs>
       <footprints>
-        <fp>Resistor_*</fp>
         <fp>R_*</fp>
       </footprints>
       <fields>
@@ -186,51 +204,51 @@
   </libparts>
   <libraries>
     <library logical="AmigaComponents">
-      <uri>/home/debian/packages/kicad/kicad-symbols/AmigaComponents.lib</uri>
+      <uri>/home/debian/Progetti/RetroBitLab-Library/AmigaComponents.lib</uri>
     </library>
-    <library logical="conn">
-      <uri>/usr/share/kicad/library/conn.lib</uri>
+    <library logical="Connector_Generic">
+      <uri>/usr/share/kicad/library/Connector_Generic.lib</uri>
     </library>
-    <library logical="device">
-      <uri>/usr/share/kicad/library/device.lib</uri>
+    <library logical="Device">
+      <uri>/usr/share/kicad/library/Device.lib</uri>
     </library>
   </libraries>
   <nets>
-    <net code="1" name="Net-(D1-Pad2)">
-      <node ref="R1" pin="1"/>
-      <node ref="D1" pin="2"/>
-    </net>
-    <net code="2" name="GND">
+    <net code="1" name="GND">
       <node ref="C4" pin="2"/>
+      <node ref="C2" pin="2"/>
       <node ref="D1" pin="1"/>
+      <node ref="P1" pin="3"/>
       <node ref="U1" pin="35"/>
       <node ref="C1" pin="2"/>
-      <node ref="P1" pin="3"/>
-      <node ref="C2" pin="2"/>
       <node ref="P1" pin="4"/>
       <node ref="C3" pin="2"/>
     </net>
-    <net code="3" name="VCC5V">
-      <node ref="P1" pin="6"/>
-      <node ref="U1" pin="13"/>
-      <node ref="U1" pin="11"/>
-      <node ref="R1" pin="2"/>
-      <node ref="C4" pin="1"/>
-      <node ref="C3" pin="1"/>
-      <node ref="C2" pin="1"/>
-      <node ref="C1" pin="1"/>
+    <net code="2" name="Net-(D1-Pad2)">
+      <node ref="R1" pin="1"/>
+      <node ref="D1" pin="2"/>
     </net>
-    <net code="5" name="mKBD_RESET">
+    <net code="3" name="mKBD_RESET">
       <node ref="U1" pin="19"/>
       <node ref="P1" pin="5"/>
     </net>
-    <net code="6" name="mKBD_DATA">
+    <net code="4" name="mKBD_DATA">
       <node ref="U1" pin="44"/>
       <node ref="P1" pin="2"/>
     </net>
-    <net code="7" name="mKBD_CLOCK">
-      <node ref="U1" pin="43"/>
+    <net code="5" name="mKBD_CLOCK">
       <node ref="P1" pin="1"/>
+      <node ref="U1" pin="43"/>
+    </net>
+    <net code="6" name="VCC5V">
+      <node ref="U1" pin="11"/>
+      <node ref="U1" pin="13"/>
+      <node ref="P1" pin="6"/>
+      <node ref="C3" pin="1"/>
+      <node ref="R1" pin="2"/>
+      <node ref="C4" pin="1"/>
+      <node ref="C2" pin="1"/>
+      <node ref="C1" pin="1"/>
     </net>
   </nets>
 </export>

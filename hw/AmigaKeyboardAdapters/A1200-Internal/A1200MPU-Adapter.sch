@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 1 1
 Title "Amiga1200 U13 MPU Adapter"
 Date "2022-11-10"
-Rev ""
+Rev "2.0"
 Comp "RetroBit Lab"
 Comment1 "Amiga1200 Internal Connector for STALKER"
 Comment2 "From Kicad 4 to Kicad 5"
