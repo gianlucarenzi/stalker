@@ -4,3 +4,4 @@
 /hw/AmigaKeyboardAdapters/StandAlone-Adapter/StandAlone-Adapter.kicad_pcb-bak
 /build/
 *.DS_Store
+/hw/AmigaKeyboardAdapters/A1200-Internal/A1200MPU-Adapter-cache.lib
