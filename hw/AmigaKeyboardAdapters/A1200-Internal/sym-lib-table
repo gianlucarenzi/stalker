@@ -1,0 +1,7 @@
+(sym_lib_table
+  (lib (name A1200MPU-Adapter-rescue)(type Legacy)(uri ${KIPRJMOD}/A1200MPU-Adapter-rescue.lib)(options "")(descr ""))
+  (lib (name AmigaComponents)(type Legacy)(uri /home/debian/Progetti/RetroBitLab-Library/AmigaComponents.lib)(options "")(descr ""))
+  (lib (name Fiber_Optic)(type Legacy)(uri ${KICAD_SYMBOL_DIR}/Fiber_Optic.lib)(options "")(descr ""))
+  (lib (name MCU_Microchip_SAMD)(type Legacy)(uri ${KICAD_SYMBOL_DIR}/MCU_Microchip_SAMD.lib)(options "")(descr ""))
+  (lib (name RF_GSM)(type Legacy)(uri ${KICAD_SYMBOL_DIR}/RF_GSM.lib)(options "")(descr ""))
+)
