@@ -79,7 +79,7 @@ Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Src/usbd_customhid.c
 
 # ASM sources
 ASM_SOURCES =  \
-startup_stm32f407xx.s
+startup_stm32f401xc.s
 
 
 #######################################
@@ -125,7 +125,7 @@ AS_DEFS =
 # C defines
 C_DEFS =  \
 -DUSE_HAL_DRIVER \
--DSTM32F407xx
+-DSTM32F401xE \
 
 
 # AS includes
@@ -160,7 +160,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # LDFLAGS
 #######################################
 # link script
-LDSCRIPT = STM32F407VETx_FLASH.ld
+LDSCRIPT = STM32F401RCTx_FLASH.ld
 
 # libraries
 LIBS = -lc -lm -lnosys 

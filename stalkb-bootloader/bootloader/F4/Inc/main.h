@@ -1,6 +1,9 @@
 /*******************************************************************************
   *
-  * HID bootloader for STM32F407 MCU
+  * HID bootloader for STM32F401 based board
+  * To Enter in bootloader mode, simply connect the board to PC
+  * while shorting out the J8 AMIGA RESET jumper. In this case it will be
+  * forced in bootmode upgrade.
   *
   ******************************************************************************
   *
@@ -95,11 +98,11 @@
                              
                         
 
-#define BOOT_1_PIN      GPIO_PIN_15 //DIYMROE STM32F407VGT board (Button PD15, LED PE0)
-#define BOOT_1_PORT     GPIOD
+#define BOOT_1_PIN      GPIO_PIN_1 //STALKER V2 BOARD: PC1
+#define BOOT_1_PORT     GPIOC
 #define BOOT_1_ENABLED  GPIO_PIN_RESET
 #define LED_1_PIN       GPIO_PIN_0
-#define LED_1_PORT      GPIOE
+#define LED_1_PORT      GPIOA
        
 // #define BOOT_1_PIN      GPIO_PIN_2 //Black VET6 (http://wiki.stm32duino.com/index.php?title=STM32F407)
 // #define BOOT_1_PORT     GPIOB

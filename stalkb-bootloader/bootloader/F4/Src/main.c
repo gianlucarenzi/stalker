@@ -66,6 +66,7 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
+#include <string.h> // for memset
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "usb_device.h"
@@ -90,7 +91,6 @@ uint8_t new_data_is_received = 0;
 static uint8_t pageData[SECTOR_SIZE];
 typedef void (*funct_ptr)(void);
 
-uint32_t magic_val = 0;
 uint16_t erase_page = 1;
 
 /* USER CODE END PV */
@@ -110,7 +110,43 @@ extern uint8_t USBD_CUSTOM_HID_SendReport(USBD_HandleTypeDef *pdev, uint8_t *rep
 
 /* USER CODE END 0 */
 
-__weak int ask_for_bootloader(void) { return 0; }
+/*
+ * Reads NUM_SAMPLES and manage the average 
+ */
+#define NUM_SAMPLES 10
+#define WAIT_MS (1000L / NUM_SAMPLES)
+
+static int ask_for_bootloader(void)
+{
+	int boot_pin [ NUM_SAMPLES ];
+	int count = 0;
+	int no_boot = 0;
+	int maybe_boot = 0;
+
+	memset(boot_pin, 0, sizeof(boot_pin) * NUM_SAMPLES);
+
+	while (count < NUM_SAMPLES)
+	{
+		boot_pin[ count ] = HAL_GPIO_ReadPin(BOOT_1_PORT, BOOT_1_PIN);
+		HAL_Delay(WAIT_MS);
+		count++;
+	}
+
+	for (count = 0; count < NUM_SAMPLES; count++)
+	{
+		if (boot_pin[ count ] != BOOT_1_ENABLED)
+			no_boot++;
+		else
+			maybe_boot++;
+	}
+
+	/* We need at least the half or more pressions of the pin tied to ground
+	 * to be sure we are in bootmode...
+	 */
+	if (maybe_boot >= no_boot)
+		return 1;
+	return 0;
+}
 
 /**
   * @brief  The application entry point.
@@ -120,6 +156,7 @@ __weak int ask_for_bootloader(void) { return 0; }
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  int bootmode;
 
   /* USER CODE END 1 */
 
@@ -150,11 +187,8 @@ int main(void)
   /* Initialize all configured peripherals */
 
 
-  /* In case of SIMULTANEOUS PRESS OF:
-   * ESC + LCTRL + SPACEBAR 
-   */
-  magic_val = ask_for_bootloader();
-  if ((magic_val != 0)) {
+  bootmode = ask_for_bootloader();
+  if ( !bootmode ) {
     typedef void (*pFunction)(void);
     pFunction Jump_To_Application;
     uint32_t JumpAddress;
