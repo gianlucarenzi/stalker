@@ -188,7 +188,7 @@ int main(void)
 
 
   bootmode = ask_for_bootloader();
-  if ( !bootmode ) {
+  if ( !bootmode )  {
     typedef void (*pFunction)(void);
     pFunction Jump_To_Application;
     uint32_t JumpAddress;
@@ -221,7 +221,7 @@ int main(void)
           current_Page = 16;
           currentPageOffset = 0;
           erase_page = 1;
-          // HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_0);	
+          // HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_0); 
           break;
 
         case 0x01:
@@ -364,7 +364,7 @@ void write_flash_sector(uint32_t currentPage) {
   uint32_t pageAddress = FLASH_BASE + (currentPage * SECTOR_SIZE);
   uint32_t SectorError;
 
-  HAL_GPIO_WritePin(LED_1_PORT, LED_1_PIN, GPIO_PIN_SET);	
+  HAL_GPIO_WritePin(LED_1_PORT, LED_1_PIN, GPIO_PIN_SET);   
   FLASH_EraseInitTypeDef EraseInit;
   HAL_FLASH_Unlock();
   
