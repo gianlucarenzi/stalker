@@ -8,11 +8,11 @@
   *
   ******************************************************************************
   * Modified by:
-  *		Gianluca Renzi <icjtqr@gmail.com>
+  *     Gianluca Renzi <icjtqr@gmail.com>
   * 
   * Based on the work of Vassilis Serasidis
   * 
-  *	Created by: Vassilis Serasidis
+  * Created by: Vassilis Serasidis
   *       Date: 28 June 2018
   *       Home: http://www.serasidis.gr
   *      email: avrsite@yahoo.gr, info@serasidis.gr
@@ -74,7 +74,7 @@
 #include "stm32f4xx_ll_pwr.h"
 /* USER CODE BEGIN Includes */
 
-/* USER CODE END Includes	*/
+/* USER CODE END Includes   */
 
 /* Private variables ---------------------------------------------------------*/
 
@@ -118,34 +118,34 @@ extern uint8_t USBD_CUSTOM_HID_SendReport(USBD_HandleTypeDef *pdev, uint8_t *rep
 
 static int ask_for_bootloader(void)
 {
-	int boot_pin [ NUM_SAMPLES ];
-	int count = 0;
-	int no_boot = 0;
-	int maybe_boot = 0;
+    int boot_pin [ NUM_SAMPLES ];
+    int count = 0;
+    int no_boot = 0;
+    int maybe_boot = 0;
 
-	memset(boot_pin, 0, sizeof(boot_pin) * NUM_SAMPLES);
+    memset(boot_pin, 0, sizeof(boot_pin) * NUM_SAMPLES);
 
-	while (count < NUM_SAMPLES)
-	{
-		boot_pin[ count ] = HAL_GPIO_ReadPin(BOOT_1_PORT, BOOT_1_PIN);
-		HAL_Delay(WAIT_MS);
-		count++;
-	}
+    while (count < NUM_SAMPLES)
+    {
+        boot_pin[ count ] = HAL_GPIO_ReadPin(BOOT_1_PORT, BOOT_1_PIN);
+        HAL_Delay(WAIT_MS);
+        count++;
+    }
 
-	for (count = 0; count < NUM_SAMPLES; count++)
-	{
-		if (boot_pin[ count ] != BOOT_1_ENABLED)
-			no_boot++;
-		else
-			maybe_boot++;
-	}
+    for (count = 0; count < NUM_SAMPLES; count++)
+    {
+        if (boot_pin[ count ] != BOOT_1_ENABLED)
+            no_boot++;
+        else
+            maybe_boot++;
+    }
 
-	/* We need at least the half or more pressions of the pin tied to ground
-	 * to be sure we are in bootmode...
-	 */
-	if (maybe_boot >= no_boot)
-		return 1;
-	return 0;
+    /* We need at least the half or more pressions of the pin tied to ground
+     * to be sure we are in bootmode...
+     */
+    if (maybe_boot >= no_boot)
+        return 1;
+    return 0;
 }
 
 /**
@@ -186,12 +186,78 @@ int main(void)
   
   /* Initialize all configured peripherals */
 
-
   bootmode = ask_for_bootloader();
   if ( !bootmode )  {
     typedef void (*pFunction)(void);
     pFunction Jump_To_Application;
     uint32_t JumpAddress;
+    /*
+     * It's a tricky calculation: basically every firmware starts with
+     * the Vector Table (Jump table) and it is defined in the startup
+     * code (.s) as:
+     * 
+     *     
+            g_pfnVectors:
+              .word  _estack
+              .word  Reset_Handler
+              .word  NMI_Handler
+              .word  HardFault_Handler
+              .word  MemManage_Handler
+              .word  BusFault_Handler
+              .word  UsageFault_Handler
+              .word  0
+              .word  0
+              .word  0
+              .word  0
+              .word  SVC_Handler
+              .word  DebugMon_Handler
+              .word  0
+              .word  PendSV_Handler
+              .word  SysTick_Handler
+     * 
+     * So, the g_pfnVectors is located in the first (FLASH_BASE) address
+     * and it contains at offset + 0 the _estack STACK POINTER (usually
+     * located in RAM) and the following address (+1 word or +4 bytes)
+     * is the Reset_Handler (i.e. the start of the application firmware
+     * code).
+     * 
+     * What I can see here, is the following issue:
+     * 
+     * If there is no code at that address (first programmed bootloader)
+     * the machine crash if we don't force the bootloader mode.
+     * 
+     * It should be great if a sanity check is done BEFORE entering in
+     * the jump code. Example of sanity check:
+     * 
+     * uint32_t stackPtr;
+     * uint32_t resetPtr;
+     * stackPtr = *(uint32_t *)(FLASH_BASE + USER_CODE_OFFSET);
+     * resetPtr = *(uint32_t *)(FLASH_BASE + USER_CODE_OFFSET + 4);
+     * 
+     * The stackPtr must be reside within the RAM SPACE Address, meanwhile
+     * the resetPtr must be equal or higher than the application flash
+     * address (FLASH_BASE + USER_CODE_OFFSET) and less than the last
+     * valid flash address (FLASH_BASE + USER_CODE_OFFSET + FLASH_SIZE)
+     * 
+     * if (stackPtr >= RAM_START_ADDRESS && stackPtr < (RAM_START_ADDRESS + RAM_SIZE))
+     * {
+     *    // The _estack pointer seems to be valid (within RAM space)
+     *    // now check for the Reset_Handler...
+     *    if (resetPtr >= (FLASH_BASE + USER_CODE_OFFSET) && resetPtr < (FLASH_BASE + USER_CODE_OFFSET + FLASH_SIZE))
+     *    {
+     *       // the Reset_Handler seems to be valid (within FLASH user space)
+     *       // so we can jump into it.
+     *       JumpAddress = *(__IO uint32_t*) (FLASH_BASE + USER_CODE_OFFSET + 4);
+     *       Jump_To_Application = (pFunction) JumpAddress;
+     *       __set_MSP(*(uint32_t *) (FLASH_BASE + USER_CODE_OFFSET));
+     *       Jump_To_Application(); 
+     *       // THIS SHOULD BE NEVER REACHED
+     *       while( 1 )
+     *       ;
+     *    }
+     * }
+     * 
+     */
     
     JumpAddress = *(__IO uint32_t*) (FLASH_BASE + USER_CODE_OFFSET + 4);
     Jump_To_Application = (pFunction) JumpAddress;
