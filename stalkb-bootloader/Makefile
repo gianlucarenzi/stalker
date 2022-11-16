@@ -6,6 +6,7 @@
 # Generic Makefile (based on gcc)
 #
 # ChangeLog :
+#	2022-11-16 - Reduce the flash size of the bootloader under 16K
 #	2017-02-10 - Several enhancements + project update mode
 #   2015-07-22 - first version
 # ------------------------------------------------
@@ -20,9 +21,15 @@ TARGET = stalkb-bootloader
 # building variables
 ######################################
 # debug build?
-DEBUG = 1
-# optimization
-OPT = -Og
+DEBUG = 0
+ifeq ($(DEBUG), 1)
+	OPT = -Og
+else
+	# optimization level
+	#OPTLVL = -O2
+	OPTLVL = -O3
+	OPT = $(OPTLVL) -fomit-frame-pointer -funroll-loops
+endif
 
 
 #######################################
@@ -35,41 +42,59 @@ BUILD_DIR = build
 # source
 ######################################
 # C sources
-C_SOURCES =  \
-Core/Src/main.c \
-Core/Src/stm32f4xx_it.c \
-Core/Src/stm32f4xx_hal_msp.c \
-USB_DEVICE/App/usb_device.c \
-USB_DEVICE/App/usbd_desc.c \
-USB_DEVICE/Target/usbd_conf.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
-Core/Src/system_stm32f4xx.c \
-Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c \
-Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
-Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
-Middlewares/ST/STM32_USB_Device_Library/Class/HID/Src/usbd_hid.c
+C_CORE_SOURCES =  \
+	Core/Src/main.c \
+	Core/Src/syscall.c \
+	Core/Src/stm32f4xx_it.c \
+	Core/Src/stm32f4xx_hal_msp.c \
+	Core/Src/system_stm32f4xx.c \
+
+
+C_USB_SOURCES = \
+	USB_DEVICE/App/usb_device.c \
+	USB_DEVICE/App/usbd_desc.c \
+	USB_DEVICE/Target/usbd_conf.c \
+	
+
+C_DRIVERS_SOURCES = \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c \
+#	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c \
+
+
+C_MIDDLEWARE_SOURCES = \
+	Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c \
+	Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
+	Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
+	Middlewares/ST/STM32_USB_Device_Library/Class/HID/Src/usbd_hid.c \
+	
+
+C_SOURCES = \
+	$(C_CORE_SOURCES) \
+	$(C_DRIVERS_SOURCES) \
+#	$(C_USB_SOURCES) \
+#	$(C_MIDDLEWARE_SOURCES) \
+	
 
 # ASM sources
 ASM_SOURCES =  \
-startup_stm32f401xc.s
+	startup_stm32f401xc.s
 
 
 #######################################
@@ -112,30 +137,42 @@ MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
 AS_DEFS =
 
 # C defines
-C_DEFS =  \
--DUSE_HAL_DRIVER \
--DSTM32F401xC
+C_DEFS = \
+	-DUSE_HAL_DRIVER \
+	-DSTM32F401xC
 
 
 # AS includes
 AS_INCLUDES =
 
 # C includes
-C_INCLUDES =  \
+C_INCLUDES = \
+	-ICore/Inc \
+	
+
+C_USB_INCLUDES = \
 	-IUSB_DEVICE/App \
 	-IUSB_DEVICE/Target \
+	
 
-C_INCLUDES += \
-	-ICore/Inc \
-
-C_INCLUDES += \
+C_DRIVERS_INCLUDES = \
 	-IDrivers/STM32F4xx_HAL_Driver/Inc \
 	-IDrivers/STM32F4xx_HAL_Driver/Inc/Legacy \
+	-IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
+	-IDrivers/CMSIS/Include \
+	
+
+C_MIDDLEWARE_INCLUDES = \
 	-IMiddlewares/ST/STM32_USB_Device_Library/Core/Inc \
 	-IMiddlewares/ST/STM32_USB_Device_Library/Class/HID/Inc \
-	-IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
-	-IDrivers/CMSIS/Include
+	
 
+# All includes
+C_INCLUDES += \
+	$(C_DRIVERS_INCLUDES) \
+#	$(C_USB_INCLUDES) \
+#	$(C_MIDDLEWARE_INCLUDES) \
+	
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
