@@ -1,4 +1,3 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.c
@@ -15,49 +14,83 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
+#include <string.h> // for memset
 #include "main.h"
-#include "usb_device.h"
+#include "syscall.h"
+#include "debug.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
+/* Local variables */
+static int debuglevel = DBG_NOISY;
+static const char *fwBuild = "v0.1rc";
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
 
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_USART2_UART_Init(void);
-/* USER CODE BEGIN PFP */
+static void MX_USART2_UART_Init(int baudrate);
 
-/* USER CODE END PFP */
+/*
+ * Reads NUM_SAMPLES and manage the average
+ */
+#define NUM_SAMPLES 10
+#define WAIT_MS (1000L / NUM_SAMPLES)
 
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
+#define STM32_DFU_ROM_CODE 0x1FFF0000
+#define USER_CODE_OFFSET   (0x4000)
 
-/* USER CODE END 0 */
+#define BOOT_1_PIN      GPIO_PIN_1 //STALKER V2 BOARD: PC1
+#define BOOT_1_PORT     GPIOC
+#define BOOT_1_ENABLED  GPIO_PIN_RESET
+#define LED_1_PIN       GPIO_PIN_0
+#define LED_1_PORT      GPIOA
+
+static int ask_for_bootloader(void);
+static void banner(void);
+static void amiga_reset(void);
+
+static void banner(void)
+{
+	printf("\r\n\r\n" ANSI_BLUE "RETROBITLAB STM32 USB DFU BOOTLOADER" ANSI_RESET "\r\n");
+	printf(ANSI_BLUE "-=* STALKER BASED BOARD HANDLER  *=-" ANSI_RESET "\r\n");
+	printf(ANSI_YELLOW);
+	printf("FWVER: %s", fwBuild);
+	printf(ANSI_RESET "\r\n");
+	printf("\r\n\n");
+}
+
+static int ask_for_bootloader(void)
+{
+	int boot_pin [ NUM_SAMPLES ];
+	int count = 0;
+	int no_boot = 0;
+	int maybe_boot = 0;
+
+	memset(boot_pin, 0, sizeof(int) * NUM_SAMPLES);
+
+	while (count < NUM_SAMPLES)
+	{
+		boot_pin[ count ] = HAL_GPIO_ReadPin(BOOT_1_PORT, BOOT_1_PIN);
+		HAL_Delay(WAIT_MS);
+		count++;
+	}
+
+	for (count = 0; count < NUM_SAMPLES; count++)
+	{
+		if (boot_pin[ count ] != BOOT_1_ENABLED)
+			no_boot++;
+		else
+			maybe_boot++;
+	}
+
+	/* We need at least the half or more pressions of the pin tied to ground
+	 * to be sure we are in bootmode...
+	 */
+	if (maybe_boot >= no_boot)
+		return 1;
+	return 0;
+}
 
 /**
   * @brief  The application entry point.
@@ -65,90 +98,202 @@ static void MX_USART2_UART_Init(void);
   */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
+	int bootmode;
+	typedef void (*pFunction)(void);
+	pFunction Jump_To_Application;
+	uint32_t JumpAddress;
 
-  /* USER CODE END 1 */
+	_write_ready(SYSCALL_NOTREADY, &huart2);
 
-  /* MCU Configuration--------------------------------------------------------*/
+	/* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+	HAL_Init();
 
-  /* USER CODE BEGIN Init */
+	/* Configure the system clock */
+	SystemClock_Config();
 
-  /* USER CODE END Init */
+	/* Initialize all configured peripherals */
+	MX_GPIO_Init();
+	MX_USART2_UART_Init(115200);
+	_write_ready(SYSCALL_READY, &huart2);
 
-  /* Configure the system clock */
-  SystemClock_Config();
+	banner();
 
-  /* USER CODE BEGIN SysInit */
+	bootmode = ask_for_bootloader();
+	if ( !bootmode ) {
+		/*
+		 * It's a tricky calculation: basically every firmware starts with
+		 * the Vector Table (Jump table) and it is defined in the startup
+		 * code (.s) as:
+		 *
+		 *
+				g_pfnVectors:
+				  .word  _estack
+				  .word  Reset_Handler
+				  .word  NMI_Handler
+				  .word  HardFault_Handler
+				  .word  MemManage_Handler
+				  .word  BusFault_Handler
+				  .word  UsageFault_Handler
+				  .word  0
+				  .word  0
+				  .word  0
+				  .word  0
+				  .word  SVC_Handler
+				  .word  DebugMon_Handler
+				  .word  0
+				  .word  PendSV_Handler
+				  .word  SysTick_Handler
+		 *
+		 * So, the g_pfnVectors is located in the first (FLASH_BASE) address
+		 * and it contains at offset + 0 the _estack STACK POINTER (usually
+		 * located in RAM) and the following address (+1 word or +4 bytes)
+		 * is the Reset_Handler (i.e. the start of the application firmware
+		 * code).
+		 *
+		 * What I can see here, is the following issue:
+		 *
+		 * If there is no code at that address (first programmed bootloader)
+		 * the machine crash if we don't force the bootloader mode.
+		 *
+		 * It should be great if a sanity check is done BEFORE entering in
+		 * the jump code. Example of sanity check:
+		 *
+		 * uint32_t stackPtr;
+		 * uint32_t resetPtr;
+		 * stackPtr = *(uint32_t *)(FLASH_BASE + USER_CODE_OFFSET);
+		 * resetPtr = *(uint32_t *)(FLASH_BASE + USER_CODE_OFFSET + 4);
+		 *
+		 * The stackPtr must be reside within the RAM SPACE Address, meanwhile
+		 * the resetPtr must be equal or higher than the application flash
+		 * address (FLASH_BASE + USER_CODE_OFFSET) and less than the last
+		 * valid flash address (FLASH_BASE + USER_CODE_OFFSET + FLASH_SIZE)
+		 *
+		 * if (stackPtr >= RAM_START_ADDRESS && stackPtr < (RAM_START_ADDRESS + RAM_SIZE))
+		 * {
+		 *    // The _estack pointer seems to be valid (within RAM space)
+		 *    // now check for the Reset_Handler...
+		 *    if (resetPtr >= (FLASH_BASE + USER_CODE_OFFSET) && resetPtr < (FLASH_BASE + USER_CODE_OFFSET + FLASH_SIZE))
+		 *    {
+		 *       // the Reset_Handler seems to be valid (within FLASH user space)
+		 *       // so we can jump into it.
+		 *       JumpAddress = *(__IO uint32_t*) (FLASH_BASE + USER_CODE_OFFSET + 4);
+		 *       Jump_To_Application = (pFunction) JumpAddress;
+		 *       __set_MSP(*(uint32_t *) (FLASH_BASE + USER_CODE_OFFSET));
+		 *       Jump_To_Application();
+		 *       // THIS SHOULD BE NEVER REACHED
+		 *       while( 1 )
+		 *       ;
+		 *    }
+		 * }
+		 *
+		 */
+		JumpAddress = *(__IO uint32_t*) (FLASH_BASE + USER_CODE_OFFSET + 4);
+		Jump_To_Application = (pFunction) JumpAddress;
+		__set_MSP(*(__IO uint32_t *) (FLASH_BASE + USER_CODE_OFFSET));
+		Jump_To_Application();
+		/* Never reached */
+		while (1) ;
+	}
 
-  /* USER CODE END SysInit */
+	DBG_I("Starting STM32 DFU Mode...\n");
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_USART2_UART_Init();
-  MX_USB_DEVICE_Init();
-  /* USER CODE BEGIN 2 */
+	/* Now we need to reconfigure pin as output, as well as the Amiga needs
+	 * to be in reset mode during all upgrade (if connected)
+	 */
+	amiga_reset();
 
-  /* USER CODE END 2 */
+	/* Enter in DFU ROM Code. We need to de-initialize almost everything */
+	HAL_RCC_DeInit();
+	SysTick->CTRL = 0;
+	SysTick->LOAD = 0;
+	SysTick->VAL = 0;
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-    /* USER CODE END WHILE */
+	/* Step: Disable all interrupts */
+	__disable_irq();
 
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
+	/* ARM Cortex-M Programming Guide to Memory Barrier Instructions.*/
+	__DSB();
+
+	__HAL_SYSCFG_REMAPMEMORY_SYSTEMFLASH();
+	/* Remap is bot visible at once. Execute some unrelated command! */
+
+	__DSB();
+	__ISB();
+
+	JumpAddress = *(__IO uint32_t*) (STM32_DFU_ROM_CODE + 4);
+	Jump_To_Application = (pFunction) JumpAddress;
+	__set_MSP(*(__IO uint32_t *) (STM32_DFU_ROM_CODE));
+	Jump_To_Application();
+	/* Never reached */
+	while (1) ;
 }
 
 /**
-  * @brief System Clock Configuration
-  * @retval None
-  */
+ * @brief Keep Amiga in reset state during update
+ * @retval None
+ */
+static void amiga_reset(void)
+{
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+	/*Configure GPIO pin Output Level BOOT_1_PIN as low */
+	HAL_GPIO_WritePin(BOOT_1_PORT, BOOT_1_PIN, GPIO_PIN_RESET);
+
+	/*Configure GPIO pin as output: PC1 - AMIGA RESET J8 */
+	GPIO_InitStruct.Pin = BOOT_1_PIN;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(BOOT_1_PORT, &GPIO_InitStruct);
+}
+
+/**
+ * @brief System Clock Configuration
+ * @retval None
+ */
 void SystemClock_Config(void)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /** Configure the main internal regulator output voltage
-  */
-  __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
+	/** Configure the main internal regulator output voltage
+	*/
+	__HAL_RCC_PWR_CLK_ENABLE();
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
 
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 4;
-  RCC_OscInitStruct.PLL.PLLN = 72;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 3;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	/** Initializes the RCC Oscillators according to the specified parameters
+	* in the RCC_OscInitTypeDef structure.
+	*/
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
+	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+	RCC_OscInitStruct.PLL.PLLM = 4;
+	RCC_OscInitStruct.PLL.PLLN = 72;
+	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+	RCC_OscInitStruct.PLL.PLLQ = 3;
+	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+	{
+		Error_Handler();
+	}
 
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+	/** Initializes the CPU, AHB and APB buses clocks
+	*/
+	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+							  |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+	{
+		Error_Handler();
+	}
 }
 
 /**
@@ -156,32 +301,20 @@ void SystemClock_Config(void)
   * @param None
   * @retval None
   */
-static void MX_USART2_UART_Init(void)
+static void MX_USART2_UART_Init(int baudrate)
 {
-
-  /* USER CODE BEGIN USART2_Init 0 */
-
-  /* USER CODE END USART2_Init 0 */
-
-  /* USER CODE BEGIN USART2_Init 1 */
-
-  /* USER CODE END USART2_Init 1 */
-  huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
-  huart2.Init.WordLength = UART_WORDLENGTH_8B;
-  huart2.Init.StopBits = UART_STOPBITS_1;
-  huart2.Init.Parity = UART_PARITY_NONE;
-  huart2.Init.Mode = UART_MODE_TX_RX;
-  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART2_Init 2 */
-
-  /* USER CODE END USART2_Init 2 */
-
+	huart2.Instance = USART2;
+	huart2.Init.BaudRate = baudrate;
+	huart2.Init.WordLength = UART_WORDLENGTH_8B;
+	huart2.Init.StopBits = UART_STOPBITS_1;
+	huart2.Init.Parity = UART_PARITY_NONE;
+	huart2.Init.Mode = UART_MODE_TX_RX;
+	huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+	huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+	if (HAL_UART_Init(&huart2) != HAL_OK)
+	{
+		Error_Handler();
+	}
 }
 
 /**
@@ -191,34 +324,30 @@ static void MX_USART2_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
+	/* GPIO Ports Clock Enable */
+	__HAL_RCC_GPIOH_CLK_ENABLE();
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	__HAL_RCC_GPIOA_CLK_ENABLE();
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+	/*Configure GPIO pin Output Level LED D4 ON */
+	HAL_GPIO_WritePin(LED_1_PORT, LED_1_PIN, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PC1 */
-  GPIO_InitStruct.Pin = GPIO_PIN_1;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+	/*Configure GPIO pin : PC1 - AMIGA RESET J8 */
+	GPIO_InitStruct.Pin = BOOT_1_PIN;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(BOOT_1_PORT, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA0 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	/*Configure GPIO pin : PA0 */
+	GPIO_InitStruct.Pin = LED_1_PIN;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(LED_1_PORT, &GPIO_InitStruct);
 
 }
-
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
 
 /**
   * @brief  This function is executed in case of error occurrence.
@@ -226,13 +355,13 @@ static void MX_GPIO_Init(void)
   */
 void Error_Handler(void)
 {
-  /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
-  /* USER CODE END Error_Handler_Debug */
+	/* USER CODE BEGIN Error_Handler_Debug */
+	/* User can add his own implementation to report the HAL error return state */
+	__disable_irq();
+	while (1)
+	{
+	}
+	/* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -245,9 +374,13 @@ void Error_Handler(void)
   */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-  /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
+	/* USER CODE BEGIN 6 */
+	/* User can add his own implementation to report the file name and line number,
+	 ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+	DBG_E("Error! Wrong parameters value: file %s on line %d\r\n", file, line);
+	while (1)
+	{
+	}
+	/* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
