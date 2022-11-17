@@ -19,9 +19,12 @@
 #include "syscall.h"
 #include "debug.h"
 
+/* From Linker file */
+extern uint32_t _estack;
+
 /* Local variables */
 static int debuglevel = DBG_NOISY;
-static const char *fwBuild = "v0.1rc";
+static const char *fwBuild = "v0.2rc";
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
@@ -49,6 +52,25 @@ static void MX_USART2_UART_Init(int baudrate);
 static int ask_for_bootloader(void);
 static void banner(void);
 static void amiga_reset(void);
+
+/**
+ * @brief Keep Amiga in reset state during update
+ * @retval None
+ */
+static void amiga_reset(void)
+{
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+	/*Configure GPIO pin Output Level BOOT_1_PIN as low */
+	HAL_GPIO_WritePin(BOOT_1_PORT, BOOT_1_PIN, GPIO_PIN_RESET);
+
+	/*Configure GPIO pin as output: PC1 - AMIGA RESET J8 */
+	GPIO_InitStruct.Pin = BOOT_1_PIN;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_PULLUP; /* Due to a short circuit tied to gnd an internal pullup is needed */
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(BOOT_1_PORT, &GPIO_InitStruct);
+}
 
 static void banner(void)
 {
@@ -93,8 +115,23 @@ static int ask_for_bootloader(void)
 }
 
 /**
-  * @brief  The application entry point.
-  * @retval int
+ * @brief It is a sanity check for valid vector pointers to SRAM and INTERNAL FLASH
+ * @retval Returns 0 if NO VALID APP FOUND otherwise 1
+ */
+static inline int check_valid_application(uint32_t jumpAddress, uint32_t stackAddress)
+{
+	return (stackAddress >= SRAM_BASE && stackAddress <= (SRAM_BASE + _estack) &&
+			jumpAddress >= (FLASH_BASE + USER_CODE_OFFSET) && jumpAddress < FLASH_END);
+}
+
+/**
+  * @brief  The USB Bootloader.
+  * @retval never reached
+  * 
+  * Tie the Amiga Reset Pin to ground for at least 1 second during
+  * powerup to enter into the bootloader mode, otherwise it will jump
+  * to user application.
+  * 
   */
 int main(void)
 {
@@ -102,6 +139,7 @@ int main(void)
 	typedef void (*pFunction)(void);
 	pFunction Jump_To_Application;
 	uint32_t JumpAddress;
+	uint32_t StackAddress;
 
 	_write_ready(SYSCALL_NOTREADY, &huart2);
 
@@ -121,6 +159,11 @@ int main(void)
 	banner();
 
 	bootmode = ask_for_bootloader();
+	/* Now we need to reconfigure pin as output, as well as the Amiga needs
+	 * to be in reset mode during all upgrade (if connected)
+	 */
+	amiga_reset();
+
 	if ( !bootmode ) {
 		/*
 		 * It's a tricky calculation: basically every firmware starts with
@@ -170,39 +213,23 @@ int main(void)
 		 * address (FLASH_BASE + USER_CODE_OFFSET) and less than the last
 		 * valid flash address (FLASH_BASE + USER_CODE_OFFSET + FLASH_SIZE)
 		 *
-		 * if (stackPtr >= RAM_START_ADDRESS && stackPtr < (RAM_START_ADDRESS + RAM_SIZE))
-		 * {
-		 *    // The _estack pointer seems to be valid (within RAM space)
-		 *    // now check for the Reset_Handler...
-		 *    if (resetPtr >= (FLASH_BASE + USER_CODE_OFFSET) && resetPtr < (FLASH_BASE + USER_CODE_OFFSET + FLASH_SIZE))
-		 *    {
-		 *       // the Reset_Handler seems to be valid (within FLASH user space)
-		 *       // so we can jump into it.
-		 *       JumpAddress = *(__IO uint32_t*) (FLASH_BASE + USER_CODE_OFFSET + 4);
-		 *       Jump_To_Application = (pFunction) JumpAddress;
-		 *       __set_MSP(*(uint32_t *) (FLASH_BASE + USER_CODE_OFFSET));
-		 *       Jump_To_Application();
-		 *       // THIS SHOULD BE NEVER REACHED
-		 *       while( 1 )
-		 *       ;
-		 *    }
-		 * }
-		 *
 		 */
 		JumpAddress = *(__IO uint32_t*) (FLASH_BASE + USER_CODE_OFFSET + 4);
-		Jump_To_Application = (pFunction) JumpAddress;
-		__set_MSP(*(__IO uint32_t *) (FLASH_BASE + USER_CODE_OFFSET));
-		Jump_To_Application();
-		/* Never reached */
-		while (1) ;
+		StackAddress = *(__IO uint32_t*) (FLASH_BASE + USER_CODE_OFFSET + 0);
+
+		if (check_valid_application(JumpAddress, StackAddress)) {
+			Jump_To_Application = (pFunction) JumpAddress;
+			__set_MSP(*(__IO uint32_t *) (FLASH_BASE + USER_CODE_OFFSET));
+			Jump_To_Application();
+			/* Never reached */
+			while (1) ;
+		} else {
+			DBG_E("Not valid application found. Firmware Upgrade FORCED.\n");
+			HAL_Delay(100);
+		}
 	}
 
 	DBG_I("Starting STM32 DFU Mode...\n");
-
-	/* Now we need to reconfigure pin as output, as well as the Amiga needs
-	 * to be in reset mode during all upgrade (if connected)
-	 */
-	amiga_reset();
 
 	/* Enter in DFU ROM Code. We need to de-initialize almost everything */
 	HAL_RCC_DeInit();
@@ -228,25 +255,6 @@ int main(void)
 	Jump_To_Application();
 	/* Never reached */
 	while (1) ;
-}
-
-/**
- * @brief Keep Amiga in reset state during update
- * @retval None
- */
-static void amiga_reset(void)
-{
-	GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-	/*Configure GPIO pin Output Level BOOT_1_PIN as low */
-	HAL_GPIO_WritePin(BOOT_1_PORT, BOOT_1_PIN, GPIO_PIN_RESET);
-
-	/*Configure GPIO pin as output: PC1 - AMIGA RESET J8 */
-	GPIO_InitStruct.Pin = BOOT_1_PIN;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(BOOT_1_PORT, &GPIO_InitStruct);
 }
 
 /**
