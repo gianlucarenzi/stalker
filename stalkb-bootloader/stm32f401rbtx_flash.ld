@@ -186,4 +186,4 @@ SECTIONS
   .ARM.attributes 0 : { *(.ARM.attributes) }
 }
 
-
+_estack = ORIGIN(RAM) + LENGTH(RAM);    /* end of RAM */
