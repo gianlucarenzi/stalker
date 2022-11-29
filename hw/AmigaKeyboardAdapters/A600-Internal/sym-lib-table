@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name AmigaComponents)(type Legacy)(uri ${HOME}/Progetti/RetroBitLab-Library/AmigaComponents.lib)(options "")(descr ""))
+)
