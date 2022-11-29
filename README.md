@@ -20,11 +20,14 @@ Features
 * non-blocking keyboard.
 
 Why so a bad name for a so good product?
+
 As stated in the title, the STALKER is an acronym of:
-=====================================
+
 STm32-to-Amiga-Local-Keyboard adaptER
-=====================================
+-------------------------------------
+
 But if you think a little more, it is catching all the keystrokes you do,
+
 so basically it is stalking you! ;-)
 
 # Rendered Images
