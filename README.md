@@ -19,7 +19,9 @@ Features
 * built around 32-bit STM32 microcontroller utilizing latest technology,
 * non-blocking keyboard.
 
-As stated in the tile, the STALKER is an acronym of: STm32-to-Amiga-Local-Keyboard adaptER
+Why so a bad name for a so good product?
+As stated in the title, the STALKER is an acronym of: STm32-to-Amiga-Local-Keyboard adaptER
+But if you think a little more, it is catching all the keystrokes you do, so basically it is stalking you! ;-)
 
 # Rendered Images
 # [![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-f.png "Board Front")](#features)
