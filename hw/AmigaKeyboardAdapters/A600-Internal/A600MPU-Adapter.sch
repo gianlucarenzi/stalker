@@ -1,43 +1,12 @@
-EESchema Schematic File Version 2
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
-LIBS:AmigaComponents
-LIBS:A600MPU-Adapter-cache
-EELAYER 25 0
+EESchema Schematic File Version 4
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Amiga 600 MPU Keyboard Adapter"
-Date "2018-11-15"
-Rev ""
+Date "2022-11-29"
+Rev "2.0"
 Comp "RetroBit Lab"
 Comment1 ""
 Comment2 ""
@@ -45,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L VCC #PWR01
+L power:VCC #PWR01
 U 1 1 5BECA05B
 P 5850 1700
 F 0 "#PWR01" H 5850 1550 50  0001 C CNN
@@ -56,7 +25,7 @@ F 3 "" H 5850 1700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR02
+L power:GND #PWR02
 U 1 1 5BECA073
 P 2600 4350
 F 0 "#PWR02" H 2600 4100 50  0001 C CNN
@@ -75,7 +44,7 @@ KBD_DATA
 Text GLabel 3300 3950 0    60   BiDi ~ 0
 KBD_CLOCK
 $Comp
-L GND #PWR03
+L power:GND #PWR03
 U 1 1 5BECA2A3
 P 3600 2750
 F 0 "#PWR03" H 3600 2500 50  0001 C CNN
@@ -94,12 +63,12 @@ KBD_DATA
 Text GLabel 5350 4700 0    60   BiDi ~ 0
 KBD_CLOCK
 $Comp
-L CONN_02X03 P1
+L A600MPU-Adapter-rescue:CONN_02X03 P1
 U 1 1 5BECAC1D
 P 3550 4050
 F 0 "P1" H 3550 4250 50  0000 C CNN
 F 1 "CONN_02X03" H 3550 3850 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x03" H 3550 2850 50  0001 C CNN
+F 2 "Connector_IDC:IDC-Header_2x03_P2.54mm_Vertical" H 3550 2850 50  0001 C CNN
 F 3 "" H 3550 2850 50  0000 C CNN
 	1    3550 4050
 	1    0    0    -1  
@@ -107,7 +76,7 @@ $EndComp
 Text GLabel 7350 4700 2    60   BiDi ~ 0
 ~TRESET
 $Comp
-L GND #PWR04
+L power:GND #PWR04
 U 1 1 5BECAD5B
 P 6350 5800
 F 0 "#PWR04" H 6350 5550 50  0001 C CNN
@@ -119,9 +88,8 @@ F 3 "" H 6350 5800 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	6100 5700 6350 5700
-Connection ~ 6350 5700
 Wire Wire Line
-	6700 1800 5700 1800
+	6700 1800 6500 1800
 Wire Wire Line
 	5850 1700 5850 1800
 Connection ~ 5850 1800
@@ -131,7 +99,7 @@ Connection ~ 6500 1800
 Wire Wire Line
 	4050 3050 4050 2800
 $Comp
-L VCC #PWR05
+L power:VCC #PWR05
 U 1 1 5BECADCF
 P 4050 2800
 F 0 "#PWR05" H 4050 2650 50  0001 C CNN
@@ -142,7 +110,7 @@ F 3 "" H 4050 2800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L PWR_FLAG #FLG06
+L power:PWR_FLAG #FLG06
 U 1 1 5BECADE9
 P 4050 2900
 F 0 "#FLG06" H 4050 2975 50  0001 C CNN
@@ -157,7 +125,7 @@ Wire Wire Line
 Text GLabel 3600 3050 3    60   BiDi ~ 0
 GND
 $Comp
-L PWR_FLAG #FLG07
+L power:PWR_FLAG #FLG07
 U 1 1 5BECAE1C
 P 3600 2900
 F 0 "#FLG07" H 3600 2975 50  0001 C CNN
@@ -172,9 +140,9 @@ KBD_RESET
 Wire Wire Line
 	3300 4050 2600 4050
 Wire Wire Line
-	2600 4050 2600 4350
+	2600 4050 2600 4300
 $Comp
-L VCC #PWR08
+L power:VCC #PWR08
 U 1 1 5BECAE78
 P 3800 4150
 F 0 "#PWR08" H 3800 4000 50  0001 C CNN
@@ -192,23 +160,23 @@ Wire Wire Line
 	4100 4300 2600 4300
 Connection ~ 2600 4300
 $Comp
-L 6571R4_PLCC44_MPUKEY_REV U1
+L AmigaComponents:6571R4_PLCC44_MPUKEY_REV U1
 U 1 1 5BECAC84
 P 6350 3800
 F 0 "U1" H 7050 5650 50  0000 C CNN
 F 1 "6571R4_PLCC44_MPUKEY_REV" H 6550 2000 50  0000 L CNN
-F 2 "Sockets:PLCC44" H 6350 3800 60  0001 C CNN
+F 2 "RetroBitLab:PLCC-44_THT-Socket_3D" H 6350 3800 60  0001 C CNN
 F 3 "" H 6350 3800 60  0000 C CNN
 	1    6350 3800
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X03 P2
+L A600MPU-Adapter-rescue:CONN_01X03 P2
 U 1 1 5BECAF7D
 P 3700 5500
 F 0 "P2" H 3700 5700 50  0000 C CNN
 F 1 "CONN_01X03" V 3800 5500 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x03" H 3700 5500 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 3700 5500 50  0001 C CNN
 F 3 "" H 3700 5500 50  0000 C CNN
 	1    3700 5500
 	0    1    1    0   
@@ -226,53 +194,45 @@ Text GLabel 4100 5300 2    60   BiDi ~ 0
 Text GLabel 3350 5300 0    60   BiDi ~ 0
 ~RST
 $Comp
-L C_Small C2
+L Device:C_Small C2
 U 1 1 5BECB297
 P 8400 2100
 F 0 "C2" H 8410 2170 50  0000 L CNN
 F 1 "100nF" H 8410 2020 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 8400 2100 50  0001 C CNN
-F 3 "" H 8400 2100 50  0000 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 8400 2100 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1810221109_Samsung-Electro-Mechanics-CL31B104KBCNNNC_C24497.pdf" H 8400 2100 50  0001 C CNN
+F 4 "C24497" H 8400 2100 50  0001 C CNN "LCSC"
 	1    8400 2100
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C4
-U 1 1 5BECB2DE
-P 9300 2100
-F 0 "C4" H 9310 2170 50  0000 L CNN
-F 1 "100nF" H 9310 2020 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 9300 2100 50  0001 C CNN
-F 3 "" H 9300 2100 50  0000 C CNN
-	1    9300 2100
-	1    0    0    -1  
-$EndComp
-$Comp
-L CP1_Small C1
+L Device:CP1_Small C1
 U 1 1 5BECB339
 P 7900 2100
 F 0 "C1" H 7910 2170 50  0000 L CNN
 F 1 "10uF" H 7910 2020 50  0000 L CNN
-F 2 "Capacitors_SMD:c_elec_3x5.3" H 7900 2100 50  0001 C CNN
-F 3 "" H 7900 2100 50  0000 C CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-12_Kemet-S_Pad1.58x1.35mm_HandSolder" H 7900 2100 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811151641_Sunlord-TC212A106K016Y_C108529.pdf" H 7900 2100 50  0001 C CNN
+F 4 "C108529" H 7900 2100 50  0001 C CNN "LCSC"
 	1    7900 2100
 	1    0    0    -1  
 $EndComp
 $Comp
-L CP1_Small C3
+L Device:CP1_Small C3
 U 1 1 5BECB38C
 P 8800 2100
 F 0 "C3" H 8810 2170 50  0000 L CNN
 F 1 "10uF" H 8810 2020 50  0000 L CNN
-F 2 "Capacitors_SMD:c_elec_3x5.3" H 8800 2100 50  0001 C CNN
-F 3 "" H 8800 2100 50  0000 C CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-12_Kemet-S_Pad1.58x1.35mm_HandSolder" H 8800 2100 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811151641_Sunlord-TC212A106K016Y_C108529.pdf" H 8800 2100 50  0001 C CNN
+F 4 "C108529" H 8800 2100 50  0001 C CNN "LCSC"
 	1    8800 2100
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	9300 2000 9300 1900
 Wire Wire Line
-	9300 1900 7700 1900
+	9300 1900 8800 1900
 Wire Wire Line
 	7900 2000 7900 1900
 Connection ~ 7900 1900
@@ -285,7 +245,7 @@ Connection ~ 8800 1900
 Wire Wire Line
 	9300 2200 9300 2300
 Wire Wire Line
-	9300 2300 7700 2300
+	9300 2300 8800 2300
 Wire Wire Line
 	7900 2200 7900 2300
 Connection ~ 7900 2300
@@ -300,7 +260,7 @@ GND
 Text GLabel 7700 1900 0    60   BiDi ~ 0
 VCC
 $Comp
-L GND #PWR09
+L power:GND #PWR09
 U 1 1 5BECB52C
 P 7800 2300
 F 0 "#PWR09" H 7800 2050 50  0001 C CNN
@@ -312,7 +272,7 @@ F 3 "" H 7800 2300 50  0001 C CNN
 $EndComp
 Connection ~ 7800 2300
 $Comp
-L VCC #PWR010
+L power:VCC #PWR010
 U 1 1 5BECB550
 P 7800 1900
 F 0 "#PWR010" H 7800 1750 50  0001 C CNN
@@ -324,29 +284,31 @@ F 3 "" H 7800 1900 50  0001 C CNN
 $EndComp
 Connection ~ 7800 1900
 $Comp
-L Led_Small D1
+L A600MPU-Adapter-rescue:Led_Small D1
 U 1 1 5BECB5FD
 P 8450 3000
-F 0 "D1" H 8400 3125 50  0000 L CNN
-F 1 "Led_Small" H 8275 2900 50  0000 L CNN
-F 2 "SMD_Packages:SMD-1206_Pol" V 8450 3000 50  0001 C CNN
-F 3 "" V 8450 3000 50  0000 C CNN
+F 0 "D1" V 8445 3095 50  0000 L CNN
+F 1 "RED" V 8440 2785 50  0000 L CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 8450 3000 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811151241_Everlight-Elec-15-21-R6C-FQ1R1B-2T_C93133.pdf" V 8450 3000 50  0001 C CNN
+F 4 "C93133" V 8450 3000 50  0001 C CNN "LCSC"
 	1    8450 3000
 	0    -1   -1   0   
 $EndComp
 $Comp
-L R R1
+L Device:R R1
 U 1 1 5BECB680
 P 8450 3250
-F 0 "R1" V 8530 3250 50  0000 C CNN
-F 1 "330" V 8450 3250 50  0000 C CNN
-F 2 "Resistors_SMD:R_0603_HandSoldering" V 8380 3250 50  0001 C CNN
-F 3 "" H 8450 3250 50  0000 C CNN
+F 0 "R1" H 8565 3255 50  0000 C CNN
+F 1 "330R" H 8265 3260 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 8380 3250 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811141443_Ever-Ohms-Tech-CR1206F330RP05Z_C245520.pdf" H 8450 3250 50  0001 C CNN
+F 4 "C245520" H 8450 3250 50  0001 C CNN "LCSC"
 	1    8450 3250
 	1    0    0    -1  
 $EndComp
 $Comp
-L VCC #PWR011
+L power:VCC #PWR011
 U 1 1 5BECB6C0
 P 8450 2900
 F 0 "#PWR011" H 8450 2750 50  0001 C CNN
@@ -357,7 +319,7 @@ F 3 "" H 8450 2900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR012
+L power:GND #PWR012
 U 1 1 5BECB6E6
 P 8450 3400
 F 0 "#PWR012" H 8450 3150 50  0001 C CNN
@@ -365,6 +327,44 @@ F 1 "GND" H 8450 3250 50  0000 C CNN
 F 2 "" H 8450 3400 50  0001 C CNN
 F 3 "" H 8450 3400 50  0001 C CNN
 	1    8450 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5850 1800 5700 1800
+Wire Wire Line
+	6050 1800 5850 1800
+Wire Wire Line
+	6250 1800 6050 1800
+Wire Wire Line
+	6500 1800 6250 1800
+Wire Wire Line
+	2600 4300 2600 4350
+Wire Wire Line
+	7900 1900 7800 1900
+Wire Wire Line
+	8400 1900 7900 1900
+Wire Wire Line
+	8800 1900 8400 1900
+Wire Wire Line
+	7900 2300 7800 2300
+Wire Wire Line
+	8400 2300 7900 2300
+Wire Wire Line
+	8800 2300 8400 2300
+Wire Wire Line
+	7800 2300 7700 2300
+Wire Wire Line
+	7800 1900 7700 1900
+$Comp
+L Device:C_Small C4
+U 1 1 63875C29
+P 9300 2100
+F 0 "C4" H 9310 2170 50  0000 L CNN
+F 1 "100nF" H 9310 2020 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 9300 2100 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1810221109_Samsung-Electro-Mechanics-CL31B104KBCNNNC_C24497.pdf" H 9300 2100 50  0001 C CNN
+F 4 "C24497" H 9300 2100 50  0001 C CNN "LCSC"
+	1    9300 2100
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
