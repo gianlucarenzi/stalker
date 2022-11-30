@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/gianluca/Progetti-CVS/Amiga/stalkb/hw/AmigaKeyboardAdapters/A1200-Internal/A1200MPU-Adapter.sch</source>
-    <date>Thu 10 Nov 2022 09:57:48 AM CET</date>
+    <date>Wed 30 Nov 2022 10:20:20 AM CET</date>
     <tool>Eeschema 5.1.9+dfsg1-1+deb11u1</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -218,37 +218,37 @@
       <node ref="C4" pin="2"/>
       <node ref="C2" pin="2"/>
       <node ref="D1" pin="1"/>
-      <node ref="P1" pin="3"/>
-      <node ref="U1" pin="35"/>
-      <node ref="C1" pin="2"/>
       <node ref="P1" pin="4"/>
+      <node ref="P1" pin="3"/>
       <node ref="C3" pin="2"/>
+      <node ref="C1" pin="2"/>
+      <node ref="U1" pin="35"/>
     </net>
     <net code="2" name="Net-(D1-Pad2)">
       <node ref="R1" pin="1"/>
       <node ref="D1" pin="2"/>
     </net>
     <net code="3" name="mKBD_RESET">
-      <node ref="U1" pin="19"/>
       <node ref="P1" pin="5"/>
+      <node ref="U1" pin="19"/>
     </net>
-    <net code="4" name="mKBD_DATA">
-      <node ref="U1" pin="44"/>
-      <node ref="P1" pin="2"/>
-    </net>
-    <net code="5" name="mKBD_CLOCK">
+    <net code="4" name="mKBD_CLOCK">
       <node ref="P1" pin="1"/>
       <node ref="U1" pin="43"/>
     </net>
-    <net code="6" name="VCC5V">
-      <node ref="U1" pin="11"/>
+    <net code="5" name="VCC5V">
       <node ref="U1" pin="13"/>
-      <node ref="P1" pin="6"/>
-      <node ref="C3" pin="1"/>
-      <node ref="R1" pin="2"/>
+      <node ref="U1" pin="11"/>
       <node ref="C4" pin="1"/>
       <node ref="C2" pin="1"/>
+      <node ref="P1" pin="6"/>
+      <node ref="R1" pin="2"/>
+      <node ref="C3" pin="1"/>
       <node ref="C1" pin="1"/>
+    </net>
+    <net code="6" name="mKBD_DATA">
+      <node ref="U1" pin="44"/>
+      <node ref="P1" pin="2"/>
     </net>
   </nets>
 </export>
