@@ -1,5 +1,5 @@
-Drill report for /home/debian/Progetti/AMIGA/stalkb/hw/AmigaKeyboardAdapters/A500-Internal/A500MPU-Adapter.kicad_pcb
-Created on Fri 01 Mar 2019 15:28:17 CET
+Drill report for /home/gianluca/Progetti/Amiga/stalkb/hw/AmigaKeyboardAdapters/A500-Internal/A500MPU-Adapter.kicad_pcb
+Created on Wed 30 Nov 2022 10:07:24 AM CET
 
 Copper Layer Stackup:
     =============================================================
@@ -7,16 +7,15 @@ Copper Layer Stackup:
     L2 :  B.Cu                      back
 
 
-Drill file 'A500MPU-Adapter.drl' contains
+Drill file 'A500MPU-Adapter-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0,40mm  0,016"  (19 holes)
-    T2  1,02mm  0,040"  (26 holes)
+    T1  1.00mm  0.039"  (26 holes)
 
-    Total plated holes count 45
+    Total plated holes count 26
 
 
-Not plated through holes are merged with plated holes
+Drill file 'A500MPU-Adapter-NPTH.drl' contains
     unplated through holes:
     =============================================================
 

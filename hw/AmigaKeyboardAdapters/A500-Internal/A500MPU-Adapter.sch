@@ -1,245 +1,18 @@
-EESchema Schematic File Version 2
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
-LIBS:AmigaComponents
-LIBS:4xxx
-LIBS:4xxx_IEEE
-LIBS:74xGxx
-LIBS:74xx_IEEE
-LIBS:Amplifier_Audio
-LIBS:Amplifier_Buffer
-LIBS:Amplifier_Current
-LIBS:Amplifier_Difference
-LIBS:Amplifier_Instrumentation
-LIBS:Amplifier_Operational
-LIBS:Amplifier_Video
-LIBS:Analog
-LIBS:Analog_ADC
-LIBS:Analog_DAC
-LIBS:Analog_Switch
-LIBS:Audio
-LIBS:Battery_Management
-LIBS:Comparator
-LIBS:Connector
-LIBS:Connector_Generic
-LIBS:Connector_Generic_MountingPin
-LIBS:Connector_Generic_Shielded
-LIBS:Converter_ACDC
-LIBS:Converter_DCDC
-LIBS:CPLD_Altera
-LIBS:CPLD_Xilinx
-LIBS:CPU
-LIBS:CPU_NXP_6800
-LIBS:CPU_NXP_68000
-LIBS:CPU_PowerPC
-LIBS:Device
-LIBS:Diode
-LIBS:Diode_Bridge
-LIBS:Diode_Laser
-LIBS:Display_Character
-LIBS:Display_Graphic
-LIBS:Driver_Display
-LIBS:Driver_FET
-LIBS:Driver_LED
-LIBS:Driver_Motor
-LIBS:Driver_Relay
-LIBS:DSP_AnalogDevices
-LIBS:DSP_Freescale
-LIBS:DSP_Microchip_DSPIC33
-LIBS:DSP_Motorola
-LIBS:DSP_Texas
-LIBS:Fiber_Optic
-LIBS:Filter
-LIBS:FPGA_Lattice
-LIBS:FPGA_Microsemi
-LIBS:FPGA_Xilinx
-LIBS:FPGA_Xilinx_Artix7
-LIBS:FPGA_Xilinx_Kintex7
-LIBS:FPGA_Xilinx_Spartan6
-LIBS:FPGA_Xilinx_Virtex5
-LIBS:FPGA_Xilinx_Virtex6
-LIBS:FPGA_Xilinx_Virtex7
-LIBS:ft232rl
-LIBS:GPU
-LIBS:Graphic
-LIBS:Interface
-LIBS:Interface_CAN_LIN
-LIBS:Interface_CurrentLoop
-LIBS:Interface_Ethernet
-LIBS:Interface_Expansion
-LIBS:Interface_HID
-LIBS:Interface_LineDriver
-LIBS:Interface_Optical
-LIBS:Interface_Telecom
-LIBS:Interface_UART
-LIBS:Interface_USB
-LIBS:Isolator
-LIBS:Isolator_Analog
-LIBS:Jumper
-LIBS:LED
-LIBS:Logic_LevelTranslator
-LIBS:Logic_Programmable
-LIBS:MCU_AnalogDevices
-LIBS:MCU_Cypress
-LIBS:MCU_Espressif
-LIBS:MCU_Intel
-LIBS:MCU_Microchip_8051
-LIBS:MCU_Microchip_ATmega
-LIBS:MCU_Microchip_ATtiny
-LIBS:MCU_Microchip_AVR
-LIBS:MCU_Microchip_PIC10
-LIBS:MCU_Microchip_PIC12
-LIBS:MCU_Microchip_PIC16
-LIBS:MCU_Microchip_PIC18
-LIBS:MCU_Microchip_PIC24
-LIBS:MCU_Microchip_PIC32
-LIBS:MCU_Microchip_SAMD
-LIBS:MCU_Microchip_SAME
-LIBS:MCU_Microchip_SAML
-LIBS:MCU_Module
-LIBS:MCU_Nordic
-LIBS:MCU_NXP_ColdFire
-LIBS:MCU_NXP_HC11
-LIBS:MCU_NXP_HC12
-LIBS:MCU_NXP_HCS12
-LIBS:MCU_NXP_Kinetis
-LIBS:MCU_NXP_LPC
-LIBS:MCU_NXP_MAC7100
-LIBS:MCU_NXP_MCore
-LIBS:MCU_NXP_S08
-LIBS:MCU_Parallax
-LIBS:MCU_SiFive
-LIBS:MCU_SiliconLabs
-LIBS:MCU_ST_STM8
-LIBS:MCU_ST_STM32F0
-LIBS:MCU_ST_STM32F1
-LIBS:MCU_ST_STM32F2
-LIBS:MCU_ST_STM32F3
-LIBS:MCU_ST_STM32F4
-LIBS:MCU_ST_STM32F7
-LIBS:MCU_ST_STM32H7
-LIBS:MCU_ST_STM32L0
-LIBS:MCU_ST_STM32L1
-LIBS:MCU_ST_STM32L4
-LIBS:MCU_ST_STM32L4+
-LIBS:MCU_Texas
-LIBS:MCU_Texas_MSP430
-LIBS:Mechanical
-LIBS:Memory_Controller
-LIBS:Memory_EEPROM
-LIBS:Memory_EPROM
-LIBS:Memory_Flash
-LIBS:Memory_NVRAM
-LIBS:Memory_RAM
-LIBS:Memory_ROM
-LIBS:Memory_UniqueID
-LIBS:Motor
-LIBS:Oscillator
-LIBS:Potentiometer_Digital
-LIBS:Power_Management
-LIBS:Power_Protection
-LIBS:Power_Supervisor
-LIBS:pspice
-LIBS:Reference_Current
-LIBS:Reference_Voltage
-LIBS:Regulator_Controller
-LIBS:Regulator_Current
-LIBS:Regulator_Linear
-LIBS:Regulator_SwitchedCapacitor
-LIBS:Regulator_Switching
-LIBS:Relay
-LIBS:Relay_SolidState
-LIBS:RF
-LIBS:RF_AM_FM
-LIBS:RF_Amplifier
-LIBS:RF_Bluetooth
-LIBS:RF_GPS
-LIBS:RF_GSM
-LIBS:RF_Mixer
-LIBS:RF_Module
-LIBS:RF_RFID
-LIBS:RF_Switch
-LIBS:RF_WiFi
-LIBS:RF_ZigBee
-LIBS:Security
-LIBS:Sensor
-LIBS:Sensor_Audio
-LIBS:Sensor_Current
-LIBS:Sensor_Gas
-LIBS:Sensor_Humidity
-LIBS:Sensor_Magnetic
-LIBS:Sensor_Motion
-LIBS:Sensor_Optical
-LIBS:Sensor_Pressure
-LIBS:Sensor_Proximity
-LIBS:Sensor_Temperature
-LIBS:Sensor_Touch
-LIBS:Sensor_Voltage
-LIBS:Switch
-LIBS:Timer
-LIBS:Timer_PLL
-LIBS:Timer_RTC
-LIBS:Transformer
-LIBS:Transistor_Array
-LIBS:Transistor_BJT
-LIBS:Transistor_FET
-LIBS:Transistor_IGBT
-LIBS:Triac_Thyristor
-LIBS:Valve
-LIBS:Video
-LIBS:A500MPU-Adapter-cache
-EELAYER 25 0
+EESchema Schematic File Version 4
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Amiga 500 MPU Adapter"
-Date "2018-12-23"
-Rev "1.0"
+Date "2022-11-30"
+Rev "2.0"
 Comp "Retrobit Lab"
 Comment1 "J13 Adapter on Amiga 500 Motherboard Lobster"
 Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L CONN_01X08 P1
-U 1 1 5BE8B105
-P 7800 3400
-F 0 "P1" H 7800 3850 50  0000 C CNN
-F 1 "CONN_01X08" V 7900 3400 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x08" V 8000 3350 50  0000 C CNN
-F 3 "" H 7800 3400 50  0000 C CNN
-	1    7800 3400
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	7600 3050 7400 3050
 Wire Wire Line
@@ -251,7 +24,7 @@ Wire Wire Line
 Wire Wire Line
 	7600 3450 7400 3450
 Wire Wire Line
-	7600 3550 7400 3550
+	7600 3550 7500 3550
 Wire Wire Line
 	7600 3650 7400 3650
 Wire Wire Line
@@ -268,7 +41,7 @@ Text GLabel 7400 3750 0    39   BiDi ~ 0
 INUSE
 NoConn ~ 7400 3450
 $Comp
-L GND #PWR01
+L power:GND #PWR01
 U 1 1 5BE8B22F
 P 7500 3850
 F 0 "#PWR01" H 7500 3600 50  0001 C CNN
@@ -285,10 +58,8 @@ Text GLabel 7400 3550 0    39   BiDi ~ 0
 GND
 Text GLabel 7400 3350 0    39   BiDi ~ 0
 VCC
-Wire Wire Line
-	7600 3350 7600 4150
 $Comp
-L VCC #PWR02
+L power:VCC #PWR02
 U 1 1 5BE8B275
 P 7600 4150
 F 0 "#PWR02" H 7600 4000 50  0001 C CNN
@@ -297,18 +68,6 @@ F 2 "" H 7600 4150 50  0001 C CNN
 F 3 "" H 7600 4150 50  0001 C CNN
 	1    7600 4150
 	-1   0    0    1   
-$EndComp
-Connection ~ 7600 3350
-$Comp
-L CONN_01X08 P2
-U 1 1 5BE8B419
-P 9150 3400
-F 0 "P2" H 9150 3850 50  0000 C CNN
-F 1 "CONN_01X08" V 9250 3400 50  0000 C CNN
-F 2 "Socket_Strips:Socket_Strip_Straight_1x08" V 9400 3300 50  0000 C CNN
-F 3 "" H 9150 3400 50  0000 C CNN
-	1    9150 3400
-	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	8950 3050 8750 3050
@@ -321,7 +80,7 @@ Wire Wire Line
 Wire Wire Line
 	8950 3450 8750 3450
 Wire Wire Line
-	8950 3550 8750 3550
+	8950 3550 8850 3550
 Wire Wire Line
 	8950 3650 8750 3650
 Wire Wire Line
@@ -338,7 +97,7 @@ Text GLabel 8750 3750 0    39   BiDi ~ 0
 INUSE
 NoConn ~ 8750 3450
 $Comp
-L GND #PWR03
+L power:GND #PWR03
 U 1 1 5BE8B42D
 P 8850 3850
 F 0 "#PWR03" H 8850 3600 50  0001 C CNN
@@ -355,10 +114,8 @@ Text GLabel 8750 3550 0    39   BiDi ~ 0
 GND
 Text GLabel 8750 3350 0    39   BiDi ~ 0
 VCC
-Wire Wire Line
-	8950 3350 8950 4150
 $Comp
-L VCC #PWR04
+L power:VCC #PWR04
 U 1 1 5BE8B438
 P 8950 4150
 F 0 "#PWR04" H 8950 4000 50  0001 C CNN
@@ -368,9 +125,8 @@ F 3 "" H 8950 4150 50  0001 C CNN
 	1    8950 4150
 	-1   0    0    1   
 $EndComp
-Connection ~ 8950 3350
 $Comp
-L VCC #PWR05
+L power:VCC #PWR05
 U 1 1 5BE8B527
 P 9800 2750
 F 0 "#PWR05" H 9800 2600 50  0001 C CNN
@@ -381,11 +137,11 @@ F 3 "" H 9800 2750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9800 2750 9800 2950
+	9800 2750 9800 2850
 Text GLabel 9800 2950 3    39   BiDi ~ 0
 VCC
 $Comp
-L GND #PWR06
+L power:GND #PWR06
 U 1 1 5BE8B566
 P 10050 2750
 F 0 "#PWR06" H 10050 2500 50  0001 C CNN
@@ -398,9 +154,9 @@ $EndComp
 Text GLabel 10050 2950 3    39   BiDi ~ 0
 GND
 Wire Wire Line
-	10050 2750 10050 2950
+	10050 2750 10050 2850
 $Comp
-L PWR_FLAG #FLG07
+L power:PWR_FLAG #FLG07
 U 1 1 5BE8B59C
 P 10050 2850
 F 0 "#FLG07" H 10050 2925 50  0001 C CNN
@@ -411,7 +167,7 @@ F 3 "" H 10050 2850 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L PWR_FLAG #FLG08
+L power:PWR_FLAG #FLG08
 U 1 1 5BE8B5B8
 P 9800 2850
 F 0 "#FLG08" H 9800 2925 50  0001 C CNN
@@ -426,146 +182,70 @@ Connection ~ 9800 2850
 Text GLabel 6250 2100 2    39   BiDi ~ 0
 STATUS
 Wire Wire Line
-	5650 2100 6250 2100
+	5650 2100 5900 2100
 $Comp
-L R_Small R1
-U 1 1 5BE8B735
-P 5900 2300
-F 0 "R1" H 5750 2300 50  0000 L CNN
-F 1 "330" H 5930 2260 50  0000 L CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" H 5900 2300 50  0001 C CNN
-F 3 "" H 5900 2300 50  0000 C CNN
-	1    5900 2300
-	1    0    0    -1  
-$EndComp
-$Comp
-L Led_Small D1
-U 1 1 5BE8B76E
-P 5900 2500
-F 0 "D1" H 5850 2625 50  0000 L CNN
-F 1 "LED GREEN" V 5900 2000 50  0000 L CNN
-F 2 "SMD_Packages:SMD-1206_Pol" V 5900 2500 50  0001 C CNN
-F 3 "" V 5900 2500 50  0000 C CNN
-	1    5900 2500
-	0    -1   -1   0   
-$EndComp
-$Comp
-L GND #PWR09
+L power:GND #PWR09
 U 1 1 5BE8B7FF
-P 5900 2600
-F 0 "#PWR09" H 5900 2350 50  0001 C CNN
-F 1 "GND" H 5900 2450 50  0000 C CNN
-F 2 "" H 5900 2600 50  0001 C CNN
-F 3 "" H 5900 2600 50  0001 C CNN
-	1    5900 2600
+P 5900 2700
+F 0 "#PWR09" H 5900 2450 50  0001 C CNN
+F 1 "GND" H 5900 2550 50  0000 C CNN
+F 2 "" H 5900 2700 50  0001 C CNN
+F 3 "" H 5900 2700 50  0001 C CNN
+	1    5900 2700
 	1    0    0    -1  
 $EndComp
-Text GLabel 6250 2900 2    39   BiDi ~ 0
+Text GLabel 6250 3025 2    39   BiDi ~ 0
 INUSE
 $Comp
-L R_Small R2
+L Device:R_Small R2
 U 1 1 5BE8B8C9
-P 5900 3100
-F 0 "R2" H 5750 3100 50  0000 L CNN
-F 1 "330" H 5930 3060 50  0000 L CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" H 5900 3100 50  0001 C CNN
-F 3 "" H 5900 3100 50  0000 C CNN
-	1    5900 3100
+P 5900 3225
+F 0 "R2" H 5750 3225 50  0000 L CNN
+F 1 "330R" H 5955 3220 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" H 5900 3225 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811141443_Ever-Ohms-Tech-CR1206F330RP05Z_C245520.pdf" H 5900 3225 50  0001 C CNN
+F 4 "C245520" H 5900 3225 50  0001 C CNN "LCSC"
+	1    5900 3225
 	1    0    0    -1  
 $EndComp
 $Comp
-L Led_Small D2
-U 1 1 5BE8B8CF
-P 5900 3300
-F 0 "D2" H 5850 3425 50  0000 L CNN
-F 1 "DISK YELLOW" V 5900 2750 50  0000 L CNN
-F 2 "SMD_Packages:SMD-1206_Pol" V 5900 3300 50  0001 C CNN
-F 3 "" V 5900 3300 50  0000 C CNN
-	1    5900 3300
-	0    -1   -1   0   
-$EndComp
-$Comp
-L GND #PWR010
+L power:GND #PWR010
 U 1 1 5BE8B8D5
-P 5900 3400
-F 0 "#PWR010" H 5900 3150 50  0001 C CNN
-F 1 "GND" H 5900 3250 50  0000 C CNN
-F 2 "" H 5900 3400 50  0001 C CNN
-F 3 "" H 5900 3400 50  0001 C CNN
-	1    5900 3400
+P 5900 3625
+F 0 "#PWR010" H 5900 3375 50  0001 C CNN
+F 1 "GND" H 5900 3475 50  0000 C CNN
+F 2 "" H 5900 3625 50  0001 C CNN
+F 3 "" H 5900 3625 50  0001 C CNN
+	1    5900 3625
 	1    0    0    -1  
 $EndComp
-Text GLabel 6250 3850 2    39   BiDi ~ 0
+Text GLabel 6220 4045 2    39   BiDi ~ 0
 VCC
 $Comp
-L R_Small R3
-U 1 1 5BE8BAA4
-P 5900 4050
-F 0 "R3" H 5750 4050 50  0000 L CNN
-F 1 "330" H 5930 4010 50  0000 L CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" H 5900 4050 50  0001 C CNN
-F 3 "" H 5900 4050 50  0000 C CNN
-	1    5900 4050
-	1    0    0    -1  
-$EndComp
-$Comp
-L Led_Small D3
-U 1 1 5BE8BAAA
-P 5900 4250
-F 0 "D3" H 5850 4375 50  0000 L CNN
-F 1 "READY RED" V 5900 3700 50  0000 L CNN
-F 2 "SMD_Packages:SMD-1206_Pol" V 5900 4250 50  0001 C CNN
-F 3 "" V 5900 4250 50  0000 C CNN
-	1    5900 4250
-	0    -1   -1   0   
-$EndComp
-$Comp
-L GND #PWR011
+L power:GND #PWR011
 U 1 1 5BE8BAB0
-P 5900 4350
-F 0 "#PWR011" H 5900 4100 50  0001 C CNN
-F 1 "GND" H 5900 4200 50  0000 C CNN
-F 2 "" H 5900 4350 50  0001 C CNN
-F 3 "" H 5900 4350 50  0001 C CNN
-	1    5900 4350
+P 5870 4645
+F 0 "#PWR011" H 5870 4395 50  0001 C CNN
+F 1 "GND" H 5870 4495 50  0000 C CNN
+F 2 "" H 5870 4645 50  0001 C CNN
+F 3 "" H 5870 4645 50  0001 C CNN
+	1    5870 4645
 	1    0    0    -1  
 $EndComp
-$Comp
-L CONN_02X03 P3
-U 1 1 5BE8BD7E
-P 4400 3450
-F 0 "P3" H 4400 3650 50  0000 C CNN
-F 1 "CONN_02X03" H 4400 3250 50  0000 C CNN
-F 2 "RetroBitLab:IDC-Header_2x03_P2.54mm_Vertical" H 4400 3050 50  0000 C CNN
-F 3 "" H 4400 2250 50  0000 C CNN
-	1    4400 3450
-	1    0    0    -1  
-$EndComp
-Text GLabel 4650 3350 2    39   BiDi ~ 0
+Text GLabel 4650 2910 2    39   BiDi ~ 0
 DATA
-Text GLabel 4150 3350 0    39   BiDi ~ 0
+Text GLabel 4150 2910 0    39   BiDi ~ 0
 CLOCK
-Text GLabel 4150 3550 0    39   BiDi ~ 0
+Text GLabel 4150 3110 0    39   BiDi ~ 0
 RESET
-Text GLabel 4650 3550 2    39   BiDi ~ 0
+Text GLabel 4650 3110 2    39   BiDi ~ 0
 VCC
-Text GLabel 4150 3450 0    39   BiDi ~ 0
+Text GLabel 4150 3010 0    39   BiDi ~ 0
 GND
-Text GLabel 4650 3450 2    39   BiDi ~ 0
+Text GLabel 4650 3010 2    39   BiDi ~ 0
 GND
 $Comp
-L CONN_01X02 P4
-U 1 1 5BE8BF09
-P 5400 2300
-F 0 "P4" V 5600 2300 50  0000 C CNN
-F 1 "CONN_01X02" V 5500 2300 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x02" H 5400 2300 50  0001 C CNN
-F 3 "" H 5400 2300 50  0000 C CNN
-	1    5400 2300
-	0    1    1    0   
-$EndComp
-$Comp
-L GND #PWR012
+L power:GND #PWR012
 U 1 1 5BE8BFEA
 P 5350 2100
 F 0 "#PWR012" H 5350 1850 50  0001 C CNN
@@ -575,66 +255,33 @@ F 3 "" H 5350 2100 50  0001 C CNN
 	1    5350 2100
 	-1   0    0    1   
 $EndComp
-$Comp
-L R_Small R4
-U 1 1 5BE8C013
-P 5550 2100
-F 0 "R4" V 5450 2050 50  0000 L CNN
-F 1 "330" V 5650 2050 50  0000 L CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" H 5550 2100 50  0001 C CNN
-F 3 "" H 5550 2100 50  0000 C CNN
-	1    5550 2100
-	0    -1   -1   0   
-$EndComp
 Connection ~ 5900 2100
 Wire Wire Line
 	5900 2100 5900 2200
 Wire Wire Line
-	5650 2900 6250 2900
+	5650 3025 5900 3025
 $Comp
-L CONN_01X02 P5
-U 1 1 5BE8C23A
-P 5400 3100
-F 0 "P5" V 5600 3100 50  0000 C CNN
-F 1 "CONN_01X02" V 5500 3100 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x02" H 5400 3100 50  0001 C CNN
-F 3 "" H 5400 3100 50  0000 C CNN
-	1    5400 3100
-	0    1    1    0   
-$EndComp
-$Comp
-L GND #PWR013
+L power:GND #PWR013
 U 1 1 5BE8C240
-P 5350 2900
-F 0 "#PWR013" H 5350 2650 50  0001 C CNN
-F 1 "GND" H 5350 2750 50  0000 C CNN
-F 2 "" H 5350 2900 50  0001 C CNN
-F 3 "" H 5350 2900 50  0001 C CNN
-	1    5350 2900
+P 5350 3025
+F 0 "#PWR013" H 5350 2775 50  0001 C CNN
+F 1 "GND" H 5350 2875 50  0000 C CNN
+F 2 "" H 5350 3025 50  0001 C CNN
+F 3 "" H 5350 3025 50  0001 C CNN
+	1    5350 3025
 	-1   0    0    1   
 $EndComp
-$Comp
-L R_Small R5
-U 1 1 5BE8C246
-P 5550 2900
-F 0 "R5" V 5450 2850 50  0000 L CNN
-F 1 "330" V 5650 2850 50  0000 L CNN
-F 2 "Resistors_SMD:R_1206_HandSoldering" H 5550 2900 50  0001 C CNN
-F 3 "" H 5550 2900 50  0000 C CNN
-	1    5550 2900
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
-	5900 3000 5900 2900
-Connection ~ 5900 2900
+	5900 3125 5900 3025
+Connection ~ 5900 3025
 Wire Wire Line
-	6250 3850 5900 3850
+	6220 4045 5870 4045
 Wire Wire Line
-	5900 3850 5900 3950
+	5870 4045 5870 4145
 Text GLabel 4500 4350 2    39   BiDi ~ 0
 VCC
 $Comp
-L GND #PWR014
+L power:GND #PWR014
 U 1 1 5C1ED552
 P 4150 4850
 F 0 "#PWR014" H 4150 4600 50  0001 C CNN
@@ -645,28 +292,30 @@ F 3 "" H 4150 4850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3850 4350 4500 4350
+	3850 4350 4150 4350
 Wire Wire Line
 	4150 4350 4150 4450
 $Comp
-L C_Small C2
+L Device:C_Small C2
 U 1 1 5C1ED589
 P 4150 4550
 F 0 "C2" H 4160 4620 50  0000 L CNN
 F 1 "100nF" H 4160 4470 50  0000 L CNN
-F 2 "Capacitors_SMD:C_1206_HandSoldering" H 4150 4550 50  0001 C CNN
-F 3 "" H 4150 4550 50  0000 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 4150 4550 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1810221109_Samsung-Electro-Mechanics-CL31B104KBCNNNC_C24497.pdf" H 4150 4550 50  0001 C CNN
+F 4 "C24497" H 4150 4550 50  0001 C CNN "LCSC"
 	1    4150 4550
 	1    0    0    -1  
 $EndComp
 $Comp
-L CP1_Small C1
+L Device:CP1_Small C1
 U 1 1 5C1ED5CC
 P 3850 4550
 F 0 "C1" H 3860 4620 50  0000 L CNN
 F 1 "10uF" H 3860 4470 50  0000 L CNN
-F 2 "SMD_Packages:SMD-1206_Pol" H 3850 4550 50  0001 C CNN
-F 3 "" H 3850 4550 50  0000 C CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-12_Kemet-S_Pad1.58x1.35mm_HandSolder" H 3850 4550 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811151641_Sunlord-TC212A106K016Y_C108529.pdf" H 3850 4550 50  0001 C CNN
+F 4 "C108529" H 3850 4550 50  0001 C CNN "LCSC"
 	1    3850 4550
 	1    0    0    -1  
 $EndComp
@@ -674,10 +323,179 @@ Wire Wire Line
 	3850 4350 3850 4450
 Connection ~ 4150 4350
 Wire Wire Line
-	4150 4650 4150 4850
+	4150 4650 4150 4750
 Wire Wire Line
 	4150 4750 3850 4750
 Wire Wire Line
 	3850 4750 3850 4650
 Connection ~ 4150 4750
+Wire Wire Line
+	7500 3550 7400 3550
+Wire Wire Line
+	8850 3550 8750 3550
+Wire Wire Line
+	10050 2850 10050 2950
+Wire Wire Line
+	9800 2850 9800 2950
+Wire Wire Line
+	5900 2100 6250 2100
+Wire Wire Line
+	5900 3025 6250 3025
+Wire Wire Line
+	4150 4350 4500 4350
+Wire Wire Line
+	4150 4750 4150 4850
+$Comp
+L Connector_Generic:Conn_02x03_Odd_Even P3
+U 1 1 6387440A
+P 4350 3010
+F 0 "P3" H 4390 3245 50  0000 C CNN
+F 1 "Conn_02x03" H 4390 2770 50  0001 C CNN
+F 2 "Connector_IDC:IDC-Header_2x03_P2.54mm_Vertical" H 4350 3010 50  0001 C CNN
+F 3 "~" H 4350 3010 50  0001 C CNN
+	1    4350 3010
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x08 P1
+U 1 1 63877AAC
+P 7800 3350
+F 0 "P1" H 7740 3800 50  0000 L CNN
+F 1 "Conn_01x08" H 7880 3251 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical" H 7800 3350 50  0001 C CNN
+F 3 "~" H 7800 3350 50  0001 C CNN
+	1    7800 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x08 P2
+U 1 1 63879470
+P 9150 3350
+F 0 "P2" H 9085 3760 50  0000 L CNN
+F 1 "Conn_01x08" H 9230 3251 50  0001 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x08_P2.54mm_Vertical" H 9150 3350 50  0001 C CNN
+F 3 "~" H 9150 3350 50  0001 C CNN
+	1    9150 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 P4
+U 1 1 63888D90
+P 5450 2420
+F 0 "P4" V 5560 2315 50  0000 L CNN
+F 1 "Conn_01x02" V 5413 2500 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 5450 2420 50  0001 C CNN
+F 3 "~" H 5450 2420 50  0001 C CNN
+	1    5450 2420
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 P5
+U 1 1 6388A0FA
+P 5450 3330
+F 0 "P5" V 5560 3240 50  0000 L CNN
+F 1 "Conn_01x02" V 5413 3410 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 5450 3330 50  0001 C CNN
+F 3 "~" H 5450 3330 50  0001 C CNN
+	1    5450 3330
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5450 3025 5450 3130
+Wire Wire Line
+	5350 3025 5350 3130
+Wire Wire Line
+	5450 2100 5450 2220
+Wire Wire Line
+	5350 2100 5350 2220
+Wire Wire Line
+	7600 3750 7600 4150
+Connection ~ 7600 3750
+Wire Wire Line
+	8950 3750 8950 4150
+Connection ~ 8950 3750
+$Comp
+L Device:R_Small R3
+U 1 1 638B5FCA
+P 5870 4245
+F 0 "R3" H 5720 4245 50  0000 L CNN
+F 1 "330R" H 5925 4240 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" H 5870 4245 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811141443_Ever-Ohms-Tech-CR1206F330RP05Z_C245520.pdf" H 5870 4245 50  0001 C CNN
+F 4 "C245520" H 5870 4245 50  0001 C CNN "LCSC"
+	1    5870 4245
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_Small R1
+U 1 1 638B6D68
+P 5900 2300
+F 0 "R1" H 5750 2300 50  0000 L CNN
+F 1 "330R" H 5955 2295 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" H 5900 2300 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811141443_Ever-Ohms-Tech-CR1206F330RP05Z_C245520.pdf" H 5900 2300 50  0001 C CNN
+F 4 "C245520" H 5900 2300 50  0001 C CNN "LCSC"
+	1    5900 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED D2
+U 1 1 638C83C9
+P 5900 3475
+F 0 "D2" V 5905 3575 50  0000 L CNN
+F 1 "FLOPPY GREEN" V 5910 2780 50  0000 L CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 5900 3475 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1810261420_Everlight-Elec-15-21-S2C-AQ2R2B-2T_C183851.pdf" V 5900 3475 50  0001 C CNN
+F 4 "C2980185" H 5900 3475 50  0001 C CNN "LCSC"
+	1    5900 3475
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:LED D3
+U 1 1 638C8D6E
+P 5870 4495
+F 0 "D3" H 5820 4620 50  0000 L CNN
+F 1 "READY RED" V 5870 3945 50  0000 L CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 5870 4495 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811151241_Everlight-Elec-15-21-R6C-FQ1R1B-2T_C93133.pdf" V 5870 4495 50  0001 C CNN
+F 4 "C93133" H 5870 4495 50  0001 C CNN "LCSC"
+	1    5870 4495
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_Small R4
+U 1 1 638E637E
+P 5550 2100
+F 0 "R4" V 5460 2050 50  0000 L CNN
+F 1 "330R" V 5640 2050 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" H 5550 2100 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811141443_Ever-Ohms-Tech-CR1206F330RP05Z_C245520.pdf" H 5550 2100 50  0001 C CNN
+F 4 "C245520" H 5550 2100 50  0001 C CNN "LCSC"
+	1    5550 2100
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_Small R5
+U 1 1 638E937F
+P 5550 3025
+F 0 "R5" V 5460 2975 50  0000 L CNN
+F 1 "330R" V 5640 2975 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" H 5550 3025 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1811141443_Ever-Ohms-Tech-CR1206F330RP05Z_C245520.pdf" H 5550 3025 50  0001 C CNN
+F 4 "C245520" H 5550 3025 50  0001 C CNN "LCSC"
+	1    5550 3025
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED D1
+U 1 1 638EB651
+P 5900 2550
+F 0 "D1" V 5910 2630 50  0000 L CNN
+F 1 "POWER ORANGE" V 5910 1855 50  0000 L CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 5900 2550 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/lcsc/1810261420_Everlight-Elec-15-21-S2C-AQ2R2B-2T_C183851.pdf" V 5900 2550 50  0001 C CNN
+F 4 "C183851" H 5900 2550 50  0001 C CNN "LCSC"
+	1    5900 2550
+	0    -1   -1   0   
+$EndComp
 $EndSCHEMATC
