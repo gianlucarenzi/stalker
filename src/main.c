@@ -64,7 +64,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(int baud);
 
 /* Local variables */
-static int debuglevel = DBG_NOISY;
+static int debuglevel = DBG_INFO;
 static const char *fwBuild = "v1.1rc";
 static UART_HandleTypeDef huart2;
 
