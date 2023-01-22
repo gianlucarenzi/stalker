@@ -93,6 +93,7 @@ static void USBH_Process_OS(void const * argument);
   */
 USBH_StatusTypeDef  USBH_Init(USBH_HandleTypeDef *phost, void (*pUsrFunc)(USBH_HandleTypeDef *phost, uint8_t ), uint8_t id)
 {
+	DBG_N("Called\r\n");
   /* Check whether the USB Host handle is valid */
   if(phost == NULL)
   {
@@ -134,6 +135,7 @@ USBH_StatusTypeDef  USBH_Init(USBH_HandleTypeDef *phost, void (*pUsrFunc)(USBH_H
 
   /* Initialize low level driver */
   USBH_LL_Init(phost);
+  DBG_N("Exit OK\r\n");
   return USBH_OK;
 }
 
