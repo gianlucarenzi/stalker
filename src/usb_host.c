@@ -77,6 +77,7 @@ void MX_USB_HOST_Init(void)
 
 	USBH_Start(&hUsbHostFS);
 
+	DBG_N("Exit\n\r");
 }
 
 /*
