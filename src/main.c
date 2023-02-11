@@ -65,7 +65,7 @@ static void MX_USART2_UART_Init(int baud);
 
 /* Local variables */
 static int debuglevel = DBG_INFO;
-static const char *fwBuild = "v1.1rc";
+static const char *fwBuild = "v1.2rc" __TIME__ "-" __DATE__;
 static UART_HandleTypeDef huart2;
 
 static void banner(void)
@@ -169,6 +169,7 @@ int main(void)
 	USBH_HandleTypeDef * usbhost = NULL;
 	int keyboard_ready = 0;
 	int count = 0;
+	int usbh_initialized = 0;
 
 	_write_ready(SYSCALL_NOTREADY, &huart2);
 
@@ -189,17 +190,24 @@ int main(void)
 
 	banner();
 
-	/* Initialize USB HOST OTG FS */
-	MX_USB_HOST_Init();
-
-	/* Infinite loop */
+	DBG_N("timer_start()\r\n");
 	timer_start();
 	/* Now intialize Amiga Pinouts and sync the keyboard */
+	DBG_N("amikb_startup()\r\n");
 	amikb_startup();
+	DBG_N("amikb_ready(0)\r\n");
 	amikb_ready(0);
-
+	DBG_N("Entering LOOP...\r\n");
 	for (;;)
 	{
+		DBG_N("LOOPING...\r\n");
+		if (!usbh_initialized) {
+			DBG_V("MX_USB_HOST_Init()\r\n");
+			/* Initialize USB HOST OTG FS */
+			MX_USB_HOST_Init();
+			usbh_initialized = ! usbh_initialized;
+		}
+
 		MX_USB_HOST_Process();
 		aState = USBH_ApplicationState();
 		// Se risulta connessa la tastiera USB
