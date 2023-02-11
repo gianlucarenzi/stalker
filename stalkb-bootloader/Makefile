@@ -51,9 +51,9 @@ C_CORE_SOURCES =  \
 
 
 C_USB_SOURCES = \
-	USB_DEVICE/App/usb_device.c \
-	USB_DEVICE/App/usbd_desc.c \
-	USB_DEVICE/Target/usbd_conf.c \
+#	USB_DEVICE/App/usb_device.c \
+#	USB_DEVICE/App/usbd_desc.c \
+#	USB_DEVICE/Target/usbd_conf.c \
 	
 
 C_DRIVERS_SOURCES = \
@@ -79,10 +79,10 @@ C_DRIVERS_SOURCES = \
 
 
 C_MIDDLEWARE_SOURCES = \
-	Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c \
-	Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
-	Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
-	Middlewares/ST/STM32_USB_Device_Library/Class/HID/Src/usbd_hid.c \
+#	Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c \
+#	Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
+#	Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
+#	Middlewares/ST/STM32_USB_Device_Library/Class/HID/Src/usbd_hid.c \
 	
 
 C_SOURCES = \
@@ -139,8 +139,7 @@ AS_DEFS =
 # C defines
 C_DEFS = \
 	-DUSE_HAL_DRIVER \
-	-DSTM32F401xC
-
+	-DSTM32F401xC \
 
 # AS includes
 AS_INCLUDES =
