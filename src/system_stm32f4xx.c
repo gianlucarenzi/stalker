@@ -196,6 +196,11 @@ void SystemInit(void)
 #ifdef VECT_TAB_SRAM
   SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
 #else
+  /* Use the correct offset for bootloader: 0x5000 */
+  #ifdef VECT_TAB_OFFSET
+  #undef VECT_TAB_OFFSET
+  #endif
+  #define VECT_TAB_OFFSET 0x5000
   SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal FLASH */
 #endif
 }
