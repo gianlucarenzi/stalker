@@ -24,7 +24,7 @@ extern uint32_t _estack;
 
 /* Local variables */
 static int debuglevel = DBG_NOISY;
-static const char *fwBuild = "v0.2rc";
+static const char *fwBuild = "v0.2rc : " __TIME__ "-" __DATE__;
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
@@ -41,7 +41,7 @@ static void MX_USART2_UART_Init(int baudrate);
 #define WAIT_MS (1000L / NUM_SAMPLES)
 
 #define STM32_DFU_ROM_CODE 0x1FFF0000
-#define USER_CODE_OFFSET   (0x4000)
+#define USER_CODE_OFFSET   (0x5000)
 
 #define BOOT_1_PIN      GPIO_PIN_1 //STALKER V2 BOARD: PC1
 #define BOOT_1_PORT     GPIOC
@@ -120,8 +120,28 @@ static int ask_for_bootloader(void)
  */
 static inline int check_valid_application(uint32_t jumpAddress, uint32_t stackAddress)
 {
-	return (stackAddress >= SRAM_BASE && stackAddress <= (SRAM_BASE + _estack) &&
-			jumpAddress >= (FLASH_BASE + USER_CODE_OFFSET) && jumpAddress < FLASH_END);
+	int ram_is_valid = 0;
+	int flash_is_valid = 0;
+
+	DBG_N("ApplicationAddressSpace = 0x%08lX -- FLASH_BASE: 0x%08lX\r\n", jumpAddress, FLASH_BASE);
+	DBG_N("ApplicationRAMSpace     = 0x%08lX -- SRAM_BASE: 0x%08lX\r\n", stackAddress, SRAM_BASE);
+
+	ram_is_valid = stackAddress >= SRAM_BASE && stackAddress <= (SRAM_BASE + 0x10000);
+	flash_is_valid = jumpAddress >= (FLASH_BASE + USER_CODE_OFFSET) && jumpAddress < FLASH_END;
+
+	DBG_N("RIV: %d -- FIV: %d\r\n", ram_is_valid, flash_is_valid);
+
+	DBG_V("The Application is %s\r\n", (ram_is_valid && flash_is_valid) ? "VALID" : "INVALID");
+	return (ram_is_valid && flash_is_valid);
+}
+
+static void mdump(uint32_t offset, uint32_t size)
+{
+	for (uint32_t reg = 0; reg < (size * 4); reg = reg + 4)
+	{
+		uint32_t regval = *(__IO uint32_t *) (offset + reg);
+		printf("[%02ld] 0x%08lX\r\n", reg, regval);
+	}
 }
 
 /**
@@ -165,6 +185,7 @@ int main(void)
 	amiga_reset();
 
 	if ( !bootmode ) {
+		DBG_I("NFU\r\n");
 		/*
 		 * It's a tricky calculation: basically every firmware starts with
 		 * the Vector Table (Jump table) and it is defined in the startup
@@ -218,18 +239,27 @@ int main(void)
 		StackAddress = *(__IO uint32_t*) (FLASH_BASE + USER_CODE_OFFSET + 0);
 
 		if (check_valid_application(JumpAddress, StackAddress)) {
+
 			Jump_To_Application = (pFunction) JumpAddress;
-			__set_MSP(*(__IO uint32_t *) (FLASH_BASE + USER_CODE_OFFSET));
+
+			/* Set the vector table */
+			SCB->VTOR = FLASH_BASE + USER_CODE_OFFSET;
+
+			uint32_t msp_value = *(__IO uint32_t *) (FLASH_BASE + USER_CODE_OFFSET);
+
+			/* Set the STACK POINTER to the Application space */
+			__set_MSP(msp_value);
 			Jump_To_Application();
 			/* Never reached */
 			while (1) ;
 		} else {
-			DBG_E("Not valid application found. Firmware Upgrade FORCED.\n");
+			DBG_E("Not valid application found. Firmware Upgrade FORCED.\r\n");
 			HAL_Delay(100);
 		}
 	}
 
-	DBG_I("Starting STM32 DFU Mode...\n");
+	DBG_I("Starting STM32 DFU Mode...\r\n");
+	HAL_Delay(200);
 
 	/* Enter in DFU ROM Code. We need to de-initialize almost everything */
 	HAL_RCC_DeInit();
