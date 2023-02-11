@@ -246,6 +246,10 @@ USBH_StatusTypeDef USBH_SelectInterface(USBH_HandleTypeDef *phost, uint8_t inter
     USBH_UsrLog ("Class    : %xh", phost->device.CfgDesc.Itf_Desc[interface].bInterfaceClass );
     USBH_UsrLog ("SubClass : %xh", phost->device.CfgDesc.Itf_Desc[interface].bInterfaceSubClass );
     USBH_UsrLog ("Protocol : %xh", phost->device.CfgDesc.Itf_Desc[interface].bInterfaceProtocol );
+    DBG_I("Switching to Interface (#%d)\r\n", interface);
+    DBG_I("Class    : 0x%02x\r\n", phost->device.CfgDesc.Itf_Desc[interface].bInterfaceClass );
+    DBG_I("SubClass : 0x%02x\r\n", phost->device.CfgDesc.Itf_Desc[interface].bInterfaceSubClass );
+    DBG_I("Protocol : 0x%02x\r\n", phost->device.CfgDesc.Itf_Desc[interface].bInterfaceProtocol );
   }
   else
   {
@@ -665,10 +669,10 @@ static USBH_StatusTypeDef USBH_HandleEnum (USBH_HandleTypeDef *phost)
     /* Get FULL Device Desc  */
     if ( USBH_Get_DevDesc(phost, USB_DEVICE_DESC_SIZE)== USBH_OK)
     {
-      USBH_UsrLog("PID: %xh", phost->device.DevDesc.idProduct );
-      USBH_UsrLog("VID: %xh", phost->device.DevDesc.idVendor );
-      DBG_I("VID: 0x%x\n\r", phost->device.DevDesc.idVendor );
-      DBG_I("PID: 0x%x\n\r", phost->device.DevDesc.idProduct );
+      USBH_UsrLog("PID: %04xh", phost->device.DevDesc.idProduct );
+      USBH_UsrLog("VID: %04xh", phost->device.DevDesc.idVendor );
+      DBG_I("VID: 0x%04x\n\r", phost->device.DevDesc.idVendor );
+      DBG_I("PID: 0x%04x\n\r", phost->device.DevDesc.idProduct );
       phost->EnumState = ENUM_SET_ADDR;
 
     }
