@@ -41,7 +41,7 @@ static void MX_USART2_UART_Init(int baudrate);
 #define WAIT_MS (1000L / NUM_SAMPLES)
 
 #define STM32_DFU_ROM_CODE 0x1FFF0000
-#define USER_CODE_OFFSET   (0x5000)
+#define BOOTLOADER_SIZE    0x4000 /* 16K Bootloader size */
 
 #define BOOT_1_PIN      GPIO_PIN_1 //STALKER V2 BOARD: PC1
 #define BOOT_1_PORT     GPIOC
@@ -127,7 +127,7 @@ static inline int check_valid_application(uint32_t jumpAddress, uint32_t stackAd
 	DBG_N("ApplicationRAMSpace     = 0x%08lX -- SRAM_BASE: 0x%08lX\r\n", stackAddress, SRAM_BASE);
 
 	ram_is_valid = stackAddress >= SRAM_BASE && stackAddress <= (SRAM_BASE + 0x10000);
-	flash_is_valid = jumpAddress >= (FLASH_BASE + USER_CODE_OFFSET) && jumpAddress < FLASH_END;
+	flash_is_valid = jumpAddress >= (FLASH_BASE + BOOTLOADER_SIZE) && jumpAddress < FLASH_END;
 
 	DBG_N("RIV: %d -- FIV: %d\r\n", ram_is_valid, flash_is_valid);
 
@@ -226,26 +226,26 @@ int main(void)
 		 *
 		 * uint32_t stackPtr;
 		 * uint32_t resetPtr;
-		 * stackPtr = *(uint32_t *)(FLASH_BASE + USER_CODE_OFFSET);
-		 * resetPtr = *(uint32_t *)(FLASH_BASE + USER_CODE_OFFSET + 4);
+		 * stackPtr = *(uint32_t *)(FLASH_BASE + BOOTLOADER_SIZE);
+		 * resetPtr = *(uint32_t *)(FLASH_BASE + BOOTLOADER_SIZE + 4);
 		 *
 		 * The stackPtr must be reside within the RAM SPACE Address, meanwhile
 		 * the resetPtr must be equal or higher than the application flash
-		 * address (FLASH_BASE + USER_CODE_OFFSET) and less than the last
-		 * valid flash address (FLASH_BASE + USER_CODE_OFFSET + FLASH_SIZE)
+		 * address (FLASH_BASE + BOOTLOADER_SIZE) and less than the last
+		 * valid flash address (FLASH_BASE + BOOTLOADER_SIZE + FLASH_SIZE)
 		 *
 		 */
-		JumpAddress = *(__IO uint32_t*) (FLASH_BASE + USER_CODE_OFFSET + 4);
-		StackAddress = *(__IO uint32_t*) (FLASH_BASE + USER_CODE_OFFSET + 0);
+		JumpAddress = *(__IO uint32_t*) (FLASH_BASE + BOOTLOADER_SIZE + 4);
+		StackAddress = *(__IO uint32_t*) (FLASH_BASE + BOOTLOADER_SIZE + 0);
 
 		if (check_valid_application(JumpAddress, StackAddress)) {
 
 			Jump_To_Application = (pFunction) JumpAddress;
 
 			/* Set the vector table */
-			SCB->VTOR = FLASH_BASE + USER_CODE_OFFSET;
+			SCB->VTOR = FLASH_BASE + BOOTLOADER_SIZE;
 
-			uint32_t msp_value = *(__IO uint32_t *) (FLASH_BASE + USER_CODE_OFFSET);
+			uint32_t msp_value = *(__IO uint32_t *) (FLASH_BASE + BOOTLOADER_SIZE);
 
 			/* Set the STACK POINTER to the Application space */
 			__set_MSP(msp_value);
