@@ -56,11 +56,13 @@ ENTRY(Reset_Handler)
 _Min_Heap_Size = 0x200;      /* required amount of heap  */
 _Min_Stack_Size = 0x400; /* required amount of stack */
 
+_BOOTLOADER_SIZE_ = 0x4000;  /* 16K */
+
 /* Specify the memory areas */
 MEMORY
 {
-	RAM (xrw)	: ORIGIN = 0x20000000, LENGTH = 64K
-	FLASH (rx)	: ORIGIN = 0x08000000, LENGTH = 32K
+  FLASH (rx) : ORIGIN = 0x08000000, LENGTH = _BOOTLOADER_SIZE_
+  RAM (xrw)  : ORIGIN = 0x20000000, LENGTH = 64K
 }
 
 /* Highest address of the user mode stack */
