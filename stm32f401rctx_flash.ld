@@ -43,6 +43,7 @@ _BOOTLOADER_SIZE_ = 0x4000; /* 16K */
 /* Specify the memory areas */
 MEMORY
 {
+	FLASH (rx)	: ORIGIN = 0x08000000 + _BOOTLOADER_SIZE_, LENGTH = 128K - _BOOTLOADER_SIZE_
 	RAM (xrw)	: ORIGIN = 0x20000000, LENGTH = 64K
 }
 
