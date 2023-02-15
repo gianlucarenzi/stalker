@@ -65,13 +65,12 @@ static void MX_USART2_UART_Init(int baud);
 
 /* Local variables */
 static int debuglevel = DBG_INFO;
-static const char *fwBuild = "v1.2rc" __TIME__ "-" __DATE__;
+static const char *fwBuild = "v1.2 BUILD: " __TIME__ "-" __DATE__;
 static UART_HandleTypeDef huart2;
 
 static void banner(void)
 {
 	printf("\r\n\r\n" ANSI_BLUE "RETROBITLAB AMIGA USB KEYBOARD ADAPTER" ANSI_RESET "\r\n");
-	printf(ANSI_BLUE "-=* STM32F401 BASED BOARD HANDLER  *=-" ANSI_RESET "\r\n");
 	printf(ANSI_YELLOW);
 	printf("FWVER: %s", fwBuild);
 	printf(ANSI_RESET "\r\n");
@@ -366,11 +365,13 @@ int main(void)
 				{
 					DBG_N("NO HID DEVICE FOUND\r\n");
 					led_toggle();
-					amikb_notify("NO HID Device. Please Connect - Amiga Is Back!\n");
 					timer_start();
 					if (count++ > 10)
 					{
-						DBG_I("Waiting USB HID Keyboard - Amiga Is Back!\r\n");
+#ifdef __EASTER_EGG__
+						amikb_notify("NO USB Keyboard Device. Please Connect - Amiga Is Back!\n");
+#endif
+						DBG_I("Waiting USB HID Keyboard!\r\nPlease Connect\r\n");
 						count = 0;
 					}
 				}
@@ -396,8 +397,10 @@ int main(void)
 				timer_start();
 				if (count++ > 10)
 				{
-					amikb_notify("Waiting USB Keyboard - Amiga Is Back!\n");
-					DBG_I("Waiting USB Keyboard - Amiga Is Back!\r\n");
+#ifdef __EASTER_EGG__
+					amikb_notify("NO USB Keyboard Device. Please Connect - Amiga Is Back!\n");
+#endif
+					DBG_I("Waiting USB HID Keyboard!\r\nPlease Connect\r\n");
 					count = 0;
 				}
 			}
