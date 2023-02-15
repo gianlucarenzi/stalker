@@ -23,8 +23,8 @@
 extern uint32_t _estack;
 
 /* Local variables */
-static int debuglevel = DBG_NOISY;
-static const char *fwBuild = "v0.2rc : " __TIME__ "-" __DATE__;
+static int debuglevel = DBG_INFO;
+static const char *fwBuild = "v0.2 BUILD: " __TIME__ "-" __DATE__;
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
@@ -75,7 +75,6 @@ static void amiga_reset(void)
 static void banner(void)
 {
 	printf("\r\n\r\n" ANSI_BLUE "RETROBITLAB STM32 USB DFU BOOTLOADER" ANSI_RESET "\r\n");
-	printf(ANSI_BLUE "-=* STALKER BASED BOARD HANDLER  *=-" ANSI_RESET "\r\n");
 	printf(ANSI_YELLOW);
 	printf("FWVER: %s", fwBuild);
 	printf(ANSI_RESET "\r\n");
@@ -258,33 +257,18 @@ int main(void)
 		}
 	}
 
-	DBG_I("Starting STM32 DFU Mode...\r\n");
+	DBG_I("Starting STM32 DFU BOOTLOADER Mode...\r\n");
 	HAL_Delay(200);
 
-	/* Enter in DFU ROM Code. We need to de-initialize almost everything */
-	HAL_RCC_DeInit();
-	SysTick->CTRL = 0;
-	SysTick->LOAD = 0;
-	SysTick->VAL = 0;
-
-	/* Step: Disable all interrupts */
-	__disable_irq();
-
-	/* ARM Cortex-M Programming Guide to Memory Barrier Instructions.*/
-	__DSB();
-
-	__HAL_SYSCFG_REMAPMEMORY_SYSTEMFLASH();
-	/* Remap is bot visible at once. Execute some unrelated command! */
-
-	__DSB();
-	__ISB();
-
+	/* Enter in DFU ROM Code. */
 	JumpAddress = *(__IO uint32_t*) (STM32_DFU_ROM_CODE + 4);
 	Jump_To_Application = (pFunction) JumpAddress;
 	__set_MSP(*(__IO uint32_t *) (STM32_DFU_ROM_CODE));
 	Jump_To_Application();
 	/* Never reached */
-	while (1) ;
+	while (1)
+	{
+	}
 }
 
 /**
@@ -304,16 +288,14 @@ void SystemClock_Config(void)
 	/** Initializes the RCC Oscillators according to the specified parameters
 	* in the RCC_OscInitTypeDef structure.
 	*/
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
 	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
 	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
 	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
 	RCC_OscInitStruct.PLL.PLLM = 4;
-	RCC_OscInitStruct.PLL.PLLN = 72;
-	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-	RCC_OscInitStruct.PLL.PLLQ = 3;
+	RCC_OscInitStruct.PLL.PLLN = 168;
+	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+	RCC_OscInitStruct.PLL.PLLQ = 7;
 	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
 	{
 		Error_Handler();
@@ -322,13 +304,13 @@ void SystemClock_Config(void)
 	/** Initializes the CPU, AHB and APB buses clocks
 	*/
 	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-							  |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+				  |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
 	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
 	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
 	{
 		Error_Handler();
 	}
