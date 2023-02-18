@@ -63,6 +63,7 @@
 
 
 #include "stm32f4xx.h"
+#include "stm32f4xx_it.h" /* For __appflash_start */
 
 #if !defined  (HSE_VALUE) 
   #define HSE_VALUE    ((uint32_t)25000000) /*!< Default value of the External oscillator in Hz */
@@ -196,12 +197,7 @@ void SystemInit(void)
 #ifdef VECT_TAB_SRAM
   SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
 #else
-  /* Use the correct offset for bootloader: 0x5000 */
-  #ifdef VECT_TAB_OFFSET
-  #undef VECT_TAB_OFFSET
-  #endif
-  #define VECT_TAB_OFFSET 0x4000
-  SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal FLASH */
+  SCB->VTOR = &__appflash_start; /* this symbol is defined in the GNU linker script */
 #endif
 }
 
