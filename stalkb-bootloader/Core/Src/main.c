@@ -36,7 +36,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(int baudrate);
 
 /*
- * Reads NUM_SAMPLES and manage the average
+ * Reads NUM_SAMPLES and manage the average within 1 second
  */
 #define NUM_SAMPLES 10
 #define WAIT_MS (1000L / NUM_SAMPLES)
