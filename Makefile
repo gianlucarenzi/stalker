@@ -14,6 +14,7 @@
 # target
 ######################################
 TARGET = stm32f401-usb-keyboard-amiga
+DEBUG ?= 0
 
 # Librerie et al.
 include Makefile.common
@@ -59,13 +60,12 @@ ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffuncti
 CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 
 ifeq ($(DEBUG), 1)
-	CFLAGS += -g -gdwarf-2 -O0 -pg
+	CFLAGS += -g -gdwarf-2 -O0 -pg -DDEBUG
 
 	ASM_SOURCES += \
 		src/profile_mcount_arm.s \
 
 endif
-
 
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
