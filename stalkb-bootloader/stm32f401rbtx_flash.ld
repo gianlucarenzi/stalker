@@ -57,12 +57,18 @@ _Min_Heap_Size = 0x200;      /* required amount of heap  */
 _Min_Stack_Size = 0x400; /* required amount of stack */
 
 _BOOTLOADER_SIZE_ = 0x4000;  /* 16K */
-
+/*
+ * Select the correct flash size depending on the MCU
+ * 0x20000 = 128K
+ * 0x40000 = 256K
+ */
+_MCU_FLASH_SIZE_ = 0x20000;
 /* Specify the memory areas */
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x08000000, LENGTH = _BOOTLOADER_SIZE_
-  RAM (xrw)  : ORIGIN = 0x20000000, LENGTH = 64K
+  FLASH (rx)    : ORIGIN = 0x08000000, LENGTH = _BOOTLOADER_SIZE_
+  APPFLASH (rx) : ORIGIN = 0x08000000 + _BOOTLOADER_SIZE_, LENGTH = _MCU_FLASH_SIZE_ - _BOOTLOADER_SIZE_
+  RAM (xrw)     : ORIGIN = 0x20000000, LENGTH = 64K
 }
 
 /* Highest address of the user mode stack */
@@ -190,3 +196,10 @@ SECTIONS
 }
 
 _estack = ORIGIN(RAM) + LENGTH(RAM);    /* end of RAM */
+
+/* Bootloader start address and Application start address as defined in MEMORY section */
+__bootflash_start = ORIGIN(FLASH);
+__appflash_start = ORIGIN(APPFLASH);
+__appflash_end = ORIGIN(APPFLASH) + LENGTH(APPFLASH);
+__ram_start = ORIGIN(RAM);
+__ram_end = ORIGIN(RAM) + LENGTH(RAM);
