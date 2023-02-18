@@ -49,6 +49,7 @@ static void MX_USART2_UART_Init(int baudrate);
 #define LED_1_PIN       GPIO_PIN_0
 #define LED_1_PORT      GPIOA
 
+/* Prototypes */
 static int ask_for_bootloader(void);
 static void banner(void);
 static void amiga_reset(void);
