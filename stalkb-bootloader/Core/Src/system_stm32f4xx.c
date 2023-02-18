@@ -46,6 +46,7 @@
 
 
 #include "stm32f4xx.h"
+#include "stm32f4xx_it.h" /* For symbols defined by the GNU linker script */
 
 #if !defined  (HSE_VALUE) 
   #define HSE_VALUE    ((uint32_t)25000000) /*!< Default value of the External oscillator in Hz */
@@ -179,8 +180,7 @@ void SystemInit(void)
 #if defined(USER_VECT_TAB_ADDRESS)
   SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
 #else
-  #define VECT_TAB_OFFSET 0x0000
-  SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal FLASH */
+  SCB->VTOR = (uint32_t) &__bootflash_start;
 #endif /* USER_VECT_TAB_ADDRESS */
 }
 
