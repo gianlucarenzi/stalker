@@ -197,7 +197,7 @@ void SystemInit(void)
 #ifdef VECT_TAB_SRAM
   SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
 #else
-  SCB->VTOR = &__appflash_start; /* this symbol is defined in the GNU linker script */
+  SCB->VTOR = (uint32_t) &__appflash_start; /* this symbol is defined in the GNU linker script */
 #endif
 }
 
