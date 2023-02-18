@@ -40,10 +40,19 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 
 _BOOTLOADER_SIZE_ = 0x4000; /* 16K */
 
+/*
+ * Change the MCU FLASH size accordingly with the device STM32F401 you are
+ * using.
+ * For a 128K based device _MCU_FLASH_SIZE_ = 0x20000;
+ * For a 256K based device _MCU_FLASH_SIZE_ = 0x40000;
+ */
+_MCU_FLASH_SIZE_ = 0x20000;
+
 /* Specify the memory areas */
 MEMORY
 {
-	FLASH (rx)	: ORIGIN = 0x08000000 + _BOOTLOADER_SIZE_, LENGTH = 128K - _BOOTLOADER_SIZE_
+	BOOT (rx)	: ORIGIN = 0x08000000, LENGTH = _BOOTLOADER_SIZE_
+	FLASH (rx)	: ORIGIN = 0x08000000 + _BOOTLOADER_SIZE_, LENGTH = _MCU_FLASH_SIZE_ - _BOOTLOADER_SIZE_
 	RAM (xrw)	: ORIGIN = 0x20000000, LENGTH = 64K
 }
 
@@ -170,3 +179,8 @@ SECTIONS
 
 /* Application Flash Start Address as defined in MEMORY section */
 __appflash_start = ORIGIN(FLASH);
+__appflash_end = ORIGIN(FLASH) + LENGTH(FLASH);
+__bootflash_start = ORIGIN(BOOT);
+__bootflash_end = ORIGIN(BOOT) + LENGTH(BOOT);
+__ram_start = ORIGIN(RAM);
+__ram_end = ORIGIN(RAM) + LENGTH(RAM);

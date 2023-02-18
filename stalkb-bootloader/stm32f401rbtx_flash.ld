@@ -199,6 +199,7 @@ _estack = ORIGIN(RAM) + LENGTH(RAM);    /* end of RAM */
 
 /* Bootloader start address and Application start address as defined in MEMORY section */
 __bootflash_start = ORIGIN(FLASH);
+__bootflash_end = ORIGIN(FLASH) + LENGTH(FLASH);
 __appflash_start = ORIGIN(APPFLASH);
 __appflash_end = ORIGIN(APPFLASH) + LENGTH(APPFLASH);
 __ram_start = ORIGIN(RAM);

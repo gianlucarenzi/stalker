@@ -60,6 +60,7 @@ void OTG_FS_IRQHandler(void);
 
 /* the following symbols are defined in the GNU linker script */
 extern uint32_t *__bootflash_start;
+extern uint32_t *__bootflash_end;
 extern uint32_t *__appflash_start;
 extern uint32_t *__appflash_end;
 extern uint32_t *__ram_start;
