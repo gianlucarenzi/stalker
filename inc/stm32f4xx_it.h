@@ -61,6 +61,9 @@ extern void USART2_IRQHandler(void);
 extern void OTG_FS_USB_Enable(HCD_HandleTypeDef *ptr);
 extern void OTG_FS_IRQHandler(void);
 
+/* the following symbol is defined in the GNU linker script */
+extern uint32_t *__appflash_start;
+
 #ifdef __cplusplus
 }
 #endif
