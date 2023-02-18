@@ -168,4 +168,5 @@ SECTIONS
   .ARM.attributes 0 : { *(.ARM.attributes) }
 }
 
-
+/* Application Flash Start Address as defined in MEMORY section */
+__appflash_start = ORIGIN(FLASH);
