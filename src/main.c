@@ -65,7 +65,7 @@ static void MX_USART2_UART_Init(int baud);
 
 /* Local variables */
 static int debuglevel = DBG_INFO;
-static const char *fwBuild = "v1.2 BUILD: " __TIME__ "-" __DATE__;
+static const char *fwBuild = "v1.3 BUILD: " __TIME__ "-" __DATE__;
 static UART_HandleTypeDef huart2;
 
 static void banner(void)
