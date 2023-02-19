@@ -45,7 +45,8 @@ After launched it will be shown as the following image.
 
 ![pic1](https://user-images.githubusercontent.com/22798919/219906340-83e0abf5-7d11-4da2-b882-8896653abf63.png)
 
-Connect the special upgrade cable to the right lower opening of the STALKER, the connect the board with the provided USB cable to the one of the USB ports available in your computer. The red LED will light steady.
+Connect the <b>special upgrade cable</b> to the right lower opening of <b>The STALKER</b>, then connect the board with the provided USB cable to the one of the USB ports available in your computer. The red LED will light steady.
+
 Then click on the connect button on the upper right position of the STM32Cube Programmer's window as shown in the picture below:
 
 ![pic1-connect](https://user-images.githubusercontent.com/22798919/219906316-8d8b55ae-dc68-4bae-b0f4-8fe2d6cec071.png)
@@ -58,7 +59,7 @@ After, you will need to select the correct <b>FIRMWARE</b> file (<b>.hex file fo
 
 ![pic3-select-hex](https://user-images.githubusercontent.com/22798919/219906407-b783084b-6df9-425e-9266-d689db07113c.png)
 
-If the file is loaded correctly, the Download button need to be pressed to start the programming/flashing procedure. It will takes few seconds to be completed.
+If the file is loaded correctly, the <b>Download button</b> needs to be pressed to start the programming/flashing procedure. It will takes few seconds to be completed.
 
 ![pic4-download-flash](https://user-images.githubusercontent.com/22798919/219906426-8261f1b7-b1df-463f-b3c8-6042e0b08809.png)
 
