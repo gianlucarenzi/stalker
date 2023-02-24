@@ -1,4 +1,4 @@
-19111076020007105
+19113898034051105
 Battery
 BatteryHolder_Bulgin_BX0036_1xC
 Bulgin Battery Holder, BX0036, Battery Type C (https://www.bulgin.com/products/pub/media/bulgin/data/Battery_holders.pdf)
@@ -76215,6 +76215,13 @@ PIC32MX795F512H-80I&slash_PT
 0
 64
 64
+RetroBitLab
+PLCC-44_THT-Socket_3D
+PLCC, 44 pins, through hole
+plcc leaded
+0
+44
+44
 RetroBitLab
 POT_TPH_CT-9EW
 
