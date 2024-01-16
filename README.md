@@ -35,6 +35,26 @@ so basically it is stalking you! ;-)
 # [![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-b.png "Board Back")](#features)
 # [![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter.png "Board Overall")](#features)
 
+Upgrading with Linux and OpenOCD and STLinkV2 Programmer/Debugger
+-----------------------------------------------------------------
+Starting from this project folder, there are some shell scripts
+that can be used to program the board if you unluckly brick it or simply to upgrade
+some features from bootloader and application without using the STM32CubeProgrammer software.
+
+Connect the [STLinkV2 jtag/swd programmer](https://it.aliexpress.com/item/1005005293861493.html?src=google&src=google&albch=shopping&acnt=494-037-6276&slnk=&plac=&mtctp=&albbt=Google_7_shopping&albagn=888888&isSmbAutoCall=false&needSmbHouyi=false&albcp=19215268799&albag=&trgt=&crea=it1005005293861493&netw=x&device=c&albpg=&albpd=it1005005293861493&gad_source=1&gclid=CjwKCAiA75itBhA6EiwAkho9e9Ok9PTFKaCFdsAMpPSbBLCq1OQtwuj0-TzUiPkTw3kzGwD3cOH9dRoCA5QQAvD_BwE&gclsrc=aw.ds&aff_fcid=d493d20850c64605be1501f0d54beda6-1705426166888-01099-UneMJZVf&aff_fsk=UneMJZVf&aff_platform=aaf&sk=UneMJZVf&aff_trace_key=d493d20850c64605be1501f0d54beda6-1705426166888-01099-UneMJZVf&terminal_id=d32dafb4e34148a48d22c2edf9d0f94b&afSmartRedirect=y&gatewayAdapt=glo2ita)
+to the STALKER Board in J4 connector (STLink V2 in the silkscreen) using a standard 10 pin IDC female/female [cable 2x5 10P](https://it.aliexpress.com/item/1005003161799870.html?spm=a2g0o.productlist.main.3.4e647234kvSKE1&algo_pvid=74dab80a-ec8c-4818-bb77-7391a24769ef&aem_p4p_detail=202401160933194312512568752080000676956&algo_exp_id=74dab80a-ec8c-4818-bb77-7391a24769ef-1&pdp_npi=4%40dis%21EUR%214.74%211.61%21%21%215.06%211.72%21%402103956b17054263991973081e262b%2112000024427578441%21sea%21IT%210%21AB&curPageLogUid=Utv522cxXgsn&utparam-url=scene%3Asearch%7Cquery_from%3A&search_p4p_id=202401160933194312512568752080000676956_2).
+Opening the project folder, you can compile all projects (application and bootloader) running:
+```
+make clean
+make
+```
+and then launch the corresponding script:
+
+* bootloader.sh (to erase all the flash memory and program the bootloader)
+
+* flash.sh (to program the application, after having erased all needed flash sectors)
+
+
 Upgrading quick guide
 ---------------------
 First, get your own copy of STM32CubeProgrammer software.
