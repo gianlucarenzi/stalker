@@ -1307,6 +1307,7 @@ static void upper_string(char s[])
 	}
 }
 
+#ifndef __AMIBERRY_EASTER_EGG__
 void amikb_notify(const char *ptr)
 {
 	int i;
@@ -1340,3 +1341,55 @@ void amikb_notify(const char *ptr)
 	}
 	DBG_N("Exit\n");
 }
+#else
+void amikb_notify(const char *ptr)
+{
+	int i;
+	char *upper = NULL;
+	led_status_t rval = NO_LED;
+	const char *amiberry = " AMIBERRY IS CREATED AND MAINTAINED BY DIMITRIS PANOKOSTAS. THANKS FOR ALL!";
+	char msg[1024]; // 1K buffer
+	int total_len = 0;
+
+	DBG_N("Enter\r\n");
+	memset(msg, 0, 1024);
+
+	if (ptr != NULL)
+	{
+		DBG_V("String %s\n\r", ptr);
+		upper = malloc(strlen(ptr));
+		if (upper != NULL)
+		{
+			strncpy(upper, ptr, strlen(ptr));
+			upper_string(upper);
+			// Now we can chain two (uppercase) strings together
+			strncpy(msg, upper, strlen(upper));
+			total_len = strlen(upper);
+			if ((total_len + strlen(amiberry)) >= 1024)
+			{
+				// print the correct amiberry string instead
+				total_len = 0;
+				memset(msg, 0, 1024);
+			}
+			strncpy(msg + total_len, amiberry, strlen(amiberry)); 
+			// Send shift pressed first
+			rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), 1);
+			for (i = 0; i < strlen(msg); i++)
+			{
+				// Send the character pressed
+				rval |= amikb_send(scancode_to_amiga(ascii_to_scancode(msg[i])), 1);
+				// ...and release of the same character
+				rval |= amikb_send(scancode_to_amiga(ascii_to_scancode(msg[i])), 0);
+			}
+			// Now release shift
+			rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), 0);
+		}
+	}
+
+	if (upper != NULL)
+	{
+		free(upper);
+	}
+	DBG_N("Exit\n");
+}
+#endif
