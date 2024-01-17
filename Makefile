@@ -67,6 +67,23 @@ ifeq ($(DEBUG), 1)
 
 endif
 
+EASTER_EGG ?= no
+AMIBERRY_EASTER_EGG ?= no
+
+# Add EASTER_EGG=yes in the makefile command
+ifeq ($(EASTER_EGG), yes)
+	CFLAGS += -D__EASTER_EGG__ \
+
+endif
+
+# Add AMIBERRY_EASTER_EGG = yes in the makefile command
+ifeq ($(AMIBERRY_EASTER_EGG), yes)
+	CFLAGS += \
+		-D__EASTER_EGG__ \
+		-D__AMIBERRY_EASTER_EGG__ \
+
+endif
+
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
