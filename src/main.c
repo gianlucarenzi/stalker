@@ -71,6 +71,9 @@ static UART_HandleTypeDef huart2;
 static void banner(void)
 {
 	printf("\r\n\r\n" ANSI_BLUE "RETROBITLAB AMIGA USB KEYBOARD ADAPTER" ANSI_RESET "\r\n");
+#ifdef __AMIBERRY_EASTER_EGG__
+	printf(ANSI_LIGHT_MAGENTA "Amiberry Dimitris Panokostas VERSION" ANSI_RESET "\r\n");
+#endif
 	printf(ANSI_YELLOW);
 	printf("FWVER: %s", fwBuild);
 	printf(ANSI_RESET "\r\n");
@@ -341,10 +344,12 @@ int main(void)
 					{
 						DBG_N("UNKNOWN USB DEVICE count: %d\r\n", count);
 						led_toggle();
-						amikb_notify("NOT USB Keyboard. Please Connect - Amiga Is Back!\n");
 						timer_start();
 						if (count++ > 10)
 						{
+#ifdef __EASTER_EGG__
+							amikb_notify("NOT USB Keyboard, but HID Compliant. Please Connect a real USB HID Keyboard!\n");
+#endif
 							DBG_I("Waiting REAL USB Keyboard - Amiga Is Back!\r\n");
 							count = 0;
 						}
@@ -369,7 +374,7 @@ int main(void)
 					if (count++ > 10)
 					{
 #ifdef __EASTER_EGG__
-						amikb_notify("NO USB Keyboard Device. Please Connect - Amiga Is Back!\n");
+						amikb_notify("NO USB Found Keyboard Device. Please Connect - Amiga Is Back!\n");
 #endif
 						DBG_I("Waiting USB HID Keyboard!\r\nPlease Connect\r\n");
 						count = 0;
@@ -398,7 +403,7 @@ int main(void)
 				if (count++ > 10)
 				{
 #ifdef __EASTER_EGG__
-					amikb_notify("NO USB Keyboard Device. Please Connect - Amiga Is Back!\n");
+					amikb_notify("NO USB Keyboard Device Connected. Please Connect! Amiga Is Back!\n");
 #endif
 					DBG_I("Waiting USB HID Keyboard!\r\nPlease Connect\r\n");
 					count = 0;
