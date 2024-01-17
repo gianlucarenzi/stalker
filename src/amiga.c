@@ -1,6 +1,11 @@
 /**
  * Amiga housekeeping as MPU.
  * Written by Gianluca Renzi R.G.
+ * (C) Copyright 2019/2024 by Gianluca Renzi (RetroBitLab Tech Guy)
+ * 
+ * //
+ * // SPDX-License-Identifier: LGPL-3.0-or-later
+ *
  * License for this code: LGPLv3
  * Please refer to this license at GNU Web Site
  * https://www.gnu.org/licenses/lgpl-3.0.html
