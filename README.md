@@ -99,7 +99,7 @@ That's all folks!
 
 Software & Hardware License
 ---------------------------
-Copyright (C) 2018/2019/2022/2023 Gianluca Renzi <gianlucarenzi@eurek.it> <icjtqr@gmail.com>
+Copyright (C) 2018/2019/2022/2023/2025 Gianluca Renzi <gianlucarenzi@eurek.it> <icjtqr@gmail.com>
 
 The hardware of this project is released as free/open hardware under the
 GNU GPL v3 License terms. See licence.txt for details.
