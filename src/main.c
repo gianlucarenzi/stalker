@@ -1,3 +1,4 @@
+
 /**
   ******************************************************************************
   * @file           : main.c
@@ -9,7 +10,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * Copyright (c) 2018 STMicroelectronics International N.V.
+  * Copyright (c) 2025 STMicroelectronics International N.V.
   * All rights reserved.
   *
   * Redistribution and use in source and binary forms, with or without
@@ -62,11 +63,14 @@ extern void MX_USB_HOST_Process(void);
 static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(int baud);
+static void StartDefaultTask(void const * argument);
 
 /* Local variables */
 static int debuglevel = DBG_INFO;
 static const char *fwBuild = "v1.3 BUILD: " __TIME__ "-" __DATE__;
 static UART_HandleTypeDef huart2;
+
+osThreadId defaultTaskHandle;
 
 static void banner(void)
 {
@@ -190,6 +194,11 @@ int main(void)
 	/* Initialize GPIO for Amiga and assert the nRESET Line */
 	amikb_gpio_init();
 
+	/* Create the thread(s) */
+	/* definition and creation of defaultTask */
+	osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+	defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
 	banner();
 
 	DBG_N("timer_start()\r\n");
@@ -200,6 +209,10 @@ int main(void)
 	DBG_N("amikb_ready(0)\r\n");
 	amikb_ready(0);
 	DBG_N("Entering LOOP...\r\n");
+	osKernelStart();
+
+	// All code must be switched to the defaultTask ASAP!
+
 	for (;;)
 	{
 		DBG_N("LOOPING...\r\n");
@@ -517,6 +530,27 @@ static void MX_GPIO_Init(void)
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(TP1_GPIO_Port, &GPIO_InitStruct);
 
+}
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void const * argument)
+{
+  /* init code for USB_HOST */
+  MX_USB_HOST_Init();
+
+  /* USER CODE BEGIN 5 */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END 5 */
 }
 
 /**

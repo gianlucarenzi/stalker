@@ -4,7 +4,7 @@
   * @brief   Interrupt Service Routines.
   ******************************************************************************
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * COPYRIGHT(c) 2025 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -109,6 +109,17 @@ void SysTick_Handler(void)
 	HAL_SYSTICK_IRQHandler();
 }
 
+/**
+* @brief This function handles TIM1 update interrupt and TIM10 global interrupt.
+*/
+void TIM1_UP_TIM10_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&htim1);
+}
+
+/**
+* @brief This function handles USB On The Go FS global interrupt.
+*/
 void OTG_FS_IRQHandler(void)
 {
 	/* USER CODE END OTG_FS_IRQn 0 */
