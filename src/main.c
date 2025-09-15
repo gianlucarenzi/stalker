@@ -48,6 +48,7 @@
   */
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "usb_host.h"
@@ -63,14 +64,17 @@ extern void MX_USB_HOST_Process(void);
 static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(int baud);
-static void StartDefaultTask(void const * argument);
+static void mainTask(void const * argument);
+static void otherTask(void const * argument);
 
 /* Local variables */
 static int debuglevel = DBG_INFO;
 static const char *fwBuild = "v1.3 BUILD: " __TIME__ "-" __DATE__;
 static UART_HandleTypeDef huart2;
 
-osThreadId defaultTaskHandle;
+/* We are using FreeRTOS */
+static osThreadId mainTaskHandle;
+static osThreadId otherTaskHandle;
 
 static void banner(void)
 {
@@ -136,6 +140,9 @@ static void usb_keyboard_led(USBH_HandleTypeDef *usbhost, keyboard_led_t ld)
 	DBG_N("Exit\r\n");
 }
 
+// Used to start the 2nd USB Thread
+static bool usb_led_done = FALSE;
+
 static void usb_keyboard_led_init(USBH_HandleTypeDef * usbhost)
 {
 	keyboard_led_t led = CAPS_LOCK_LED | NUM_LOCK_LED | SCROLL_LOCK_LED;
@@ -155,10 +162,19 @@ static void usb_keyboard_led_init(USBH_HandleTypeDef * usbhost)
 		/* Default leds off */
 		DBG_V("LEDS OFF\r\n");
 		usb_keyboard_led(usbhost, 0);
+		usb_led_done = TRUE;
 	}
 	DBG_N("Exit\r\n");
 }
 
+void otherTask(void const *argument)
+{
+	for (;;)
+	{
+		if (usb_led_done) led_toggle();
+		vTaskDelay(pdMS_TO_TICKS(1000));
+	}
+}
 /**
   * @brief  The application entry point.
   *
@@ -166,17 +182,6 @@ static void usb_keyboard_led_init(USBH_HandleTypeDef * usbhost)
   */
 int main(void)
 {
-	ApplicationTypeDef aState = APPLICATION_DISCONNECT;
-	int timerOneShot = 1;
-	int resetTimer = 0;
-	led_status_t stat;
-	static keyboard_led_t keyboard_led = 0;
-	int do_led = 0;
-	USBH_HandleTypeDef * usbhost = NULL;
-	int keyboard_ready = 0;
-	int count = 0;
-	int usbh_initialized = 0;
-
 	_write_ready(SYSCALL_NOTREADY, &huart2);
 
 	/* MCU Configuration----------------------------------------------------------*/
@@ -196,8 +201,147 @@ int main(void)
 
 	/* Create the thread(s) */
 	/* definition and creation of defaultTask */
-	osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-	defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+	osThreadDef(_mainTask, mainTask, osPriorityNormal, 0, 128);
+	mainTaskHandle = osThreadCreate(osThread(_mainTask), NULL);
+
+	osThreadDef(_otherTask, otherTask, osPriorityNormal, 0, 128);
+	otherTaskHandle = osThreadCreate(osThread(_otherTask), NULL);
+
+	/* FreeRTOS kernel starts */
+	osKernelStart();
+
+	for (;;)
+	{
+	}
+
+	// NEVERREACHED!
+}
+
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+	RCC_OscInitTypeDef RCC_OscInitStruct;
+	RCC_ClkInitTypeDef RCC_ClkInitStruct;
+
+	/**Configure the main internal regulator output voltage
+	*/
+	__HAL_RCC_PWR_CLK_ENABLE();
+
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
+
+	/**Initializes the CPU, AHB and APB busses clocks
+	*/
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+	RCC_OscInitStruct.PLL.PLLM = 4;
+	RCC_OscInitStruct.PLL.PLLN = 168;
+	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+	RCC_OscInitStruct.PLL.PLLQ = 7;
+	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+	{
+	_Error_Handler(__FILE__, __LINE__);
+	}
+
+	/**Initializes the CPU, AHB and APB busses clocks
+	*/
+	RCC_ClkInitStruct.ClockType =
+		RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK |
+		RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+	{
+		_Error_Handler(__FILE__, __LINE__);
+	}
+
+	/**Configure the Systick interrupt time
+	*/
+	HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
+
+	/**Configure the Systick
+	*/
+	HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
+
+	/* SysTick_IRQn interrupt configuration */
+	HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+}
+
+/* USART2 init function */
+static void MX_USART2_UART_Init(int baud)
+{
+	huart2.Instance = USART2;
+	huart2.Init.BaudRate = baud;
+	huart2.Init.WordLength = UART_WORDLENGTH_8B;
+	huart2.Init.StopBits = UART_STOPBITS_1;
+	huart2.Init.Parity = UART_PARITY_NONE;
+	huart2.Init.Mode = UART_MODE_TX_RX;
+	huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+	huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+	if (HAL_UART_Init(&huart2) != HAL_OK)
+	{
+		_Error_Handler(__FILE__, __LINE__);
+	}
+
+}
+
+/** Configure pins as
+		* Analog
+		* Input
+		* Output
+		* EVENT_OUT
+		* EXTI
+*/
+static void MX_GPIO_Init(void)
+{
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+	/* GPIO Ports Clock Enable */
+	__HAL_RCC_GPIOH_CLK_ENABLE();
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE();
+
+
+	/*Configure GPIO pin Output Level */
+	HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(TP2_GPIO_Port, TP2_Pin, GPIO_PIN_SET);
+
+	/*Configure GPIO pin : TP1_Pin & TP2_Pin */
+	GPIO_InitStruct.Pin = TP1_Pin | TP2_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(TP1_GPIO_Port, &GPIO_InitStruct);
+
+}
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void mainTask(void const * argument)
+{
+	ApplicationTypeDef aState = APPLICATION_DISCONNECT;
+	int timerOneShot = 1;
+	int resetTimer = 0;
+	led_status_t stat;
+	static keyboard_led_t keyboard_led = 0;
+	int do_led = 0;
+	USBH_HandleTypeDef * usbhost = NULL;
+	int keyboard_ready = 0;
+	int count = 0;
+	int usbh_initialized = 0;
 
 	banner();
 
@@ -208,10 +352,7 @@ int main(void)
 	amikb_startup();
 	DBG_N("amikb_ready(0)\r\n");
 	amikb_ready(0);
-	DBG_N("Entering LOOP...\r\n");
-	osKernelStart();
-
-	// All code must be switched to the defaultTask ASAP!
+	DBG_N("Entering LOOP for mainTask()...\r\n");
 
 	for (;;)
 	{
@@ -424,133 +565,10 @@ int main(void)
 			}
 		}
 		amikb_ready(keyboard_ready);
+
+	// Give some time to scheduler
+	vTaskDelay(1);
 	}
-}
-
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
-void SystemClock_Config(void)
-{
-	RCC_OscInitTypeDef RCC_OscInitStruct;
-	RCC_ClkInitTypeDef RCC_ClkInitStruct;
-
-	/**Configure the main internal regulator output voltage
-	*/
-	__HAL_RCC_PWR_CLK_ENABLE();
-
-	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
-
-	/**Initializes the CPU, AHB and APB busses clocks
-	*/
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-	RCC_OscInitStruct.PLL.PLLM = 4;
-	RCC_OscInitStruct.PLL.PLLN = 168;
-	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
-	RCC_OscInitStruct.PLL.PLLQ = 7;
-	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-	{
-	_Error_Handler(__FILE__, __LINE__);
-	}
-
-	/**Initializes the CPU, AHB and APB busses clocks
-	*/
-	RCC_ClkInitStruct.ClockType =
-		RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK |
-		RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-	{
-		_Error_Handler(__FILE__, __LINE__);
-	}
-
-	/**Configure the Systick interrupt time
-	*/
-	HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
-
-	/**Configure the Systick
-	*/
-	HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
-
-	/* SysTick_IRQn interrupt configuration */
-	HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
-}
-
-/* USART2 init function */
-static void MX_USART2_UART_Init(int baud)
-{
-	huart2.Instance = USART2;
-	huart2.Init.BaudRate = baud;
-	huart2.Init.WordLength = UART_WORDLENGTH_8B;
-	huart2.Init.StopBits = UART_STOPBITS_1;
-	huart2.Init.Parity = UART_PARITY_NONE;
-	huart2.Init.Mode = UART_MODE_TX_RX;
-	huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-	huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-	if (HAL_UART_Init(&huart2) != HAL_OK)
-	{
-		_Error_Handler(__FILE__, __LINE__);
-	}
-
-}
-
-/** Configure pins as
-		* Analog
-		* Input
-		* Output
-		* EVENT_OUT
-		* EXTI
-*/
-static void MX_GPIO_Init(void)
-{
-	GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-	/* GPIO Ports Clock Enable */
-	__HAL_RCC_GPIOH_CLK_ENABLE();
-	__HAL_RCC_GPIOA_CLK_ENABLE();
-	__HAL_RCC_GPIOB_CLK_ENABLE();
-
-
-	/*Configure GPIO pin Output Level */
-	HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(TP2_GPIO_Port, TP2_Pin, GPIO_PIN_SET);
-
-	/*Configure GPIO pin : TP1_Pin & TP2_Pin */
-	GPIO_InitStruct.Pin = TP1_Pin | TP2_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(TP1_GPIO_Port, &GPIO_InitStruct);
-
-}
-
-/* USER CODE BEGIN Header_StartDefaultTask */
-/**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
-{
-  /* init code for USB_HOST */
-  MX_USB_HOST_Init();
-
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END 5 */
 }
 
 /**
