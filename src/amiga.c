@@ -1347,17 +1347,18 @@ void amikb_notify(const char *ptr)
 	DBG_N("Exit\n");
 }
 #else
+#define MSGLEN	512
 void amikb_notify(const char *ptr)
 {
 	int i;
 	char *upper = NULL;
 	led_status_t rval = NO_LED;
 	const char *amiberry = " AMIBERRY IS CREATED AND MAINTAINED BY DIMITRIS PANOKOSTAS. THANKS FOR ALL!";
-	char msg[1024]; // 1K buffer
+	char msg[MSGLEN]; // MSGLEN bytes buffer
 	int total_len = 0;
 
 	DBG_N("Enter\r\n");
-	memset(msg, 0, 1024);
+	memset(msg, 0, MSGLEN);
 
 	if (ptr != NULL)
 	{
@@ -1370,11 +1371,11 @@ void amikb_notify(const char *ptr)
 			// Now we can chain two (uppercase) strings together
 			strncpy(msg, upper, strlen(upper));
 			total_len = strlen(upper);
-			if ((total_len + strlen(amiberry)) >= 1024)
+			if ((total_len + strlen(amiberry)) >= MSGLEN)
 			{
 				// print the correct amiberry string instead
 				total_len = 0;
-				memset(msg, 0, 1024);
+				memset(msg, 0, MSGLEN);
 			}
 			strncpy(msg + total_len, amiberry, strlen(amiberry)); 
 			// Send shift pressed first
