@@ -10,7 +10,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * Copyright (c) 2018 STMicroelectronics International N.V.
+  * Copyright (c) 2025 STMicroelectronics International N.V.
   * All rights reserved.
   *
   * Redistribution and use in source and binary forms, with or without
@@ -96,13 +96,13 @@
 	MiddleWare version :
 */
 /*----------   -----------*/
-#define USBH_MAX_NUM_ENDPOINTS      4
+#define USBH_MAX_NUM_ENDPOINTS      2
 
 /*----------   -----------*/
-#define USBH_MAX_NUM_INTERFACES      4
+#define USBH_MAX_NUM_INTERFACES      2
 
 /*----------   -----------*/
-#define USBH_MAX_NUM_CONFIGURATION      2
+#define USBH_MAX_NUM_CONFIGURATION      1
 
 /*----------   -----------*/
 #define USBH_KEEP_CFG_DESCRIPTOR      1
@@ -120,10 +120,7 @@
 #define USBH_DEBUG_LEVEL      0
 
 /*----------   -----------*/
-#define USBH_USE_OS      0
-
-
-
+#define USBH_USE_OS      1
 
 /****************************************/
 /* #define for FS and HS identification */
@@ -133,7 +130,7 @@
 #if (USBH_USE_OS == 1)
   #include "cmsis_os.h"
   #define USBH_PROCESS_PRIO          osPriorityNormal
-  #define USBH_PROCESS_STACK_SIZE    ((uint16_t)0)
+  #define USBH_PROCESS_STACK_SIZE    ((uint16_t)128)
 #endif /* (USBH_USE_OS == 1) */
 
 /**

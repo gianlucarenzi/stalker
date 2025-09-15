@@ -4,7 +4,7 @@
   * @brief   This file contains the headers of the interrupt handlers.
   ******************************************************************************
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * COPYRIGHT(c) 2025 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -56,6 +56,7 @@ extern void SVC_Handler(void);
 extern void DebugMon_Handler(void);
 extern void PendSV_Handler(void);
 extern void SysTick_Handler(void);
+extern void TIM1_UP_TIM10_IRQHandler(void);
 extern void UART_Enable(UART_HandleTypeDef *ptr);
 extern void USART2_IRQHandler(void);
 extern void OTG_FS_USB_Enable(HCD_HandleTypeDef *ptr);
