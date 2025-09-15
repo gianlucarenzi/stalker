@@ -13,7 +13,7 @@
 ######################################
 # target
 ######################################
-TARGET = evalboard-stm32f401rtc6-blink-uart
+TARGET = stm32f401-usb-keyboard-amiga
 DEBUG ?= 0
 
 # Librerie et al.
