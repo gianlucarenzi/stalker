@@ -37,6 +37,7 @@
 
 /* External variables --------------------------------------------------------*/
 extern HCD_HandleTypeDef hhcd_USB_OTG_FS;
+extern TIM_HandleTypeDef htim1;
 
 void NMI_Handler(void)
 {
@@ -82,7 +83,7 @@ void UsageFault_Handler(void)
 /**
 * @brief This function handles System service call via SWI instruction.
 */
-void SVC_Handler(void)
+void __attribute__((weak)) SVC_Handler(void)
 {
 }
 
@@ -96,7 +97,7 @@ void DebugMon_Handler(void)
 /**
 * @brief This function handles Pendable request for system service.
 */
-void PendSV_Handler(void)
+void __attribute__((weak))  PendSV_Handler(void)
 {
 }
 
