@@ -201,10 +201,10 @@ int main(void)
 
 	/* Create the thread(s) */
 	/* definition and creation of defaultTask */
-	osThreadDef(_mainTask, mainTask, osPriorityNormal, 0, 128);
+	osThreadDef(_mainTask, mainTask, osPriorityNormal, 0, 512);
 	mainTaskHandle = osThreadCreate(osThread(_mainTask), NULL);
 
-	osThreadDef(_otherTask, otherTask, osPriorityNormal, 0, 128);
+	osThreadDef(_otherTask, otherTask, osPriorityNormal, 0, 512);
 	otherTaskHandle = osThreadCreate(osThread(_otherTask), NULL);
 
 	/* FreeRTOS kernel starts */
