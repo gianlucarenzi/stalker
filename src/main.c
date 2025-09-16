@@ -56,6 +56,9 @@
 #include "debug.h"
 #include "stm32f4xx_it.h"
 #include "amiga.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
 
 /* External functions */
 extern void MX_USB_HOST_Process(void);
@@ -163,17 +166,81 @@ static void usb_keyboard_led_init(USBH_HandleTypeDef * usbhost)
 	DBG_N("Exit\r\n");
 }
 
+/* 
+ * Amiga Task is the only process (task) to have access to the keyboard
+ * pins on the Amiga and have its timing.
+ * Main Task is the only process (task) to have access to USB for bridging
+ * the USB keyboard to the Amiga side (via a xQueue)
+ * 
+ */
 void amigaKeyboardTask(void const *argument)
 {
+	amiga_state_t state = AMIGA_DO_STARTUP;
+	key_status_t *key = NULL;
+	message_t msg;
+
+	/* Initialize GPIO for Amiga and assert the nRESET Line */
+	amikb_gpio_init();
+
 	/* Now intialize Amiga Pinouts and sync the keyboard */
 	DBG_N("ATASK: amikb_startup()\r\n");
 	amikb_startup();
+	// Keyboard starts unconnected
 	DBG_N("ATASK: amikb_ready(0)\r\n");
 	amikb_ready(0);
 
 	for (;;)
 	{
-		vTaskDelay(pdMS_TO_TICKS(1));
+		// Let's check if tha Amiga System is doing a reset
+		if (amikb_reset_check())
+		{
+			DBG_N("ATASK: AMIGA RESET IN PROGRESS\r\n");
+			amikb_reset();
+			state = AMIGA_DO_STARTUP;
+		}
+
+		// Await some messages from the main Task within 100 msec
+		if (xQueueReceive(queue, &msg, pdMS_TO_TICKS(100)) == pdPASS)
+		{
+			DBG_N("ATASK: received msg state: %d\n\r",  msg.state);
+			state = msg.state;
+		}
+		else
+		{
+			// No message. Do nothing...
+			state = AMIGA_LAST;
+		}
+
+		switch(state)
+		{
+			case AMIGA_DO_STARTUP:
+				DBG_N("ATASK: AMIGA_DO_STARTUP\r\n");
+				amikb_startup();
+				state = AMIGA_LAST;
+				break;
+
+			case AMIGA_PROCESS_KEY:
+				// We need casting here!
+				key = (key_status_t *) msg.data;
+				DBG_N("ATASK: AMIGA_PROCESS_KEY: %02x - STATUS: %s\n\r",
+					key->keycode, key->press ? "PRESSED" : "RELEASED");
+				ll_amikb_send(key->keycode, key->press);
+				state = AMIGA_LAST;
+				break;
+
+			case AMIGA_DO_RESET:
+				DBG_N("ATASK: AMIGA_DO_RESET\r\n");
+				amikb_reset();
+				state = AMIGA_LAST;
+				break;
+
+			case AMIGA_LAST:
+			default:
+				break;
+		}
+
+		if (msg.type != TYPE_EMPTY)
+			vPortFree(msg.data);
 	}
 }
 /**
@@ -197,8 +264,6 @@ int main(void)
 	/* Initialize DEBUG UART */
 	MX_USART2_UART_Init(115200);
 	_write_ready(SYSCALL_READY, &huart2);
-	/* Initialize GPIO for Amiga and assert the nRESET Line */
-	amikb_gpio_init();
 
 	/* Create the thread(s) */
 	/* definition and creation of defaultTask */
@@ -207,6 +272,18 @@ int main(void)
 
 	osThreadDef(_amigaKeyboardTask, amigaKeyboardTask, osPriorityNormal, 0, 512);
 	amigaKeyboardTaskHandle = osThreadCreate(osThread(_amigaKeyboardTask), NULL);
+
+	/* Create the queue */
+	queue = xQueueCreate(16, sizeof(message_t));
+	if (queue == NULL)
+	{
+		DBG_E("MAIN: Error creating the queue!\r\n");
+		mdelay(500);
+		for(;;)
+		{
+		}
+		// NEVERREACHED!
+	}
 
 	/* FreeRTOS kernel starts */
 	osKernelStart();
@@ -335,7 +412,6 @@ void mainTask(void const * argument)
 {
 	ApplicationTypeDef aState = APPLICATION_DISCONNECT;
 	int timerOneShot = 1;
-	int resetTimer = 0;
 	led_status_t stat;
 	static keyboard_led_t keyboard_led = 0;
 	int do_led = 0;
@@ -447,38 +523,6 @@ void mainTask(void const * argument)
 							usb_keyboard_led(usbhost, keyboard_led);
 						}
 					}
-					else
-					{
-						// In IDLE mode, check if there are some
-						// RESET request on the CLOCK line.
-						// Any EXTERNAL Amiga keyboard will assert low
-						// the clock line for more than 500msec to
-						// obtain the SYSTEM RESET REQUEST, so do we.
-						if (amikb_reset_check())
-						{
-							// Is it the first time in IDLE state?
-							if (!resetTimer)
-							{
-								// Yes! Startup the timer
-								resetTimer = 1;
-								timer_start();
-							}
-							// In reset state
-							if (timer_elapsed(500))
-							{
-								DBG_N("MTASK: Now it's time for a RESET!\r\n");
-								resetTimer = 0;
-								amikb_reset();
-								amikb_startup();
-							}
-						}
-						else
-						{
-							// If not in CLOCK LOW MODE, reset the
-							// timer for next time...
-							resetTimer = 0;
-						}
-					}
 				}
 				else
 				{
@@ -534,6 +578,7 @@ void mainTask(void const * argument)
 		}
 		else
 		{
+			// APPLICATION_NOT_READY (USB NOT READY YET or keyboard not present)
 			keyboard_ready = 0;
 			DBG_N("APPLICATION %d\r\n", aState);
 			// On first run, we start a timer and every 1/2 second we
@@ -562,8 +607,8 @@ void mainTask(void const * argument)
 		}
 		amikb_ready(keyboard_ready);
 
-	// Give some time to scheduler
-	vTaskDelay(1);
+		// Give some time to scheduler
+		vTaskDelay(1);
 	}
 }
 
