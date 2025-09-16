@@ -65,7 +65,7 @@ static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(int baud);
 static void mainTask(void const * argument);
-static void otherTask(void const * argument);
+static void amigaKeyboardTask(void const * argument);
 
 /* Local variables */
 static int debuglevel = DBG_INFO;
@@ -74,7 +74,7 @@ static UART_HandleTypeDef huart2;
 
 /* We are using FreeRTOS */
 static osThreadId mainTaskHandle;
-static osThreadId otherTaskHandle;
+static osThreadId amigaKeyboardTaskHandle;
 
 static void banner(void)
 {
@@ -140,9 +140,6 @@ static void usb_keyboard_led(USBH_HandleTypeDef *usbhost, keyboard_led_t ld)
 	DBG_N("Exit\r\n");
 }
 
-// Used to start the 2nd USB Thread
-static bool usb_led_done = FALSE;
-
 static void usb_keyboard_led_init(USBH_HandleTypeDef * usbhost)
 {
 	keyboard_led_t led = CAPS_LOCK_LED | NUM_LOCK_LED | SCROLL_LOCK_LED;
@@ -162,17 +159,21 @@ static void usb_keyboard_led_init(USBH_HandleTypeDef * usbhost)
 		/* Default leds off */
 		DBG_V("LEDS OFF\r\n");
 		usb_keyboard_led(usbhost, 0);
-		usb_led_done = TRUE;
 	}
 	DBG_N("Exit\r\n");
 }
 
-void otherTask(void const *argument)
+void amigaKeyboardTask(void const *argument)
 {
+	/* Now intialize Amiga Pinouts and sync the keyboard */
+	DBG_N("ATASK: amikb_startup()\r\n");
+	amikb_startup();
+	DBG_N("ATASK: amikb_ready(0)\r\n");
+	amikb_ready(0);
+
 	for (;;)
 	{
-		if (usb_led_done) led_toggle();
-		vTaskDelay(pdMS_TO_TICKS(1000));
+		vTaskDelay(pdMS_TO_TICKS(1));
 	}
 }
 /**
@@ -204,8 +205,8 @@ int main(void)
 	osThreadDef(_mainTask, mainTask, osPriorityNormal, 0, 512);
 	mainTaskHandle = osThreadCreate(osThread(_mainTask), NULL);
 
-	osThreadDef(_otherTask, otherTask, osPriorityNormal, 0, 512);
-	otherTaskHandle = osThreadCreate(osThread(_otherTask), NULL);
+	osThreadDef(_amigaKeyboardTask, amigaKeyboardTask, osPriorityNormal, 0, 512);
+	amigaKeyboardTaskHandle = osThreadCreate(osThread(_amigaKeyboardTask), NULL);
 
 	/* FreeRTOS kernel starts */
 	osKernelStart();
@@ -345,20 +346,15 @@ void mainTask(void const * argument)
 
 	banner();
 
-	DBG_N("timer_start()\r\n");
+	DBG_N("MTASK: timer_start()\r\n");
 	timer_start();
-	/* Now intialize Amiga Pinouts and sync the keyboard */
-	DBG_N("amikb_startup()\r\n");
-	amikb_startup();
-	DBG_N("amikb_ready(0)\r\n");
-	amikb_ready(0);
-	DBG_N("Entering LOOP for mainTask()...\r\n");
+	DBG_N("MTASK: Entering LOOP for mainTask()...\r\n");
 
 	for (;;)
 	{
-		DBG_N("LOOPING...\r\n");
+		DBG_N("MTASK: LOOPING...\r\n");
 		if (!usbh_initialized) {
-			DBG_V("MX_USB_HOST_Init()\r\n");
+			DBG_V("MTASK: MX_USB_HOST_Init()\r\n");
 			/* Initialize USB HOST OTG FS */
 			MX_USB_HOST_Init();
 			usbh_initialized = ! usbh_initialized;
@@ -369,7 +365,7 @@ void mainTask(void const * argument)
 		// Se risulta connessa la tastiera USB
 		if (aState == APPLICATION_READY)
 		{
-			DBG_N("APPLICATION READY\r\n");
+			DBG_N("MTASK: APPLICATION READY\r\n");
 			usbhost = USBH_GetHost();
 			if (usbhost != NULL)
 			{
@@ -378,17 +374,17 @@ void mainTask(void const * argument)
 					if (!timerOneShot)
 					{
 						timerOneShot = !timerOneShot;
-						DBG_V("#### KEYBOARD CONNECTED ####\r\n");
+						DBG_V("MTASK: #### KEYBOARD CONNECTED ####\r\n");
 						timer_start();
 					}
 
 					if ( !keyboard_ready )
 					{
-						DBG_V("### BOARD LED ON ### WAIT 500msec FOR LEDS\r\n");
+						DBG_V("MTASK: ### BOARD LED ON ### WAIT 500msec FOR LEDS\r\n");
 						led_light(0);
 						if (timer_elapsed(500))
 						{
-							DBG_V("### KEYBOARD LED TOGGLE ###\r\n");
+							DBG_V("MTASK: ### KEYBOARD LED TOGGLE ###\r\n");
 							usb_keyboard_led_init(usbhost);
 							keyboard_ready = 1;
 							keyboard_led = 0;
@@ -404,50 +400,50 @@ void mainTask(void const * argument)
 						switch (stat)
 						{
 							case LED_CAPS_LOCK_OFF:
-								DBG_V("CAPS LOCK LED OFF\r\n");
+								DBG_V("MTASK: CAPS LOCK LED OFF\r\n");
 								keyboard_led &= ~CAPS_LOCK_LED;
 								do_led = 1;
 								break;
 							case LED_CAPS_LOCK_ON:
-								DBG_V("CAPS LOCK LED ON\r\n");
+								DBG_V("MTASK: CAPS LOCK LED ON\r\n");
 								keyboard_led |= CAPS_LOCK_LED;
 								do_led = 1;
 								break;
 							case LED_NUM_LOCK_OFF:
-								DBG_V("NUM LOCK LED OFF\r\n");
+								DBG_V("MTASK: NUM LOCK LED OFF\r\n");
 								keyboard_led &= ~NUM_LOCK_LED;
 								do_led = 1;
 								break;
 							case LED_NUM_LOCK_ON:
-								DBG_V("NUM LOCK LED ON\r\n");
+								DBG_V("MTASK: NUM LOCK LED ON\r\n");
 								keyboard_led |= NUM_LOCK_LED;
 								do_led = 1;
 								break;
 							case LED_SCROLL_LOCK_OFF:
-								DBG_V("SCROLL LOCK LED OFF\r\n");
+								DBG_V("MTASK: SCROLL LOCK LED OFF\r\n");
 								keyboard_led &= ~SCROLL_LOCK_LED;
 								do_led = 1;
 								break;
 							case LED_SCROLL_LOCK_ON:
-								DBG_V("SCROLL LOCK LED ON\r\n");
+								DBG_V("MTASK: SCROLL LOCK LED ON\r\n");
 								keyboard_led |= SCROLL_LOCK_LED;
 								do_led = 1;
 								break;
 							case LED_RESET_BLINK:
-								DBG_V("RESET OCCURS FROM AMIGA SIDE\r\n");
+								DBG_V("MTASK: RESET OCCURS FROM AMIGA SIDE\r\n");
 								usb_keyboard_led_init(usbhost);
 								do_led = 0;
 								break;
 							default:
 							case NO_LED:
-								DBG_V("NO ACTION FOR USB REPORT\r\n");
+								DBG_V("MTASK: NO ACTION FOR USB REPORT\r\n");
 								do_led = 0;
 								break;
 						}
 						// ...and let the led management to be done!
 						if (do_led)
 						{
-							DBG_N("USB ASK FOR REPORT: LED: 0x%02x\r\n", keyboard_led);
+							DBG_N("MTASK: USB ASK FOR REPORT: LED: 0x%02x\r\n", keyboard_led);
 							usb_keyboard_led(usbhost, keyboard_led);
 						}
 					}
@@ -470,7 +466,7 @@ void mainTask(void const * argument)
 							// In reset state
 							if (timer_elapsed(500))
 							{
-								DBG_N("Now it's time for a RESET!\r\n");
+								DBG_N("MTASK: Now it's time for a RESET!\r\n");
 								resetTimer = 0;
 								amikb_reset();
 								amikb_startup();
