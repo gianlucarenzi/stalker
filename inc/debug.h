@@ -69,6 +69,14 @@ extern "C" {
 	} \
   }
 
+#define DBG_W(fmt, args...) \
+  { if (debuglevel >= DBG_INFO) {\
+	printf(ANSI_MAGENTA); \
+	printRaw("WARN", fmt,## args); \
+	printf(ANSI_RESET); \
+	} \
+  }
+
 #define DBG_E(fmt, args...) \
   { \
 	printf(ANSI_RED); \
