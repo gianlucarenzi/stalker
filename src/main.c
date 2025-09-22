@@ -3,7 +3,6 @@
   * @file           : main.c
   * @brief          : Main program body
   ******************************************************************************
-  *
   * This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
   * USER CODE END. Other portions of this file, whether
@@ -46,8 +45,8 @@
   *
   ******************************************************************************
   */
-#include <stdio.h> 
-#include <stdlib.h> 
+#include <stdio.h>
+#include <stdlib.h>
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "usb_host.h"
@@ -56,49 +55,31 @@
 #include "stm32f4xx_it.h"
 #include "amiga.h"
 
+/* FreeRTOS includes */
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
-#include "usbh_hid_keybd.h"
 
-/* External functions */
-extern void MX_USB_HOST_Process(void);
+/* Task includes */
+#include "task_communication.h"
+#include "usb_task.h"
+#include "amiga_task.h"
+
+/* Queue handles */
+QueueHandle_t keyboard_queue = NULL;
+QueueHandle_t led_queue = NULL;
 
 /* Local functions prototypes */
 static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(int baud);
-
-/* Task prototypes */
-static void usb_task(void *pvParameters);
-static void amiga_task(void *pvParameters);
+static void create_tasks_and_queues(void);
 
 /* Local variables */
 static int debuglevel = DBG_INFO;
 static const char *fwBuild = "v1.5-rtos BUILD: " __TIME__ "-" __DATE__;
 static UART_HandleTypeDef huart2;
 
-/* FreeRTOS variables */
-typedef enum {
-	AMIGA_MSG_SCANCODE,
-	AMIGA_MSG_NOTIFY
-} amiga_msg_type_t;
-
-typedef struct {
-	amiga_msg_type_t type;
-	union {
-		keyboard_code_t *scancode;
-		const char *notification_string;
-	} data;
-} amiga_message_t;
-
-static QueueHandle_t amigaQueue = NULL;
-static QueueHandle_t ledQueue = NULL;
-
-/**
- * @brief  Prints a banner to the console.
- * @retval None
- */
 static void banner(void)
 {
 	printf("\r\n\r\n" ANSI_BLUE "RETROBITLAB AMIGA USB KEYBOARD ADAPTER" ANSI_RESET "\r\n");
@@ -111,99 +92,39 @@ static void banner(void)
 	printf("\r\n\n");
 }
 
-/**
- * @brief  Sets the state of the LED.
- * @param  state: The state of the LED (0 for off, 1 for on).
- * @retval None
- */
-static void led_light(int state)
+/* FreeRTOS Task creation and initialization */
+static void create_tasks_and_queues(void)
 {
-	int tpval = GPIO_PIN_RESET;
+	/* Create communication queues */
+	keyboard_queue = xQueueCreate(KEYBOARD_QUEUE_SIZE, sizeof(keyboard_message_t));
+	if (keyboard_queue == NULL)
+	{
+		DBG_E("Failed to create keyboard queue\r\n");
+		_Error_Handler(__FILE__, __LINE__);
+	}
 
-	if (!!state)
+	led_queue = xQueueCreate(LED_QUEUE_SIZE, sizeof(led_message_t));
+	if (led_queue == NULL)
 	{
-		tpval = GPIO_PIN_SET;
+		DBG_E("Failed to create LED queue\r\n");
+		_Error_Handler(__FILE__, __LINE__);
 	}
-	else
-	{
-		tpval = GPIO_PIN_RESET;
-	}
-	HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, tpval);
-}
 
-/**
- * @brief  Toggles the state of the LED.
- * @retval None
- */
-static void led_toggle(void)
-{
-	static int tpval = 0;
-	if (tpval == 0)
+	/* Create USB task */
+	if (xTaskCreate(usb_task, "USB_Task", USB_TASK_STACK_SIZE, NULL, USB_TASK_PRIORITY, &usb_task_handle) != pdPASS)
 	{
-		tpval = 1;
+		DBG_E("Failed to create USB task\r\n");
+		_Error_Handler(__FILE__, __LINE__);
 	}
-	else
-	{
-		tpval = 0;
-	}
-	led_light(tpval);
-}
 
-#define USB_REPORT_RETRY    (6)
-
-/**
- * @brief  Sets the state of the keyboard LEDs.
- * @param  usbhost: A pointer to the USB host handle.
- * @param  ld: The state of the LEDs.
- * @retval None
- */
-static void usb_keyboard_led(USBH_HandleTypeDef *usbhost, keyboard_led_t ld)
-{
-	keyboard_led_t led = ld;
-	USBH_StatusTypeDef status;
-	int retrygood = USB_REPORT_RETRY;
-	DBG_N("Called: %p -- Led: 0x%02x\r\n", usbhost, led);
-	if (usbhost != NULL)
+	/* Create Amiga task */
+	if (xTaskCreate(amiga_task, "Amiga_Task", AMIGA_TASK_STACK_SIZE, NULL, AMIGA_TASK_PRIORITY, &amiga_task_handle) != pdPASS)
 	{
-		for (;;)
-		{
-			status = USBH_HID_SetReport(usbhost, 0x02, 0x00, &led, 1);
-			DBG_N("[%d] USB Status: %d\r\n", retrygood, status);
-			if (status == USBH_OK)
-				retrygood--;
-			if (retrygood <= 0)
-						break;
-		}
+		DBG_E("Failed to create Amiga task\r\n");
+		_Error_Handler(__FILE__, __LINE__);
 	}
-	DBG_N("Exit\r\n");
-}
 
-/**
- * @brief  Initializes the keyboard LEDs.
- * @param  usbhost: A pointer to the USB host handle.
- * @retval None
- */
-static void usb_keyboard_led_init(USBH_HandleTypeDef * usbhost)
-{
-	keyboard_led_t led = CAPS_LOCK_LED | NUM_LOCK_LED | SCROLL_LOCK_LED;
-	int n;
-	DBG_N("Called: led: 0x%02x\r\n", led);
-	if (usbhost != NULL)
-	{
-		for (n = 0; n < 2; n++)
-		{
-			DBG_V("LEDS ON\r\n");
-			usb_keyboard_led(usbhost, led);
-			vTaskDelay(pdMS_TO_TICKS(250));
-			DBG_V("LEDS OFF\r\n");
-			usb_keyboard_led(usbhost, 0);
-			vTaskDelay(pdMS_TO_TICKS(125));
-		}
-		/* Default leds off */
-		DBG_V("LEDS OFF\r\n");
-		usb_keyboard_led(usbhost, 0);
-	}
-	DBG_N("Exit\r\n");
+	DBG_I("Tasks and queues created successfully\r\n");
 }
 
 /**
@@ -227,181 +148,26 @@ int main(void)
 	/* Initialize DEBUG UART */
 	MX_USART2_UART_Init(115200);
 	_write_ready(SYSCALL_READY, &huart2);
-	/* Initialize GPIO for Amiga and assert the nRESET Line */
-	amikb_gpio_init();
 
 	banner();
 
-	DBG_N("timer_start()\r\n");
-	timer_start();
-	/* Now intialize Amiga Pinouts and sync the keyboard */
-	DBG_N("amikb_startup()\r\n");
-	amikb_startup();
-	DBG_N("amikb_ready(0)\r\n");
-	amikb_ready(0);
+	DBG_I("Starting FreeRTOS-based USB to Amiga Keyboard Adapter\r\n");
 
-	/* Create the queues */
-	amigaQueue = xQueueCreate(10, sizeof(amiga_message_t));
-	ledQueue = xQueueCreate(5, sizeof(keyboard_led_t));
+	/* Create tasks and queues */
+	create_tasks_and_queues();
 
-	/* Create the tasks */
-	xTaskCreate(usb_task, "USB Task", 512, NULL, 1, NULL);
-	xTaskCreate(amiga_task, "Amiga Task", 256, NULL, 1, NULL);
-
-	/* Start scheduler */
+	/* Start the FreeRTOS scheduler */
 	DBG_I("Starting FreeRTOS scheduler\r\n");
 	vTaskStartScheduler();
 
 	/* We should never get here as control is now taken by the scheduler */
-	for (;;);
-}
-
-/**
- * @brief  The USB task.
- * @param  pvParameters: The task parameters.
- * @retval None
- */
-static void usb_task(void *pvParameters)
-{
-	ApplicationTypeDef aState = APPLICATION_DISCONNECT;
-	USBH_HandleTypeDef *usbhost = NULL;
-	int usbh_initialized = 0;
-	int keyboard_ready = 0;
-	keyboard_led_t led_state;
-	TickType_t last_blink_time = xTaskGetTickCount();
-	amiga_message_t msg;
-
+	DBG_E("FreeRTOS scheduler returned - this should never happen!\r\n");
 	for (;;)
 	{
-		if (!usbh_initialized)
-		{
-			MX_USB_HOST_Init();
-			usbh_initialized = 1;
-		}
-
-		MX_USB_HOST_Process();
-		aState = USBH_ApplicationState();
-
-		if (aState == APPLICATION_READY)
-		{
-			usbhost = USBH_GetHost();
-			if (usbhost != NULL && USBH_HID_GetDeviceType(usbhost) == HID_KEYBOARD)
-			{
-				// Keyboard is connected
-				if (!keyboard_ready)
-				{
-					led_light(1); // Solid LED ON
-					usb_keyboard_led_init(usbhost);
-					keyboard_ready = 1;
-				}
-
-				if (USBH_Keybd(usbhost) == 0)
-				{
-					msg.type = AMIGA_MSG_SCANCODE;
-					msg.data.scancode = USBH_GetScanCode();
-					xQueueSend(amigaQueue, &msg, portMAX_DELAY);
-				}
-
-				if (xQueueReceive(ledQueue, &led_state, 0) == pdPASS)
-				{
-					usb_keyboard_led(usbhost, led_state);
-				}
-			}
-			else
-			{
-				// Connected device is not a keyboard
-				if(keyboard_ready != 2) { // Send notification only once
-#ifdef __EASTER_EGG__
-					msg.type = AMIGA_MSG_NOTIFY;
-					msg.data.notification_string = "NOT USB Keyboard, but HID Compliant. Please Connect a real USB HID Keyboard!\n";
-					xQueueSend(amigaQueue, &msg, 0);
-#endif
-					keyboard_ready = 2; // State for unsupported device
-				}
-			}
-		}
-		else
-		{
-			// No device connected
-			if (keyboard_ready != 0) {
-				// Device was just disconnected
-#ifdef __EASTER_EGG__
-				msg.type = AMIGA_MSG_NOTIFY;
-				msg.data.notification_string = "NO USB Keyboard Device Connected. Please Connect! Amiga Is Back!\n";
-				xQueueSend(amigaQueue, &msg, 0);
-#endif
-				keyboard_ready = 0;
-			}
-
-			if ((xTaskGetTickCount() - last_blink_time) > pdMS_TO_TICKS(500))
-			{
-				led_toggle();
-				last_blink_time = xTaskGetTickCount();
-			}
-		}
-
-		amikb_ready(keyboard_ready);
-		vTaskDelay(pdMS_TO_TICKS(1));
+		/* If we get here, there was insufficient memory to create the idle task */
+		_Error_Handler(__FILE__, __LINE__);
 	}
 }
-
-/**
- * @brief  The Amiga task.
- * @param  pvParameters: The task parameters.
- * @retval None
- */
-static void amiga_task(void *pvParameters)
-{
-	amiga_message_t received_msg;
-	led_status_t stat;
-	static keyboard_led_t keyboard_led = 0;
-
-	for (;;)
-	{
-		if (xQueueReceive(amigaQueue, &received_msg, pdMS_TO_TICKS(10)) == pdPASS)
-		{
-			switch(received_msg.type)
-			{
-				case AMIGA_MSG_SCANCODE:
-					stat = amikb_process(received_msg.data.scancode);
-					int do_led_update = 0;
-					switch (stat)
-					{
-						case LED_CAPS_LOCK_OFF: keyboard_led &= ~CAPS_LOCK_LED; do_led_update = 1; break;
-						case LED_CAPS_LOCK_ON: keyboard_led |= CAPS_LOCK_LED; do_led_update = 1; break;
-						case LED_NUM_LOCK_OFF: keyboard_led &= ~NUM_LOCK_LED; do_led_update = 1; break;
-						case LED_NUM_LOCK_ON: keyboard_led |= NUM_LOCK_LED; do_led_update = 1; break;
-						case LED_SCROLL_LOCK_OFF: keyboard_led &= ~SCROLL_LOCK_LED; do_led_update = 1; break;
-						case LED_SCROLL_LOCK_ON: keyboard_led |= SCROLL_LOCK_LED; do_led_update = 1; break;
-						case LED_RESET_BLINK: 
-							do_led_update = 1; 
-							break;
-						default: break;
-					}
-
-					if (do_led_update)
-					{
-						xQueueSend(ledQueue, &keyboard_led, 0);
-					}
-					break;
-
-				case AMIGA_MSG_NOTIFY:
-					amikb_notify(received_msg.data.notification_string);
-					break;
-			}
-		}
-		else
-		{
-			// No key received, check for Amiga-side reset
-			if (amikb_reset_check())
-			{
-				amikb_reset();
-				amikb_startup();
-			}
-		}
-	}
-}
-
 
 /**
   * @brief System Clock Configuration
@@ -460,11 +226,7 @@ void SystemClock_Config(void)
 	HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
-/**
- * @brief  Initializes the USART2 peripheral.
- * @param  baud: The baud rate.
- * @retval None
- */
+/* USART2 init function */
 static void MX_USART2_UART_Init(int baud)
 {
 	huart2.Instance = USART2;
@@ -482,10 +244,13 @@ static void MX_USART2_UART_Init(int baud)
 
 }
 
-/**
- * @brief  Initializes the GPIO peripherals.
- * @retval None
- */
+/** Configure pins as
+		* Analog
+		* Input
+		* Output
+		* EVENT_OUT
+		* EXTI
+*/
 static void MX_GPIO_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -507,16 +272,6 @@ static void MX_GPIO_Init(void)
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(TP1_GPIO_Port, &GPIO_InitStruct);
 
-}
-
-/**
- * @brief  This function is called to increment a global variable "uwTick"
- *         that is incremented each tick.
- * @retval None
- */
-void vApplicationTickHook(void)
-{
-	HAL_IncTick();
 }
 
 /**
@@ -547,9 +302,9 @@ void assert_failed(uint8_t* file, uint32_t line)
 {
 	/* USER CODE BEGIN 6 */
 	/* User can add his own implementation to report the file name and line number,
-	 tex: printf("Wrong parameters value: file %s on line %d\n", file, line) */
+	 tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 	/* USER CODE END 6 */
-	DBG_E("Error! Wrong parameters value: file %s on line %d\n", file, line);
+	DBG_E("Error! Wrong parameters value: file %s on line %d\r\n", file, line);
 	while (1)
 	{
 	}
