@@ -32,23 +32,12 @@ C_SOURCES =  \
 	src/syscall.c \
 	src/system_stm32f4xx.c \
 	src/amiga.c \
+	src/usb_task.c \
+	src/amiga_task.c \
 	src/stm32f4xx_hal_timebase_TIM.c \
 	src/freertos.c \
 
 
-FREERTOS_C_SOURCES = \
-	Middlewares/3rdParty/FreeRTOS-Kernel/tasks.c \
-	Middlewares/3rdParty/FreeRTOS-Kernel/queue.c \
-	Middlewares/3rdParty/FreeRTOS-Kernel/list.c \
-	Middlewares/3rdParty/FreeRTOS-Kernel/timers.c \
-	Middlewares/3rdParty/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c \
-	Middlewares/3rdParty/FreeRTOS-Kernel/portable/MemMang/heap_4.c \
-
-
-C_SOURCES += \
-	$(FREERTOS_C_SOURCES) \
-	
-	
 C_SOURCES += \
 	$(LIBRARY_C_SOURCES) \
 

@@ -72,7 +72,5 @@ LIBRARY_C_INCLUDES = \
 	-IMiddlewares/Third_Party/FreeRTOS/Source/include \
 	-IMiddlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS \
 	-IDrivers/CMSIS/Include \
-	-IMiddlewares/3rdParty/FreeRTOS-Kernel/include \
-	-IMiddlewares/3rdParty/FreeRTOS-Kernel/portable/GCC/ARM_CM4F \
 
 # End of Makefile.common
