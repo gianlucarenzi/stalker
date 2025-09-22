@@ -286,7 +286,7 @@ static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 	{KEY_O,                      0x18 }, // O
 	{KEY_P,                      0x19 }, // P
 	{KEY_OBRACKET_AND_OBRACE,    0x1A }, // [{
-	{KEY_CBRACKET_AND_CBRACE,    0x1B }, // }]
+	{KEY_CBRACKET_AND_CBRACE,    0x1B }, // ]}
 	{KEY_INTERNATIONAL5,         0x1C }, // undefined Intl 5
 	{KEY_KEYPAD_1_END,           0x1D }, // NUM 1
 	{KEY_KEYPAD_2_DOWN_ARROW,    0x1E }, // NUM 2
@@ -411,7 +411,7 @@ static const uint8_t asciiscancode[KEYCODE_TAB_SIZE][2] =
 	{KEY_O,                      'O' }, // O
 	{KEY_P,                      'P' }, // P
 	{KEY_OBRACKET_AND_OBRACE,    '{' }, // [{
-	{KEY_CBRACKET_AND_CBRACE,    '}' }, // }]
+	{KEY_CBRACKET_AND_CBRACE,    '}' }, // ]}
 	{KEY_SPACEBAR,               ' ' }, // SPACE
 	{KEY_KEYPAD_1_END,           '1' }, // NUM 1
 	{KEY_KEYPAD_2_DOWN_ARROW,    '2' }, // NUM 2
@@ -674,6 +674,11 @@ static unsigned char scrolllk = 0;
 static void amikb_direction(kbd_dir dir);
 static led_status_t amikb_send(uint8_t code, int press);
 
+/**
+ * @brief  Converts a USB HID scancode to an Amiga scancode.
+ * @param  lkey: The USB HID scancode.
+ * @retval The corresponding Amiga scancode.
+ **/
 static uint8_t scancode_to_amiga(uint8_t lkey)
 {
 	uint8_t i = 0, keyvalue = lkey;
@@ -694,6 +699,11 @@ static uint8_t scancode_to_amiga(uint8_t lkey)
 	return keyvalue;
 }
 
+/**
+ * @brief  Converts an ASCII character to a USB HID scancode.
+ * @param  ascii: The ASCII character.
+ * @retval The corresponding USB HID scancode.
+ **/
 static uint8_t ascii_to_scancode(uint8_t ascii)
 {
 	uint8_t i = 0, keyvalue = ascii;
@@ -711,7 +721,11 @@ static uint8_t ascii_to_scancode(uint8_t ascii)
 	DBG_N("Exit with: 0x%02x ScanCode\r\n", keyvalue);
 	return keyvalue;
 }
-// **************************
+
+/**
+ * @brief  Initializes the Amiga keyboard.
+ * @retval None
+ **/
 void amikb_startup(void)
 {
 	uint8_t AMIGA_INITPOWER = 0xFD; //11111101
@@ -733,11 +747,21 @@ void amikb_startup(void)
 }
 
 static int keyboard_is_present = 0;
+
+/**
+ * @brief  Sets the keyboard presence status.
+ * @param  isready: 1 if the keyboard is present, 0 otherwise.
+ * @retval None
+ **/
 void amikb_ready(int isready)
 {
 	keyboard_is_present = isready;
 }
 
+/**
+ * @brief  Initializes the GPIO pins for the Amiga keyboard.
+ * @retval None
+ **/
 void amikb_gpio_init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -766,6 +790,11 @@ void amikb_gpio_init(void)
 	DBG_N("Exit\r\n");
 }
 
+/**
+ * @brief  Sets the direction of the keyboard data and clock lines.
+ * @param  dir: The direction of the lines (DAT_INPUT or DAT_OUTPUT).
+ * @retval None
+ **/
 static void amikb_direction(kbd_dir dir)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -799,6 +828,12 @@ static void amikb_direction(kbd_dir dir)
 	DBG_N("Exit\r\n");
 }
 
+/**
+ * @brief  Sends a keycode to the Amiga.
+ * @param  keycode: The Amiga scancode to send.
+ * @param  press: 1 if the key is pressed, 0 if it is released.
+ * @retval The LED status.
+ **/
 static led_status_t amikb_send(uint8_t keycode, int press)
 {
 	int i;
@@ -1019,7 +1054,10 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 	return rval;
 }
 
-// **************************
+/**
+ * @brief  Resets the Amiga keyboard.
+ * @retval None
+ **/
 void amikb_reset(void)
 {
 	amikb_direction(DAT_OUTPUT);
@@ -1036,7 +1074,10 @@ void amikb_reset(void)
 	DBG_N("Exit\r\n");
 }
 
-// ****************************
+/**
+ * @brief  Checks if the Amiga keyboard is being reset.
+ * @retval true if the keyboard is being reset, false otherwise.
+ **/
 bool amikb_reset_check(void)
 {
 	bool is_low;
@@ -1057,6 +1098,11 @@ bool amikb_reset_check(void)
  * 
  * ...and any other combination of those keys!
  * 
+ **/
+/**
+ * @brief  Processes a keyboard code from the USB host.
+ * @param  data: A pointer to the keyboard code structure.
+ * @retval The LED status.
  **/
 led_status_t amikb_process(keyboard_code_t *data)
 {
@@ -1299,6 +1345,11 @@ led_status_t amikb_process(keyboard_code_t *data)
 	return rval;
 }
 
+/**
+ * @brief  Converts a string to uppercase.
+ * @param  s: The string to convert.
+ * @retval None
+ **/
 static void upper_string(char s[])
 {
 	int c = 0;
@@ -1314,6 +1365,11 @@ static void upper_string(char s[])
 }
 
 #ifndef __AMIBERRY_EASTER_EGG__
+/**
+ * @brief  Sends a string to the Amiga.
+ * @param  ptr: A pointer to the string to send.
+ * @retval None
+ **/
 void amikb_notify(const char *ptr)
 {
 	int i;
@@ -1348,6 +1404,11 @@ void amikb_notify(const char *ptr)
 	DBG_N("Exit\n");
 }
 #else
+/**
+ * @brief  Sends a string to the Amiga, with an Easter egg.
+ * @param  ptr: A pointer to the string to send.
+ * @retval None
+ **/
 void amikb_notify(const char *ptr)
 {
 	int i;
