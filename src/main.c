@@ -92,7 +92,7 @@ QueueHandle_t led_queue = NULL;
 static int debuglevel = DBG_INFO;
 
 /** @brief Firmware build version string with timestamp */
-static const char *fwBuild = "v1.5-rtos BUILD: " __TIME__ "-" __DATE__;
+static const char *fwBuild = "v1.5-RTOS BUILD: " __TIME__ "-" __DATE__;
 
 /** @brief UART handle for debug communication */
 static UART_HandleTypeDef huart2;
