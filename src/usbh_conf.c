@@ -486,7 +486,7 @@ USBH_StatusTypeDef USBH_LL_SubmitURB(USBH_HandleTypeDef *phost, uint8_t pipe, ui
 	hal_status = HAL_HCD_HC_SubmitRequest(phost->pData, pipe, direction ,
 			ep_type, token, pbuff, length, do_ping);
 
-	sswitch (hal_status)
+	switch (hal_status)
 	{
 		case HAL_OK :
 			usb_status = USBH_OK;
