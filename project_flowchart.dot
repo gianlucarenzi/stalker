@@ -1,0 +1,142 @@
+digraph ProjectFlowchart {
+    // Graph settings
+    rankdir=TB;
+    node [shape=box, style=filled, fontname="Arial", fontsize=10];
+    edge [fontname="Arial", fontsize=9];
+    
+    // Color scheme
+    subgraph cluster_hardware {
+        label="Hardware Layer";
+        style=filled;
+        color=lightgrey;
+        
+        usb_keyboard [label="USB Keyboard", fillcolor=lightblue];
+        stm32 [label="STM32F401\nMicrocontroller", fillcolor=lightgreen];
+        amiga_computer [label="Amiga Computer", fillcolor=lightyellow];
+        
+        usb_keyboard -> stm32 [label="USB HID"];
+        stm32 -> amiga_computer [label="GPIO\n(Clock/Data)"];
+    }
+    
+    subgraph cluster_freertos {
+        label="FreeRTOS Kernel";
+        style=filled;
+        color=lightcyan;
+        
+        scheduler [label="FreeRTOS\nScheduler", fillcolor=cyan];
+        keyboard_queue [label="Keyboard Queue\n(USB → Amiga)", fillcolor=orange];
+        led_queue [label="LED Queue\n(Amiga → USB)", fillcolor=orange];
+    }
+    
+    subgraph cluster_tasks {
+        label="Application Tasks";
+        style=filled;
+        color=lightsteelblue;
+        
+        subgraph cluster_usb_task {
+            label="USB Task (Priority 3)";
+            style=filled;
+            color=lightpink;
+            
+            usb_init [label="USB Host\nInitialization", fillcolor=pink];
+            usb_process [label="USB HID\nProcessing", fillcolor=pink];
+            led_control [label="LED Control\n& Status", fillcolor=pink];
+            usb_state [label="Connection State\nManagement", fillcolor=pink];
+        }
+        
+        subgraph cluster_amiga_task {
+            label="Amiga Task (Priority 2)";
+            style=filled;
+            color=lightgreen;
+            
+            amiga_init [label="GPIO & Protocol\nInitialization", fillcolor=lightgreen];
+            scancode_conv [label="Scancode\nConversion", fillcolor=lightgreen];
+            amiga_protocol [label="Amiga Keyboard\nProtocol", fillcolor=lightgreen];
+            reset_detect [label="Reset Detection\n& Handling", fillcolor=lightgreen];
+        }
+    }
+    
+    subgraph cluster_drivers {
+        label="Hardware Abstraction Layer";
+        style=filled;
+        color=lightyellow;
+        
+        usb_host_lib [label="STM32 USB Host\nLibrary", fillcolor=yellow];
+        hal_drivers [label="STM32 HAL\nDrivers", fillcolor=yellow];
+        gpio_driver [label="GPIO Driver", fillcolor=yellow];
+    }
+    
+    subgraph cluster_main {
+        label="System Initialization";
+        style=filled;
+        color=lightcoral;
+        
+        main_func [label="main()", fillcolor=coral];
+        system_init [label="System Clock\n& Peripheral Init", fillcolor=coral];
+        task_creation [label="Task & Queue\nCreation", fillcolor=coral];
+    }
+    
+    // Main flow
+    main_func -> system_init;
+    system_init -> task_creation;
+    task_creation -> scheduler;
+    
+    // Task initialization
+    scheduler -> usb_init;
+    scheduler -> amiga_init;
+    
+    // USB Task flow
+    usb_init -> usb_process;
+    usb_process -> usb_state;
+    usb_state -> led_control;
+    
+    // Amiga Task flow
+    amiga_init -> scancode_conv;
+    scancode_conv -> amiga_protocol;
+    amiga_protocol -> reset_detect;
+    
+    // Inter-task communication
+    usb_process -> keyboard_queue [label="Send keyboard\ndata", color=blue];
+    keyboard_queue -> scancode_conv [label="Receive keyboard\ndata", color=blue];
+    
+    amiga_protocol -> led_queue [label="Send LED\nstatus", color=red];
+    led_queue -> led_control [label="Receive LED\nstatus", color=red];
+    
+    // Hardware interactions
+    usb_process -> usb_host_lib [label="USB HID calls"];
+    led_control -> usb_host_lib [label="LED control"];
+    
+    amiga_protocol -> gpio_driver [label="GPIO control"];
+    reset_detect -> gpio_driver [label="Reset detection"];
+    
+    usb_host_lib -> hal_drivers;
+    gpio_driver -> hal_drivers;
+    
+    // External connections
+    usb_keyboard -> usb_host_lib [style=dashed, label="USB connection"];
+    gpio_driver -> amiga_computer [style=dashed, label="Keyboard protocol"];
+    
+    // Timing loops
+    usb_process -> usb_process [label="10ms cycle", style=dotted];
+    scancode_conv -> scancode_conv [label="50ms cycle", style=dotted];
+    
+    // Legend
+    subgraph cluster_legend {
+        label="Legend";
+        style=filled;
+        color=white;
+        
+        legend_hardware [label="Hardware", fillcolor=lightblue];
+        legend_freertos [label="FreeRTOS", fillcolor=cyan];
+        legend_usb [label="USB Task", fillcolor=pink];
+        legend_amiga [label="Amiga Task", fillcolor=lightgreen];
+        legend_hal [label="HAL/Drivers", fillcolor=yellow];
+        legend_main [label="System Init", fillcolor=coral];
+        
+        legend_hardware -> legend_freertos [style=invis];
+        legend_freertos -> legend_usb [style=invis];
+        legend_usb -> legend_amiga [style=invis];
+        legend_amiga -> legend_hal [style=invis];
+        legend_hal -> legend_main [style=invis];
+    }
+}

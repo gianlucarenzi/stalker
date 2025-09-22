@@ -1,0 +1,138 @@
+digraph TimingFlow {
+    // Graph settings
+    rankdir=TB;
+    node [shape=box, style=filled, fontname="Arial", fontsize=9];
+    edge [fontname="Arial", fontsize=8];
+    
+    // System startup sequence
+    subgraph cluster_startup {
+        label="System Startup Sequence";
+        style=filled;
+        color=lightcoral;
+        
+        power_on [label="Power On", fillcolor=coral];
+        hal_init [label="HAL_Init()", fillcolor=coral];
+        clock_config [label="SystemClock_Config()", fillcolor=coral];
+        gpio_init [label="MX_GPIO_Init()", fillcolor=coral];
+        uart_init [label="MX_USART2_UART_Init()", fillcolor=coral];
+        banner [label="Display Banner", fillcolor=coral];
+        create_tasks [label="create_tasks_and_queues()", fillcolor=coral];
+        start_scheduler [label="vTaskStartScheduler()", fillcolor=coral];
+    }
+    
+    // Runtime operation
+    subgraph cluster_runtime {
+        label="Runtime Operation";
+        style=filled;
+        color=lightsteelblue;
+        
+        // USB Task cycle
+        subgraph cluster_usb_cycle {
+            label="USB Task (Every 10ms)";
+            style=filled;
+            color=lightpink;
+            
+            usb_host_process [label="MX_USB_HOST_Process()", fillcolor=pink];
+            check_connection [label="Check USB Connection", fillcolor=pink];
+            read_keyboard [label="USBH_Keybd()", fillcolor=pink];
+            send_to_queue [label="xQueueSend(keyboard_queue)", fillcolor=pink];
+            handle_leds [label="Handle LED Messages", fillcolor=pink];
+            update_status [label="Update Status LED", fillcolor=pink];
+        }
+        
+        // Amiga Task cycle
+        subgraph cluster_amiga_cycle {
+            label="Amiga Task (Every 50ms)";
+            style=filled;
+            color=lightgreen;
+            
+            receive_from_queue [label="xQueueReceive(keyboard_queue)", fillcolor=lightgreen];
+            convert_scancode [label="scancode_to_amiga()", fillcolor=lightgreen];
+            amiga_send [label="amikb_send()", fillcolor=lightgreen];
+            check_reset [label="amikb_reset_check()", fillcolor=lightgreen];
+            send_led_status [label="xQueueSend(led_queue)", fillcolor=lightgreen];
+        }
+        
+        // Protocol timing details
+        subgraph cluster_protocol_timing {
+            label="Amiga Protocol Timing (μs level)";
+            style=filled;
+            color=lightyellow;
+            
+            set_data_line [label="Set Data Line\n(20μs setup)", fillcolor=yellow];
+            clock_pulse [label="Clock Pulse\n(20μs low, 20μs high)", fillcolor=yellow];
+            repeat_8_bits [label="Repeat for 8 bits", fillcolor=yellow];
+            wait_handshake [label="Wait Handshake\n(85μs pulse)", fillcolor=yellow];
+        }
+    }
+    
+    // Error handling
+    subgraph cluster_error_handling {
+        label="Error Handling";
+        style=filled;
+        color=lightgray;
+        
+        usb_disconnect [label="USB Disconnect", fillcolor=lightgray];
+        reset_detected [label="Reset Detected\n(500ms clock low)", fillcolor=lightgray];
+        system_reset [label="System Reset", fillcolor=lightgray];
+        led_blink [label="LED Blink Sequence", fillcolor=lightgray];
+    }
+    
+    // Startup flow
+    power_on -> hal_init;
+    hal_init -> clock_config;
+    clock_config -> gpio_init;
+    gpio_init -> uart_init;
+    uart_init -> banner;
+    banner -> create_tasks;
+    create_tasks -> start_scheduler;
+    
+    // Runtime flows
+    start_scheduler -> usb_host_process;
+    start_scheduler -> receive_from_queue;
+    
+    // USB Task flow
+    usb_host_process -> check_connection;
+    check_connection -> read_keyboard;
+    read_keyboard -> send_to_queue;
+    send_to_queue -> handle_leds;
+    handle_leds -> update_status;
+    update_status -> usb_host_process [label="10ms delay", style=dotted];
+    
+    // Amiga Task flow
+    receive_from_queue -> convert_scancode;
+    convert_scancode -> amiga_send;
+    amiga_send -> check_reset;
+    check_reset -> send_led_status;
+    send_led_status -> receive_from_queue [label="50ms delay", style=dotted];
+    
+    // Protocol timing
+    amiga_send -> set_data_line;
+    set_data_line -> clock_pulse;
+    clock_pulse -> repeat_8_bits;
+    repeat_8_bits -> clock_pulse [label="x8 bits", style=dotted];
+    repeat_8_bits -> wait_handshake;
+    
+    // Inter-task communication
+    send_to_queue -> receive_from_queue [label="keyboard_queue", color=blue];
+    send_led_status -> handle_leds [label="led_queue", color=red];
+    
+    // Error flows
+    check_connection -> usb_disconnect [style=dashed, color=red];
+    check_reset -> reset_detected [style=dashed, color=red];
+    reset_detected -> system_reset;
+    system_reset -> led_blink;
+    
+    // Timing annotations
+    timing_10ms [label="10ms", shape=ellipse, fillcolor=lightblue];
+    timing_50ms [label="50ms", shape=ellipse, fillcolor=lightblue];
+    timing_20us [label="20μs", shape=ellipse, fillcolor=lightblue];
+    timing_85us [label="85μs", shape=ellipse, fillcolor=lightblue];
+    timing_500ms [label="500ms", shape=ellipse, fillcolor=lightblue];
+    
+    usb_host_process -> timing_10ms [style=dotted, color=gray];
+    receive_from_queue -> timing_50ms [style=dotted, color=gray];
+    clock_pulse -> timing_20us [style=dotted, color=gray];
+    wait_handshake -> timing_85us [style=dotted, color=gray];
+    reset_detected -> timing_500ms [style=dotted, color=gray];
+}

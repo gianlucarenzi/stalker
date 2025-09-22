@@ -1,0 +1,100 @@
+digraph DetailedArchitecture {
+    // Graph settings
+    rankdir=LR;
+    node [shape=record, style=filled, fontname="Arial", fontsize=9];
+    edge [fontname="Arial", fontsize=8];
+    
+    // USB Side
+    subgraph cluster_usb_side {
+        label="USB Side";
+        style=filled;
+        color=lightblue;
+        
+        usb_keyboard [label="{USB Keyboard|HID Protocol}", fillcolor=lightcyan];
+        
+        subgraph cluster_usb_task_detail {
+            label="USB Task (10ms cycle)";
+            style=filled;
+            color=lightpink;
+            
+            usb_task_node [label="{USB Task|{MX_USB_HOST_Process()|USBH_Keybd()|LED Management|Status Indication}}", fillcolor=pink];
+        }
+        
+        usb_host_stack [label="{USB Host Stack|{USBH_HID|STM32 USB OTG|HAL Drivers}}", fillcolor=lightyellow];
+    }
+    
+    // FreeRTOS Core
+    subgraph cluster_freertos_core {
+        label="FreeRTOS Core";
+        style=filled;
+        color=lightcyan;
+        
+        scheduler_detail [label="{FreeRTOS Scheduler|{Task Switching|Priority Management|Timing Control}}", fillcolor=cyan];
+        
+        queues [label="{Inter-Task Queues|{keyboard_queue\\n(10 messages)|led_queue\\n(5 messages)}}", fillcolor=orange];
+    }
+    
+    // Amiga Side
+    subgraph cluster_amiga_side {
+        label="Amiga Side";
+        style=filled;
+        color=lightgreen;
+        
+        subgraph cluster_amiga_task_detail {
+            label="Amiga Task (50ms cycle)";
+            style=filled;
+            color=lightsteelblue;
+            
+            amiga_task_node [label="{Amiga Task|{Scancode Conversion|Protocol Timing|Reset Detection|GPIO Control}}", fillcolor=lightgreen];
+        }
+        
+        amiga_protocol_detail [label="{Amiga Protocol|{Clock/Data Lines|Handshake Timing|Reset Handling}}", fillcolor=lightyellow];
+        
+        amiga_computer [label="{Amiga Computer|Keyboard Port}", fillcolor=lightgray];
+    }
+    
+    // Data structures
+    subgraph cluster_data_structures {
+        label="Data Structures";
+        style=filled;
+        color=wheat;
+        
+        keyboard_msg [label="{keyboard_message_t|{keycode|timestamp}}", fillcolor=wheat];
+        led_msg [label="{led_message_t|{led_status|timestamp}}", fillcolor=wheat];
+        keyboard_code [label="{keyboard_code_t|{Modifier keys|6 key array|Press states}}", fillcolor=wheat];
+    }
+    
+    // Main flow connections
+    usb_keyboard -> usb_host_stack [label="USB HID Reports"];
+    usb_host_stack -> usb_task_node [label="Keyboard Data"];
+    
+    usb_task_node -> queues [label="keyboard_message_t", color=blue];
+    queues -> amiga_task_node [label="keyboard_message_t", color=blue];
+    
+    amiga_task_node -> queues [label="led_message_t", color=red];
+    queues -> usb_task_node [label="led_message_t", color=red];
+    
+    amiga_task_node -> amiga_protocol_detail [label="GPIO Signals"];
+    amiga_protocol_detail -> amiga_computer [label="Clock/Data/Reset"];
+    
+    // Scheduler connections
+    scheduler_detail -> usb_task_node [label="10ms tick", style=dotted];
+    scheduler_detail -> amiga_task_node [label="50ms tick", style=dotted];
+    
+    // Data structure usage
+    usb_task_node -> keyboard_msg [style=dashed, label="creates"];
+    amiga_task_node -> led_msg [style=dashed, label="creates"];
+    amiga_task_node -> keyboard_code [style=dashed, label="processes"];
+    
+    // Timing annotations
+    usb_timing [label="{USB Task Timing|{Priority: 3 (High)|Cycle: 10ms|Stack: 4x minimal}}", shape=note, fillcolor=lightpink];
+    amiga_timing [label="{Amiga Task Timing|{Priority: 2 (Medium)|Cycle: 50ms|Stack: 2x minimal}}", shape=note, fillcolor=lightgreen];
+    
+    usb_task_node -> usb_timing [style=dotted, color=gray];
+    amiga_task_node -> amiga_timing [style=dotted, color=gray];
+    
+    // Protocol details
+    protocol_details [label="{Amiga Protocol Details|{Bit order: 6-5-4-3-2-1-0-7|Data inverted (0=HIGH, 1=LOW)|Clock pulse: 20μs|Handshake: 85μs pulse|Reset: 500ms clock low}}", shape=note, fillcolor=lightyellow];
+    
+    amiga_protocol_detail -> protocol_details [style=dotted, color=gray];
+}
