@@ -1,0 +1,72 @@
+digraph flowchart {
+  rankdir=TB;
+  node [shape=box, style=rounded];
+
+  subgraph cluster_init {
+    label = "Initialization";
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+    start [label="Start"];
+    init [label="System Initialization\n- HAL_Init()\n- SystemClock_Config()\n- MX_GPIO_Init()\n- MX_USART2_UART_Init()\n- amikb_gpio_init()\n- amikb_startup()"];
+    scheduler [label="vTaskStartScheduler()"];
+    start -> init -> scheduler;
+  }
+
+  subgraph cluster_tasks {
+    label = "Tasks";
+    style=filled;
+    color=lightgrey;
+    usb_task [label="usb_task"];
+    amiga_task [label="amiga_task"];
+  }
+
+  scheduler -> usb_task;
+  scheduler -> amiga_task;
+
+  subgraph cluster_usb_task {
+    label = "usb_task Logic";
+    style=filled;
+    color=lightblue;
+    node [style=filled,color=white];
+    usb_process [label="MX_USB_HOST_Process()"];
+    usb_ready [label="USB Ready?", shape=diamond];
+    is_keyboard [label="Keyboard?", shape=diamond];
+    send_scancode [label="Send Scancode to Amiga"];
+    send_notification_usb [label="Send Notification to Amiga"];
+    blink_led [label="Blink LED"];
+
+    usb_task -> usb_process -> usb_ready;
+    usb_ready -> is_keyboard [label="Yes"];
+    usb_ready -> blink_led [label="No"];
+    blink_led -> usb_process;
+    is_keyboard -> send_scancode [label="Yes"];
+    is_keyboard -> send_notification_usb [label="No"];
+    send_scancode -> usb_process;
+    send_notification_usb -> usb_process;
+  }
+
+  subgraph cluster_amiga_task {
+    label = "amiga_task Logic";
+    style=filled;
+    color=lightgreen;
+    node [style=filled,color=white];
+    wait_message [label="Wait for Message", shape=diamond];
+    is_scancode [label="Scancode?", shape=diamond];
+    amikb_process [label="amikb_process()"]
+    amikb_notify [label="amikb_notify()"]
+    check_reset [label="Check Amiga Reset"];
+
+    amiga_task -> wait_message;
+    wait_message -> is_scancode [label="Yes"];
+    wait_message -> check_reset [label="No"];
+    check_reset -> wait_message;
+    is_scancode -> amikb_process [label="Yes"];
+    is_scancode -> amikb_notify [label="No"];
+    amikb_process -> wait_message;
+    amikb_notify -> wait_message;
+  }
+
+  send_scancode -> amikb_process [style=dashed, constraint=false];
+  send_notification_usb -> amikb_notify [style=dashed, constraint=false];
+}
