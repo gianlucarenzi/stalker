@@ -36,6 +36,19 @@ C_SOURCES =  \
 	src/freertos.c \
 
 
+FREERTOS_C_SOURCES = \
+	3rdParty/FreeRTOS-Kernel/tasks.c \
+	3rdParty/FreeRTOS-Kernel/queue.c \
+	3rdParty/FreeRTOS-Kernel/list.c \
+	3rdParty/FreeRTOS-Kernel/timers.c \
+	3rdParty/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c \
+	3rdParty/FreeRTOS-Kernel/portable/MemMang/heap_4.c \
+
+
+C_SOURCES += \
+	$(FREEROTS_C_SOURCES) \
+	
+	
 C_SOURCES += \
 	$(LIBRARY_C_SOURCES) \
 
@@ -46,6 +59,9 @@ ASM_SOURCES =  \
 
 
 include Makefile.board
+
+vpath %.s $(sort $(dir $(ASM_SOURCES)))
+
 
 # C includes
 C_INCLUDES =  \
@@ -111,16 +127,16 @@ all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET
 # build the application
 #######################################
 # list of objects
-OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
-vpath %.c $(sort $(dir $(C_SOURCES)))
+OBJECTS = $(addprefix $(BUILD_DIR)/,$(C_SOURCES:.c=.o))
 # list of ASM program objects
-OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
-vpath %.s $(sort $(dir $(ASM_SOURCES)))
+OBJECTS += $(addprefix $(BUILD_DIR)/,$(ASM_SOURCES:.s=.o))
 
-$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
+$(BUILD_DIR)/%.o: %.c Makefile
+	@mkdir -p $(dir $@)
 	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
 
-$(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
+$(BUILD_DIR)/%.o: %.s Makefile
+	@mkdir -p $(dir $@)
 	$(AS) -c $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile

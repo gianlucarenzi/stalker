@@ -552,6 +552,7 @@ static const uint8_t asciiscancode[KEYCODE_TAB_SIZE][2] =
 	*
 	*
 	*
+	*
 	* Is this LookUpTable needed for translating from ascii to internal keycode?
 
 
@@ -673,9 +674,6 @@ static unsigned char scrolllk = 0;
 static void amikb_direction(kbd_dir dir);
 static led_status_t amikb_send(uint8_t code, int press);
 
-// FreeRTOS queue
-QueueHandle_t queue;
-
 static uint8_t scancode_to_amiga(uint8_t lkey)
 {
 	uint8_t i = 0, keyvalue = lkey;
@@ -727,9 +725,9 @@ void amikb_startup(void)
 	amikb_direction(DAT_OUTPUT); // Default
 
 	mdelay(1000);              // wait for sync
-	ll_amikb_send((uint8_t) AMIGA_INITPOWER, 0); // send "initiate power-up"
+	amikb_send((uint8_t) AMIGA_INITPOWER, 0); // send "initiate power-up"
 	udelay(200);
-	ll_amikb_send((uint8_t) AMIGA_TERMPOWER, 0); // send "terminate power-up"
+	amikb_send((uint8_t) AMIGA_TERMPOWER, 0); // send "terminate power-up"
 
 	DBG_N("Exit\r\n");
 }
@@ -803,9 +801,8 @@ static void amikb_direction(kbd_dir dir)
 
 static led_status_t amikb_send(uint8_t keycode, int press)
 {
+	int i;
 	led_status_t rval = NO_LED;
-	message_t msg;
-	key_status_t *keystat;
 
 	DBG_N("Amiga Keycode 0x%02x - %s\r\n", keycode, press ? "PRESSED" : "RELEASED");
 	if (keycode == 0x62 || keycode == 0x68 || keycode == 0x1c) // Caps Lock, Num Lock or Scroll Lock Pressed or Released
@@ -947,36 +944,6 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 
 	prev_keycode = keycode;
 
-	// Now the keycode must be inserted into the xQueue of the Amiga Task
-	// so can be used to call the low level access routine by the task itself
-	// NOT HERE!
-//	ll_amikb_send(keycode, press);
-	keystat = (key_status_t *) pvPortMalloc(sizeof(key_status_t));
-	if (keystat != NULL)
-	{
-		keystat->keycode = keycode;
-		keystat->press = press;
-
-		// It is mandatory to allocate here the memory space for the object
-		msg.state = AMIGA_PROCESS_KEY;
-		msg.type = TYPE_KEYBOARD_CODE;
-		msg.data = keystat;
-		xQueueSend(queue, &msg, 0);
-		// The memory will be freed by the receiving Task
-	}
-	else
-	{
-		DBG_E("*** ERROR! No space left for message!\r\n");
-	} 
-	DBG_N("Exit: %d\r\n", rval);
-	return rval;
-}
-
-// This should be called by Amiga Task as it has its timings and such.
-void ll_amikb_send(uint8_t keycode, int press)
-{
-	int i;
-
 	// Set direction DAT & CLOCK as output to ensure the correct
 	// movement of the edges (CLK and DAT)
 	amikb_direction(DAT_OUTPUT);
@@ -1022,7 +989,6 @@ void ll_amikb_send(uint8_t keycode, int press)
 #warning "USING REAL AMIGA MOTHERBOARD HANDSHAKE"
 	// Now the Amiga CPU send the sync signal lowering the KBD_DAT signal atleast 1 microsecond
 	{
-		// keyboard_is_present is a global variable!!
 		if (keyboard_is_present)
 		{
 			int hshakepulse_ms = 143;
@@ -1043,12 +1009,14 @@ void ll_amikb_send(uint8_t keycode, int press)
 	}
 #else
 #warning "USING TIMED HANDSHAKE"
-	mdelay(5);	// handshake wait 500msec
+	mdelay(5); // handshake wait 500msec
 #endif
 	// The following instructions should be useless as the port has been configured as input few
 	// lines above... :-/
 	HAL_GPIO_WritePin(GPIOC, KBD_DATA_Pin,  GPIO_PIN_SET); // Set KBD_DATA pin
 	HAL_GPIO_WritePin(GPIOC, KBD_CLOCK_Pin, GPIO_PIN_SET); // Set KBD_CLOCK pin
+	DBG_N("Exit: %d\r\n", rval);
+	return rval;
 }
 
 // **************************
@@ -1067,7 +1035,6 @@ void amikb_reset(void)
 	scrolllk = 0;
 	DBG_N("Exit\r\n");
 }
-
 
 // ****************************
 bool amikb_reset_check(void)
@@ -1090,7 +1057,7 @@ bool amikb_reset_check(void)
  * 
  * ...and any other combination of those keys!
  * 
- */
+ **/
 led_status_t amikb_process(keyboard_code_t *data)
 {
 	static int maybe_reset = 0;
@@ -1319,18 +1286,11 @@ led_status_t amikb_process(keyboard_code_t *data)
 		}
 	}
 
-	DBG_V("MAY BE TOTAL SYSTEM RESET??? %d\r\n", maybe_reset);
+	DBG_V("MAY BE RESET TOTAL??? %d\r\n", maybe_reset);
 	if (maybe_reset >= OK_RESET)
 	{
 		DBG_I("#### <SYSTEM RESET> ####\r\n");
-		// The Amiga Task will get the xQueue and execute the real
-		// amikb_reset() with all its timings...
-		message_t msg;
-		msg.state = AMIGA_DO_RESET;
-		msg.type = TYPE_EMPTY;
-		msg.data = NULL;
-		xQueueSend(queue, &msg, 0);
-		//amikb_reset();
+		amikb_reset();
 		rval = LED_RESET_BLINK;
 		maybe_reset = 0;
 	}
@@ -1364,10 +1324,10 @@ void amikb_notify(const char *ptr)
 	if (ptr != NULL)
 	{
 		DBG_V("String %s\n\r", ptr);
-		upper = malloc(strlen(ptr));
+		upper = malloc(strlen(ptr) + 1);
 		if (upper != NULL)
 		{
-			strncpy(upper, ptr, strlen(ptr));
+			strcpy(upper, ptr);
 			upper_string(upper);
 			rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), 1);
 			for (i = 0; i < strlen(ptr); i++)
@@ -1388,37 +1348,33 @@ void amikb_notify(const char *ptr)
 	DBG_N("Exit\n");
 }
 #else
-#define MSGLEN	512
 void amikb_notify(const char *ptr)
 {
 	int i;
 	char *upper = NULL;
 	led_status_t rval = NO_LED;
 	const char *amiberry = " AMIBERRY IS CREATED AND MAINTAINED BY DIMITRIS PANOKOSTAS. THANKS FOR ALL!";
-	char msg[MSGLEN]; // MSGLEN bytes buffer
+	char msg[1024]; // 1K buffer
 	int total_len = 0;
 
 	DBG_N("Enter\r\n");
-	memset(msg, 0, MSGLEN);
+	memset(msg, 0, 1024);
 
 	if (ptr != NULL)
 	{
 		DBG_V("String %s\n\r", ptr);
-		upper = malloc(strlen(ptr));
+		upper = malloc(strlen(ptr) + 1);
 		if (upper != NULL)
 		{
-			strncpy(upper, ptr, strlen(ptr));
+			strcpy(upper, ptr);
 			upper_string(upper);
 			// Now we can chain two (uppercase) strings together
-			strncpy(msg, upper, strlen(upper));
+			strncpy(msg, upper, sizeof(msg) - 1);
 			total_len = strlen(upper);
-			if ((total_len + strlen(amiberry)) >= MSGLEN)
+			if ((total_len + strlen(amiberry)) < sizeof(msg))
 			{
-				// print the correct amiberry string instead
-				total_len = 0;
-				memset(msg, 0, MSGLEN);
+				strcat(msg, amiberry);
 			}
-			strncpy(msg + total_len, amiberry, strlen(amiberry)); 
 			// Send shift pressed first
 			rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), 1);
 			for (i = 0; i < strlen(msg); i++)
