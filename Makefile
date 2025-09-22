@@ -42,6 +42,10 @@ C_SOURCES += \
 	$(LIBRARY_C_SOURCES) \
 
 
+C_SOURCES += \
+	$(FREERTOS_SOURCES) \
+
+
 # ASM sources
 ASM_SOURCES =  \
 	startup_stm32f401xc.s \
@@ -59,6 +63,10 @@ C_INCLUDES =  \
 
 C_INCLUDES += \
 	$(LIBRARY_C_INCLUDES) \
+
+
+C_INCLUDES += \
+	$(FREERTOS_INCLUDES) \
 
 
 # compile gcc flags

@@ -51,6 +51,9 @@ LIBRARY_C_SOURCES =  \
 	Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid_keybd.c \
 	Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid_mouse.c \
 	Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid_parser.c \
+
+
+FREERTOS_SOURCES = \
 	Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c \
 	Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c \
 	Middlewares/Third_Party/FreeRTOS/Source/queue.c \
@@ -69,8 +72,12 @@ LIBRARY_C_INCLUDES = \
 	-IMiddlewares/ST/STM32_USB_Host_Library/Core/Inc \
 	-IMiddlewares/ST/STM32_USB_Host_Library/Class/HID/Inc \
 	-IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
+	-IDrivers/CMSIS/Include \
+
+
+FREERTOS_INCLUDES = \
 	-IMiddlewares/Third_Party/FreeRTOS/Source/include \
 	-IMiddlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS \
-	-IDrivers/CMSIS/Include \
+
 
 # End of Makefile.common
