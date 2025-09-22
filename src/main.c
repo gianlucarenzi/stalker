@@ -95,7 +95,10 @@ typedef struct {
 static QueueHandle_t amigaQueue = NULL;
 static QueueHandle_t ledQueue = NULL;
 
-
+/**
+ * @brief  Prints a banner to the console.
+ * @retval None
+ */
 static void banner(void)
 {
 	printf("\r\n\r\n" ANSI_BLUE "RETROBITLAB AMIGA USB KEYBOARD ADAPTER" ANSI_RESET "\r\n");
@@ -108,6 +111,11 @@ static void banner(void)
 	printf("\r\n\n");
 }
 
+/**
+ * @brief  Sets the state of the LED.
+ * @param  state: The state of the LED (0 for off, 1 for on).
+ * @retval None
+ */
 static void led_light(int state)
 {
 	int tpval = GPIO_PIN_RESET;
@@ -123,6 +131,10 @@ static void led_light(int state)
 	HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, tpval);
 }
 
+/**
+ * @brief  Toggles the state of the LED.
+ * @retval None
+ */
 static void led_toggle(void)
 {
 	static int tpval = 0;
@@ -139,6 +151,12 @@ static void led_toggle(void)
 
 #define USB_REPORT_RETRY    (6)
 
+/**
+ * @brief  Sets the state of the keyboard LEDs.
+ * @param  usbhost: A pointer to the USB host handle.
+ * @param  ld: The state of the LEDs.
+ * @retval None
+ */
 static void usb_keyboard_led(USBH_HandleTypeDef *usbhost, keyboard_led_t ld)
 {
 	keyboard_led_t led = ld;
@@ -160,6 +178,11 @@ static void usb_keyboard_led(USBH_HandleTypeDef *usbhost, keyboard_led_t ld)
 	DBG_N("Exit\r\n");
 }
 
+/**
+ * @brief  Initializes the keyboard LEDs.
+ * @param  usbhost: A pointer to the USB host handle.
+ * @retval None
+ */
 static void usb_keyboard_led_init(USBH_HandleTypeDef * usbhost)
 {
 	keyboard_led_t led = CAPS_LOCK_LED | NUM_LOCK_LED | SCROLL_LOCK_LED;
@@ -233,6 +256,11 @@ int main(void)
 	for (;;);
 }
 
+/**
+ * @brief  The USB task.
+ * @param  pvParameters: The task parameters.
+ * @retval None
+ */
 static void usb_task(void *pvParameters)
 {
     ApplicationTypeDef aState = APPLICATION_DISCONNECT;
@@ -316,6 +344,11 @@ static void usb_task(void *pvParameters)
     }
 }
 
+/**
+ * @brief  The Amiga task.
+ * @param  pvParameters: The task parameters.
+ * @retval None
+ */
 static void amiga_task(void *pvParameters)
 {
     amiga_message_t received_msg;
@@ -426,7 +459,11 @@ void SystemClock_Config(void)
 	HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
-/* USART2 init function */
+/**
+ * @brief  Initializes the USART2 peripheral.
+ * @param  baud: The baud rate.
+ * @retval None
+ */
 static void MX_USART2_UART_Init(int baud)
 {
 	huart2.Instance = USART2;
@@ -444,13 +481,10 @@ static void MX_USART2_UART_Init(int baud)
 
 }
 
-/** Configure pins as
-		* Analog
-		* Input
-		* Output
-		* EVENT_OUT
-		* EXTI
-*/
+/**
+ * @brief  Initializes the GPIO peripherals.
+ * @retval None
+ */
 static void MX_GPIO_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -474,6 +508,11 @@ static void MX_GPIO_Init(void)
 
 }
 
+/**
+ * @brief  This function is called to increment a global variable "uwTick"
+ *         that is incremented each tick.
+ * @retval None
+ */
 void vApplicationTickHook(void)
 {
     HAL_IncTick();
