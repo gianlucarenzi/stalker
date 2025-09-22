@@ -1076,7 +1076,7 @@ void amikb_reset(void)
 
 /**
  * @brief  Checks if the Amiga keyboard is being reset.
- *         This function has to be called with a specific time step.
+ *         The caller should be take note of the level and timings.
  *         Amiga Reset is low only if it is longer than 500msec.
  *         i.e. RESET_TIMER calls.
  * @retval true if the keyboard is being reset, false otherwise.
@@ -1085,24 +1085,12 @@ void amikb_reset(void)
 
 bool amikb_reset_check(void)
 {
-	static int fcalled = 0;
 	bool is_low;
 	DBG_N("Enter\r\n");
 	amikb_direction( DAT_INPUT );
 	is_low = HAL_GPIO_ReadPin(GPIOC, KBD_CLOCK_Pin) == GPIO_PIN_RESET ? true : false;
 	DBG_N("KBD_CLOCK is %s\r\n", is_low == false ? "LOW" : "HIGH");
-	if (is_low)
-	{
-		fcalled++; // every pdMS_TO_TICKS 10 msec
-		if (fcalled >= RESET_TIMER)
-		{
-			DBG_N("AMIGA IS IN RESET\r\n");
-			fcalled = 0;
-			return true;
-		}
-	}
-	DBG_N("AMIGA IS NOT IN RESET\r\n");
-	return false;
+	return is_low;
 }
 
 #define OK_RESET	3 /* 3 special keys to have a KBRESET */
