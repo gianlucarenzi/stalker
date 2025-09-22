@@ -80,16 +80,16 @@ static UART_HandleTypeDef huart2;
 
 /* FreeRTOS variables */
 typedef enum {
-    AMIGA_MSG_SCANCODE,
-    AMIGA_MSG_NOTIFY
+	AMIGA_MSG_SCANCODE,
+	AMIGA_MSG_NOTIFY
 } amiga_msg_type_t;
 
 typedef struct {
-    amiga_msg_type_t type;
-    union {
-        keyboard_code_t *scancode;
-        const char *notification_string;
-    } data;
+	amiga_msg_type_t type;
+	union {
+		keyboard_code_t *scancode;
+		const char *notification_string;
+	} data;
 } amiga_message_t;
 
 static QueueHandle_t amigaQueue = NULL;
@@ -240,17 +240,17 @@ int main(void)
 	DBG_N("amikb_ready(0)\r\n");
 	amikb_ready(0);
 
-    /* Create the queues */
-    amigaQueue = xQueueCreate(10, sizeof(amiga_message_t));
-    ledQueue = xQueueCreate(5, sizeof(keyboard_led_t));
+	/* Create the queues */
+	amigaQueue = xQueueCreate(10, sizeof(amiga_message_t));
+	ledQueue = xQueueCreate(5, sizeof(keyboard_led_t));
 
-    /* Create the tasks */
-    xTaskCreate(usb_task, "USB Task", 512, NULL, 1, NULL);
-    xTaskCreate(amiga_task, "Amiga Task", 256, NULL, 1, NULL);
+	/* Create the tasks */
+	xTaskCreate(usb_task, "USB Task", 512, NULL, 1, NULL);
+	xTaskCreate(amiga_task, "Amiga Task", 256, NULL, 1, NULL);
 
-    /* Start scheduler */
-    DBG_I("Starting FreeRTOS scheduler\r\n");
-    vTaskStartScheduler();
+	/* Start scheduler */
+	DBG_I("Starting FreeRTOS scheduler\r\n");
+	vTaskStartScheduler();
 
 	/* We should never get here as control is now taken by the scheduler */
 	for (;;);
@@ -263,85 +263,86 @@ int main(void)
  */
 static void usb_task(void *pvParameters)
 {
-    ApplicationTypeDef aState = APPLICATION_DISCONNECT;
-    USBH_HandleTypeDef *usbhost = NULL;
-    int usbh_initialized = 0;
-    int keyboard_ready = 0;
-    keyboard_led_t led_state;
-    TickType_t last_blink_time = xTaskGetTickCount();
-    amiga_message_t msg;
+	ApplicationTypeDef aState = APPLICATION_DISCONNECT;
+	USBH_HandleTypeDef *usbhost = NULL;
+	int usbh_initialized = 0;
+	int keyboard_ready = 0;
+	keyboard_led_t led_state;
+	TickType_t last_blink_time = xTaskGetTickCount();
+	amiga_message_t msg;
 
-    for (;;)
-    {
-        if (!usbh_initialized) {
-            MX_USB_HOST_Init();
-            usbh_initialized = 1;
-        }
+	for (;;)
+	{
+		if (!usbh_initialized)
+		{
+			MX_USB_HOST_Init();
+			usbh_initialized = 1;
+		}
 
-        MX_USB_HOST_Process();
-        aState = USBH_ApplicationState();
+		MX_USB_HOST_Process();
+		aState = USBH_ApplicationState();
 
-        if (aState == APPLICATION_READY)
-        {
-            usbhost = USBH_GetHost();
-            if (usbhost != NULL && USBH_HID_GetDeviceType(usbhost) == HID_KEYBOARD)
-            {
-                // Keyboard is connected
-                if (!keyboard_ready)
-                {
-                    led_light(1); // Solid LED ON
-                    usb_keyboard_led_init(usbhost);
-                    keyboard_ready = 1;
-                }
+		if (aState == APPLICATION_READY)
+		{
+			usbhost = USBH_GetHost();
+			if (usbhost != NULL && USBH_HID_GetDeviceType(usbhost) == HID_KEYBOARD)
+			{
+				// Keyboard is connected
+				if (!keyboard_ready)
+				{
+					led_light(1); // Solid LED ON
+					usb_keyboard_led_init(usbhost);
+					keyboard_ready = 1;
+				}
 
-                if (USBH_Keybd(usbhost) == 0)
-                {
-                    msg.type = AMIGA_MSG_SCANCODE;
-                    msg.data.scancode = USBH_GetScanCode();
-                    xQueueSend(amigaQueue, &msg, portMAX_DELAY);
-                }
+				if (USBH_Keybd(usbhost) == 0)
+				{
+					msg.type = AMIGA_MSG_SCANCODE;
+					msg.data.scancode = USBH_GetScanCode();
+					xQueueSend(amigaQueue, &msg, portMAX_DELAY);
+				}
 
-                if (xQueueReceive(ledQueue, &led_state, 0) == pdPASS)
-                {
-                    usb_keyboard_led(usbhost, led_state);
-                }
-            }
-            else
-            {
-                // Connected device is not a keyboard
-                if(keyboard_ready != 2) { // Send notification only once
+				if (xQueueReceive(ledQueue, &led_state, 0) == pdPASS)
+				{
+					usb_keyboard_led(usbhost, led_state);
+				}
+			}
+			else
+			{
+				// Connected device is not a keyboard
+				if(keyboard_ready != 2) { // Send notification only once
 #ifdef __EASTER_EGG__
-                    msg.type = AMIGA_MSG_NOTIFY;
-                    msg.data.notification_string = "NOT USB Keyboard, but HID Compliant. Please Connect a real USB HID Keyboard!\n";
-                    xQueueSend(amigaQueue, &msg, 0);
+					msg.type = AMIGA_MSG_NOTIFY;
+					msg.data.notification_string = "NOT USB Keyboard, but HID Compliant. Please Connect a real USB HID Keyboard!\n";
+					xQueueSend(amigaQueue, &msg, 0);
 #endif
-                    keyboard_ready = 2; // State for unsupported device
-                }
-            }
-        }
-        else
-        {
-            // No device connected
-            if (keyboard_ready != 0) {
-                // Device was just disconnected
+					keyboard_ready = 2; // State for unsupported device
+				}
+			}
+		}
+		else
+		{
+			// No device connected
+			if (keyboard_ready != 0) {
+				// Device was just disconnected
 #ifdef __EASTER_EGG__
-                msg.type = AMIGA_MSG_NOTIFY;
-                msg.data.notification_string = "NO USB Keyboard Device Connected. Please Connect! Amiga Is Back!\n";
-                xQueueSend(amigaQueue, &msg, 0);
+				msg.type = AMIGA_MSG_NOTIFY;
+				msg.data.notification_string = "NO USB Keyboard Device Connected. Please Connect! Amiga Is Back!\n";
+				xQueueSend(amigaQueue, &msg, 0);
 #endif
-                keyboard_ready = 0;
-            }
+				keyboard_ready = 0;
+			}
 
-            if ((xTaskGetTickCount() - last_blink_time) > pdMS_TO_TICKS(500))
-            {
-                led_toggle();
-                last_blink_time = xTaskGetTickCount();
-            }
-        }
+			if ((xTaskGetTickCount() - last_blink_time) > pdMS_TO_TICKS(500))
+			{
+				led_toggle();
+				last_blink_time = xTaskGetTickCount();
+			}
+		}
 
-        amikb_ready(keyboard_ready);
-        vTaskDelay(pdMS_TO_TICKS(1));
-    }
+		amikb_ready(keyboard_ready);
+		vTaskDelay(pdMS_TO_TICKS(1));
+	}
 }
 
 /**
@@ -351,54 +352,54 @@ static void usb_task(void *pvParameters)
  */
 static void amiga_task(void *pvParameters)
 {
-    amiga_message_t received_msg;
-    led_status_t stat;
-    static keyboard_led_t keyboard_led = 0;
+	amiga_message_t received_msg;
+	led_status_t stat;
+	static keyboard_led_t keyboard_led = 0;
 
-    for (;;)
-    {
-        if (xQueueReceive(amigaQueue, &received_msg, pdMS_TO_TICKS(10)) == pdPASS)
-        {
-            switch(received_msg.type)
-            {
-                case AMIGA_MSG_SCANCODE:
-                    stat = amikb_process(received_msg.data.scancode);
-                    int do_led_update = 0;
-                    switch (stat)
-                    {
-                        case LED_CAPS_LOCK_OFF: keyboard_led &= ~CAPS_LOCK_LED; do_led_update = 1; break;
-                        case LED_CAPS_LOCK_ON: keyboard_led |= CAPS_LOCK_LED; do_led_update = 1; break;
-                        case LED_NUM_LOCK_OFF: keyboard_led &= ~NUM_LOCK_LED; do_led_update = 1; break;
-                        case LED_NUM_LOCK_ON: keyboard_led |= NUM_LOCK_LED; do_led_update = 1; break;
-                        case LED_SCROLL_LOCK_OFF: keyboard_led &= ~SCROLL_LOCK_LED; do_led_update = 1; break;
-                        case LED_SCROLL_LOCK_ON: keyboard_led |= SCROLL_LOCK_LED; do_led_update = 1; break;
-                        case LED_RESET_BLINK: 
-                            do_led_update = 1; 
-                            break;
-                        default: break;
-                    }
+	for (;;)
+	{
+		if (xQueueReceive(amigaQueue, &received_msg, pdMS_TO_TICKS(10)) == pdPASS)
+		{
+			switch(received_msg.type)
+			{
+				case AMIGA_MSG_SCANCODE:
+					stat = amikb_process(received_msg.data.scancode);
+					int do_led_update = 0;
+					switch (stat)
+					{
+						case LED_CAPS_LOCK_OFF: keyboard_led &= ~CAPS_LOCK_LED; do_led_update = 1; break;
+						case LED_CAPS_LOCK_ON: keyboard_led |= CAPS_LOCK_LED; do_led_update = 1; break;
+						case LED_NUM_LOCK_OFF: keyboard_led &= ~NUM_LOCK_LED; do_led_update = 1; break;
+						case LED_NUM_LOCK_ON: keyboard_led |= NUM_LOCK_LED; do_led_update = 1; break;
+						case LED_SCROLL_LOCK_OFF: keyboard_led &= ~SCROLL_LOCK_LED; do_led_update = 1; break;
+						case LED_SCROLL_LOCK_ON: keyboard_led |= SCROLL_LOCK_LED; do_led_update = 1; break;
+						case LED_RESET_BLINK: 
+							do_led_update = 1; 
+							break;
+						default: break;
+					}
 
-                    if (do_led_update)
-                    {
-                        xQueueSend(ledQueue, &keyboard_led, 0);
-                    }
-                    break;
+					if (do_led_update)
+					{
+						xQueueSend(ledQueue, &keyboard_led, 0);
+					}
+					break;
 
-                case AMIGA_MSG_NOTIFY:
-                    amikb_notify(received_msg.data.notification_string);
-                    break;
-            }
-        }
-        else
-        {
-            // No key received, check for Amiga-side reset
-            if (amikb_reset_check())
-            {
-                amikb_reset();
-                amikb_startup();
-            }
-        }
-    }
+				case AMIGA_MSG_NOTIFY:
+					amikb_notify(received_msg.data.notification_string);
+					break;
+			}
+		}
+		else
+		{
+			// No key received, check for Amiga-side reset
+			if (amikb_reset_check())
+			{
+				amikb_reset();
+				amikb_startup();
+			}
+		}
+	}
 }
 
 
@@ -515,7 +516,7 @@ static void MX_GPIO_Init(void)
  */
 void vApplicationTickHook(void)
 {
-    HAL_IncTick();
+	HAL_IncTick();
 }
 
 /**
