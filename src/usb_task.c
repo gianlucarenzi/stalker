@@ -1,52 +1,93 @@
 /**
- * USB Task Implementation
- * Handles USB HID protocol and LED management
- * 
- * Written by Gianluca Renzi R.G.
- * (C) Copyright 2019/2024 by Gianluca Renzi (RetroBitLab Tech Guy)
- * 
- * SPDX-License-Identifier: LGPL-3.0-or-later
- */
+  ******************************************************************************
+  * @file           : usb_task.c
+  * @brief          : USB Task Implementation for FreeRTOS-based USB to Amiga Adapter
+  ******************************************************************************
+  * @details        This file implements the USB task responsible for:
+  *                 - USB HID keyboard communication and management
+  *                 - USB device connection/disconnection handling
+  *                 - Keyboard LED control and status management
+  *                 - Inter-task communication with Amiga task via FreeRTOS queues
+  *                 - Status LED indication for different USB states
+  *
+  * @author         Gianluca Renzi R.G. (RetroBitLab Tech Guy)
+  * @version        v1.5-rtos
+  * @date           2024
+  * @copyright      (C) Copyright 2019/2024 by Gianluca Renzi
+  * @license        SPDX-License-Identifier: LGPL-3.0-or-later
+  *
+  * @note           This task runs at high priority (USB_TASK_PRIORITY = 3) to ensure
+  *                 responsive USB communication and minimal latency in keyboard handling.
+  ******************************************************************************
+  */
 
+/* Includes ------------------------------------------------------------------*/
 #include "usb_task.h"
 #include "debug.h"
 #include "syscall.h"
 #include "main.h"
 
-/* Debug level */
-static int debuglevel = DBG_INFO;
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
 
-/* Task handle */
-TaskHandle_t usb_task_handle = NULL;
-
-/* Task state */
-static task_state_t usb_task_state = TASK_STATE_INIT;
-
-/* USB Host handle */
-static USBH_HandleTypeDef *usbhost = NULL;
-
-/* USB state variables */
-static ApplicationTypeDef usb_app_state = APPLICATION_DISCONNECT;
-static int usb_initialized = 0;
-static int keyboard_ready = 0;
-static keyboard_led_t current_keyboard_led = 0;
-
-/* Timing variables */
-static TickType_t last_led_init_time = 0;
-
-/* LED management constants */
+/** @brief Number of retry attempts for USB HID reports */
 #define USB_REPORT_RETRY    6
+
+/** @brief Delay before LED initialization after keyboard connection (ms) */
 #define LED_INIT_DELAY_MS   500
 
-/* Function prototypes */
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+
+/** @brief Debug level for USB task logging */
+static int debuglevel = DBG_INFO;
+
+/** @brief FreeRTOS task handle for USB task */
+TaskHandle_t usb_task_handle = NULL;
+
+/** @brief Current state of the USB task */
+static task_state_t usb_task_state = TASK_STATE_INIT;
+
+/** @brief USB Host handle for HID communication */
+static USBH_HandleTypeDef *usbhost = NULL;
+
+/** @brief Current USB application state */
+static ApplicationTypeDef usb_app_state = APPLICATION_DISCONNECT;
+
+/** @brief Flag indicating if USB host is initialized */
+static int usb_initialized = 0;
+
+/** @brief Flag indicating if keyboard is ready for operation */
+static int keyboard_ready = 0;
+
+/** @brief Current keyboard LED state bitmask */
+static keyboard_led_t current_keyboard_led = 0;
+
+/** @brief Timestamp of last LED initialization */
+static TickType_t last_led_init_time = 0;
+
+/* Private function prototypes -----------------------------------------------*/
 static void usb_task_process_keyboard(void);
 static void usb_task_handle_led_messages(void);
 static void usb_task_handle_connection_state(void);
 static void led_toggle_status(void);
 
+/* Private functions ---------------------------------------------------------*/
+
 /**
- * @brief USB Task main function
- */
+  * @brief  USB Task main function
+  * @details Main task loop that handles USB HID communication, device state management,
+  *          and inter-task communication. Runs at 10ms intervals for responsive operation.
+  *          Task responsibilities:
+  *          - USB Host processing and state management
+  *          - Keyboard data acquisition and forwarding to Amiga task
+  *          - LED message processing from Amiga task
+  *          - Status indication via GPIO LED
+  * @param  pvParameters: Task parameters (unused)
+  * @retval None (task never returns)
+  * @note   Task priority: USB_TASK_PRIORITY (3 - High)
+  *         Stack size: USB_TASK_STACK_SIZE (configMINIMAL_STACK_SIZE * 4)
+  */
 void usb_task(void *pvParameters)
 {
     TickType_t last_wake_time;
@@ -89,8 +130,13 @@ void usb_task(void *pvParameters)
 }
 
 /**
- * @brief Initialize USB Task
- */
+  * @brief  Initialize USB Task
+  * @details Performs USB task initialization including USB Host stack initialization.
+  *          Sets up the USB OTG FS peripheral for HID keyboard communication.
+  * @param  None
+  * @retval None
+  * @note   Called once during task startup before entering main loop
+  */
 void usb_task_init(void)
 {
     DBG_N("USB Task initialization\r\n");
@@ -103,8 +149,16 @@ void usb_task_init(void)
 }
 
 /**
- * @brief Handle connection state changes
- */
+  * @brief  Handle USB connection state changes and status indication
+  * @details Manages USB device connection/disconnection events and provides visual
+  *          feedback through status LED blinking patterns:
+  *          - APPLICATION_READY: Solid LED, keyboard initialization
+  *          - APPLICATION_DISCONNECT: Slow blink (500ms)
+  *          - Other states: Fast blink (100ms)
+  * @param  None
+  * @retval None
+  * @note   Automatically initializes keyboard LEDs after connection delay
+  */
 static void usb_task_handle_connection_state(void)
 {
     static ApplicationTypeDef prev_state = APPLICATION_IDLE;
@@ -192,8 +246,15 @@ static void usb_task_handle_connection_state(void)
 }
 
 /**
- * @brief Process keyboard data and send to Amiga task
- */
+  * @brief  Process keyboard data and send to Amiga task
+  * @details Reads keyboard data from USB HID interface and forwards it to the Amiga task
+  *          via the keyboard_queue. Handles keyboard scan code acquisition and message
+  *          packaging with timestamp information.
+  * @param  None
+  * @retval None
+  * @note   Only processes data when keyboard is ready and USB host is available
+  *         Uses non-blocking queue send to avoid task blocking
+  */
 static void usb_task_process_keyboard(void)
 {
     if (usbhost == NULL) return;
@@ -223,8 +284,15 @@ static void usb_task_process_keyboard(void)
 }
 
 /**
- * @brief Handle LED messages from Amiga task
- */
+  * @brief  Handle LED messages from Amiga task
+  * @details Processes LED control messages received from the Amiga task via led_queue.
+  *          Updates keyboard LED state based on Amiga keyboard status (Caps Lock, Num Lock,
+  *          Scroll Lock) and handles special reset blink sequence.
+  * @param  None
+  * @retval None
+  * @note   Processes all available messages in queue during each call
+  *         Maintains current LED state in current_keyboard_led variable
+  */
 static void usb_task_handle_led_messages(void)
 {
     led_message_t led_msg;
@@ -280,8 +348,15 @@ static void usb_task_handle_led_messages(void)
 }
 
 /**
- * @brief Set keyboard LED state
- */
+  * @brief  Set keyboard LED state
+  * @details Sends HID report to set the state of keyboard LEDs (Caps Lock, Num Lock, Scroll Lock).
+  *          Implements retry mechanism for reliable LED control with configurable retry count.
+  * @param  usbhost: Pointer to USB Host handle
+  * @param  led: LED state bitmask (combination of CAPS_LOCK_LED, NUM_LOCK_LED, SCROLL_LOCK_LED)
+  * @retval None
+  * @note   Uses USBH_HID_SetReport with report type 0x02 (Output Report)
+  *         Includes retry mechanism with USB_REPORT_RETRY attempts
+  */
 void usb_keyboard_led_set(USBH_HandleTypeDef *usbhost, keyboard_led_t led)
 {
     if (usbhost == NULL) return;
@@ -306,8 +381,15 @@ void usb_keyboard_led_set(USBH_HandleTypeDef *usbhost, keyboard_led_t led)
 }
 
 /**
- * @brief Initialize keyboard LEDs with blink sequence
- */
+  * @brief  Initialize keyboard LEDs with blink sequence
+  * @details Performs keyboard LED initialization sequence by blinking all LEDs twice
+  *          to indicate successful keyboard connection and initialization. This provides
+  *          visual feedback to the user that the keyboard is ready for operation.
+  * @param  usbhost: Pointer to USB Host handle
+  * @retval None
+  * @note   Sequence: All LEDs ON (250ms) -> OFF (125ms) -> ON (250ms) -> OFF (final)
+  *         Total sequence duration: approximately 750ms
+  */
 void usb_keyboard_led_init_sequence(USBH_HandleTypeDef *usbhost)
 {
     if (usbhost == NULL) return;
@@ -333,16 +415,26 @@ void usb_keyboard_led_init_sequence(USBH_HandleTypeDef *usbhost)
 }
 
 /**
- * @brief Get USB task state
- */
+  * @brief  Get USB task state
+  * @details Returns the current state of the USB task for monitoring and debugging purposes.
+  * @param  None
+  * @retval task_state_t: Current task state (TASK_STATE_INIT, TASK_STATE_RUNNING, etc.)
+  * @note   Used for task health monitoring and system diagnostics
+  */
 task_state_t usb_task_get_state(void)
 {
     return usb_task_state;
 }
 
 /**
- * @brief Toggle status LED
- */
+  * @brief  Toggle status LED
+  * @details Toggles the status LED (TP1) to provide visual indication of USB task activity
+  *          and system state. Used for different blinking patterns based on USB connection status.
+  * @param  None
+  * @retval None
+  * @note   Controls TP1_Pin on TP1_GPIO_Port
+  *         LED state is maintained in static variable for toggle operation
+  */
 static void led_toggle_status(void)
 {
     static int led_state = 0;

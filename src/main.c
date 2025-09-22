@@ -1,8 +1,18 @@
 /**
   ******************************************************************************
   * @file           : main.c
-  * @brief          : Main program body
+  * @brief          : Main program body for USB to Amiga Keyboard Adapter
   ******************************************************************************
+  * @details        This file contains the main application entry point and
+  *                 system initialization for the FreeRTOS-based USB to Amiga
+  *                 keyboard adapter. The application creates two main tasks:
+  *                 - USB Task: Handles USB HID communication and LED management
+  *                 - Amiga Task: Handles Amiga keyboard protocol and GPIO
+  *
+  * @author         RetrobitLab
+  * @version        v1.5-rtos
+  * @date           2024
+  *
   * This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
   * USER CODE END. Other portions of this file, whether
@@ -45,6 +55,8 @@
   *
   ******************************************************************************
   */
+
+/* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "main.h"
@@ -65,21 +77,42 @@
 #include "usb_task.h"
 #include "amiga_task.h"
 
-/* Queue handles */
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+
+/** @brief Global queue handle for keyboard data communication (USB -> Amiga) */
 QueueHandle_t keyboard_queue = NULL;
+
+/** @brief Global queue handle for LED status communication (Amiga -> USB) */
 QueueHandle_t led_queue = NULL;
 
-/* Local functions prototypes */
+/** @brief Debug level for application logging */
+static int debuglevel = DBG_INFO;
+
+/** @brief Firmware build version string with timestamp */
+static const char *fwBuild = "v1.5-rtos BUILD: " __TIME__ "-" __DATE__;
+
+/** @brief UART handle for debug communication */
+static UART_HandleTypeDef huart2;
+
+/* Private function prototypes -----------------------------------------------*/
 static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(int baud);
 static void create_tasks_and_queues(void);
+static void banner(void);
 
-/* Local variables */
-static int debuglevel = DBG_INFO;
-static const char *fwBuild = "v1.5-rtos BUILD: " __TIME__ "-" __DATE__;
-static UART_HandleTypeDef huart2;
+/* Private functions ---------------------------------------------------------*/
 
+/**
+  * @brief  Display startup banner with firmware information
+  * @details Prints colorized banner with firmware version and build information
+  *          to the debug UART. Includes optional Amiberry easter egg message.
+  * @param  None
+  * @retval None
+  */
 static void banner(void)
 {
 	printf("\r\n\r\n" ANSI_BLUE "RETROBITLAB AMIGA USB KEYBOARD ADAPTER" ANSI_RESET "\r\n");
@@ -92,7 +125,17 @@ static void banner(void)
 	printf("\r\n\n");
 }
 
-/* FreeRTOS Task creation and initialization */
+/**
+  * @brief  Create and initialize FreeRTOS tasks and communication queues
+  * @details Creates the main application tasks and inter-task communication queues:
+  *          - keyboard_queue: For USB to Amiga keyboard data (size: KEYBOARD_QUEUE_SIZE)
+  *          - led_queue: For Amiga to USB LED status (size: LED_QUEUE_SIZE)
+  *          - USB Task: High priority task for USB HID management
+  *          - Amiga Task: Medium priority task for Amiga protocol handling
+  * @param  None
+  * @retval None
+  * @note   Calls _Error_Handler() if any task or queue creation fails
+  */
 static void create_tasks_and_queues(void)
 {
 	/* Create communication queues */
@@ -128,9 +171,19 @@ static void create_tasks_and_queues(void)
 }
 
 /**
-  * @brief  The application entry point.
-  *
-  * @retval None
+  * @brief  The application entry point
+  * @details Main function that initializes the system and starts the FreeRTOS scheduler.
+  *          Performs the following initialization sequence:
+  *          1. HAL library initialization
+  *          2. System clock configuration
+  *          3. GPIO initialization
+  *          4. Debug UART initialization
+  *          5. FreeRTOS tasks and queues creation
+  *          6. FreeRTOS scheduler start
+  * @param  None
+  * @retval None (function never returns under normal operation)
+  * @note   If the scheduler returns, it indicates a critical error and the system
+  *         enters an infinite error loop
   */
 int main(void)
 {
@@ -170,8 +223,18 @@ int main(void)
 }
 
 /**
-  * @brief System Clock Configuration
+  * @brief  System Clock Configuration
+  * @details Configures the system clock to run at maximum frequency using HSE.
+  *          Clock configuration:
+  *          - HSE: 8 MHz external crystal
+  *          - PLL: HSE/4 * 168 / 4 = 84 MHz (SYSCLK)
+  *          - AHB: 84 MHz (HCLK)
+  *          - APB1: 42 MHz (PCLK1)
+  *          - APB2: 84 MHz (PCLK2)
+  *          - SysTick: 1 kHz (1 ms tick)
+  * @param  None
   * @retval None
+  * @note   Calls _Error_Handler() if clock configuration fails
   */
 void SystemClock_Config(void)
 {
@@ -226,7 +289,19 @@ void SystemClock_Config(void)
 	HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
-/* USART2 init function */
+/**
+  * @brief  USART2 Initialization Function
+  * @details Configures USART2 for debug communication with specified baud rate.
+  *          Configuration:
+  *          - Data bits: 8
+  *          - Stop bits: 1
+  *          - Parity: None
+  *          - Flow control: None
+  *          - Mode: TX/RX
+  * @param  baud: Baud rate for UART communication (typically 115200)
+  * @retval None
+  * @note   Calls _Error_Handler() if UART initialization fails
+  */
 static void MX_USART2_UART_Init(int baud)
 {
 	huart2.Instance = USART2;
@@ -244,13 +319,16 @@ static void MX_USART2_UART_Init(int baud)
 
 }
 
-/** Configure pins as
-		* Analog
-		* Input
-		* Output
-		* EVENT_OUT
-		* EXTI
-*/
+/**
+  * @brief  GPIO Initialization Function
+  * @details Configure pins as:
+  *          - TP1_Pin (Test Point 1): Output, Push-Pull, No Pull, Low Speed
+  *          - TP2_Pin (Test Point 2): Output, Push-Pull, No Pull, Low Speed
+  *          Both pins are initially set to HIGH state.
+  * @param  None
+  * @retval None
+  * @note   Enables GPIO clocks for ports A, B, and H
+  */
 static void MX_GPIO_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -275,10 +353,15 @@ static void MX_GPIO_Init(void)
 }
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @param  file: The file name as string.
-  * @param  line: The line in file as a number.
-  * @retval None
+  * @brief  This function is executed in case of error occurrence
+  * @details Error handler that enters an infinite loop when a critical error occurs.
+  *          This function is called by various HAL functions and application code
+  *          when an unrecoverable error is detected.
+  * @param  file: The file name as string where the error occurred
+  * @param  line: The line number in file where the error occurred
+  * @retval None (function never returns)
+  * @note   In debug builds, this function can be used to set breakpoints
+  *         for error analysis
   */
 void _Error_Handler(char *file, int line)
 {
@@ -293,10 +376,13 @@ void _Error_Handler(char *file, int line)
 #ifdef  USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
+  *         where the assert_param error has occurred
+  * @details This function is called when an assertion fails in HAL library functions.
+  *          It provides debugging information about parameter validation errors.
+  * @param  file: pointer to the source file name where assertion failed
   * @param  line: assert_param error line source number
-  * @retval None
+  * @retval None (function never returns)
+  * @note   This function is only compiled when USE_FULL_ASSERT is defined
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
