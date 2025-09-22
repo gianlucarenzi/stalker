@@ -38,10 +38,18 @@
 /* External variables --------------------------------------------------------*/
 extern HCD_HandleTypeDef hhcd_USB_OTG_FS;
 
+/**
+  * @brief  This function handles NMI interrupt.
+  * @retval None
+  */
 void NMI_Handler(void)
 {
 }
 
+/**
+  * @brief  This function handles Hard Fault interrupt.
+  * @retval None
+  */
 void HardFault_Handler(void)
 {
 	while (1)
@@ -51,6 +59,7 @@ void HardFault_Handler(void)
 
 /**
 * @brief This function handles Memory management fault.
+* @retval None
 */
 void MemManage_Handler(void)
 {
@@ -61,6 +70,7 @@ void MemManage_Handler(void)
 
 /**
 * @brief This function handles Pre-fetch fault, memory access fault.
+* @retval None
 */
 void BusFault_Handler(void)
 {
@@ -71,6 +81,7 @@ void BusFault_Handler(void)
 
 /**
 * @brief This function handles Undefined instruction or illegal state.
+* @retval None
 */
 void UsageFault_Handler(void)
 {
@@ -81,6 +92,7 @@ void UsageFault_Handler(void)
 
 /**
 * @brief This function handles System service call via SWI instruction.
+* @retval None
 */
 /*
 void SVC_Handler(void)
@@ -90,6 +102,7 @@ void SVC_Handler(void)
 
 /**
 * @brief This function handles Debug monitor.
+* @retval None
 */
 void DebugMon_Handler(void)
 {
@@ -97,6 +110,7 @@ void DebugMon_Handler(void)
 
 /**
 * @brief This function handles Pendable request for system service.
+* @retval None
 */
 /*
 void PendSV_Handler(void)
@@ -105,6 +119,7 @@ void PendSV_Handler(void)
 */
 /**
 * @brief This function handles System tick timer.
+* @retval None
 */
 /*
 void SysTick_Handler(void)
@@ -113,6 +128,11 @@ void SysTick_Handler(void)
 	HAL_SYSTICK_IRQHandler();
 }
 */
+
+/**
+  * @brief  This function handles USB On The Go FS global interrupt.
+  * @retval None
+  */
 void OTG_FS_IRQHandler(void)
 {
 	/* USER CODE END OTG_FS_IRQn 0 */

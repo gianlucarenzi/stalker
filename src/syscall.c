@@ -12,6 +12,12 @@ static t_syscall_status uart_initialize = SYSCALL_NOTREADY;
 static UART_HandleTypeDef *uart = NULL;
 static int debuglevel = DBG_ERROR;
 
+/**
+ * @brief  Sets the UART handle for the syscalls.
+ * @param  rdy: The status of the UART.
+ * @param  ptr: A pointer to the UART handle.
+ * @retval None
+ */
 void _write_ready(t_syscall_status rdy, UART_HandleTypeDef *ptr)
 {
 	if (ptr != NULL)
@@ -21,6 +27,13 @@ void _write_ready(t_syscall_status rdy, UART_HandleTypeDef *ptr)
 	}
 }
 
+/**
+ * @brief  Writes a block of data to the UART.
+ * @param  file: The file descriptor.
+ * @param  data: A pointer to the data to write.
+ * @param  len: The length of the data to write.
+ * @retval The number of bytes written.
+ */
 int _write(int file, char *data, int len)
 {
 	HAL_StatusTypeDef status = HAL_OK - 1;
@@ -45,13 +58,22 @@ int _write(int file, char *data, int len)
 }
 
 static uint32_t timertick_start_ms = 0;
+
+/**
+ * @brief  Starts a timer.
+ * @retval None
+ */
 void timer_start(void)
 {
 	// When timer starts get the realtime system tick
 	timertick_start_ms = HAL_GetTick();
 }
 
-// Returns 0 if it is too early otherwise returns 1, i.e. time is elapsed
+/**
+ * @brief  Checks if a timer has elapsed.
+ * @param  msec: The number of milliseconds to check.
+ * @retval 1 if the timer has elapsed, 0 otherwise.
+ */
 int timer_elapsed(uint32_t msec)
 {
 	int retval;
@@ -66,15 +88,20 @@ int timer_elapsed(uint32_t msec)
 }
 
 // I hate this delay because they are clockspeed dependent!!!
-#define delayUS_ASM(us) do {\
-	asm volatile (	"MOV R0,%[loops]\n\t"\
-			"1: \n\t"\
-			"SUB R0, #1\n\t"\
-			"CMP R0, #0\n\t"\
-			"BNE 1b \n\t" : : [loops] "r" (16*us) : "memory"\
-		      );\
+#define delayUS_ASM(us) do {
+	asm volatile ( 	"MOV R0,%[loops]\n\t"
+			"1: \n\t"
+			"SUB R0, #1\n\t"
+			"CMP R0, #0\n\t"
+			"BNE 1b \n\t" : : [loops] "r" (16*us) : "memory"
+		      );
 } while(0)
 
+/**
+ * @brief  Delays for a number of microseconds.
+ * @param  micros: The number of microseconds to delay.
+ * @retval None
+ */
 void udelay(uint32_t micros)
 {
 	DBG_N("Enter with: %lu\n", micros);
@@ -87,6 +114,11 @@ void udelay(uint32_t micros)
 	DBG_N("Exit\r\n");
 }
 
+/**
+ * @brief  Delays for a number of milliseconds.
+ * @param  millis: The number of milliseconds to delay.
+ * @retval None
+ */
 void mdelay(uint32_t millis)
 {
 	HAL_Delay(millis);

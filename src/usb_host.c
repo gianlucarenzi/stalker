@@ -64,7 +64,7 @@ static ApplicationTypeDef Appli_state = APPLICATION_IDLE;
 void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id);
 
 /**
-  * Init USB host library, add supported class and start the library
+  * @brief  Initializes the USB Host library.
   * @retval None
   */
 void MX_USB_HOST_Init(void)
@@ -80,17 +80,22 @@ void MX_USB_HOST_Init(void)
 	DBG_N("Exit\n\r");
 }
 
-/*
- * Background task
- */
+/**
+  * @brief  USB Host background task.
+  * @retval None
+  */
 void MX_USB_HOST_Process(void)
 {
 	/* USB Host Background task */
 	USBH_Process(&hUsbHostFS);
 }
-/*
- * user callback definition
- */
+
+/**
+  * @brief  User Process callback.
+  * @param  phost: A pointer to the USB host handle.
+  * @param  id: The user event ID.
+  * @retval None
+  */
 void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 {
 	DBG_N("Enter with: phost %p - id: %d\r\n", phost, id);
@@ -124,11 +129,19 @@ void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 	}
 }
 
+/**
+  * @brief  Returns the application state.
+  * @retval The application state.
+  */
 ApplicationTypeDef USBH_ApplicationState(void)
 {
 	return Appli_state;
 }
 
+/**
+  * @brief  Returns the USB host handle.
+  * @retval A pointer to the USB host handle.
+  */
 USBH_HandleTypeDef * USBH_GetHost(void)
 {
 	return &hUsbHostFS;
@@ -154,6 +167,11 @@ USBH_HandleTypeDef * USBH_GetHost(void)
  **/
 static keyboard_code_t keycode;
 
+/**
+  * @brief  Processes the keyboard data.
+  * @param  phost: A pointer to the USB host handle.
+  * @retval 0 if the keyboard data was processed successfully, -1 otherwise.
+  */
 int USBH_Keybd(USBH_HandleTypeDef *phost)
 {
 	HID_KEYBD_Info_TypeDef *k_pinfo;
@@ -195,6 +213,10 @@ int USBH_Keybd(USBH_HandleTypeDef *phost)
 	}
 }
 
+/**
+  * @brief  Returns the last scancode.
+  * @retval A pointer to the last scancode.
+  */
 keyboard_code_t * USBH_GetScanCode(void)
 {
 	return &keycode;

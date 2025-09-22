@@ -53,7 +53,8 @@ extern void _Error_Handler(char *, int);
 
 /* USER CODE END 0 */
 /**
-  * Initializes the Global MSP.
+  * @brief  Initializes the Global MSP.
+  * @retval None
   */
 void HAL_MspInit(void)
 {
@@ -87,6 +88,12 @@ void HAL_MspInit(void)
   /* USER CODE END MspInit 1 */
 }
 
+/**
+  * @brief  Initializes the UART MSP.
+  * @param  huart: pointer to a UART_HandleTypeDef structure that contains
+  *                the configuration information for the specified UART module.
+  * @retval None
+  */
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
 
@@ -117,6 +124,12 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 
 }
 
+/**
+  * @brief  DeInitializes the UART MSP.
+  * @param  huart: pointer to a UART_HandleTypeDef structure that contains
+  *                the configuration information for the specified UART module.
+  * @retval None
+  */
 void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
 {
 
