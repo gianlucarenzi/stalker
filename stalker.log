@@ -14,7 +14,7 @@ Stalker Board - Refactoring Log
 2025-09-22: Project Refactoring to FreeRTOS
 
     - **FEATURE**: Integrated FreeRTOS Kernel V11.1.0 into the project.
-        - Cloned the kernel into `3rdParty/FreeRTOS-Kernel`.
+        - Cloned the kernel into `Middlewares/3rdParty/FreeRTOS-Kernel`.
         - Created and configured `FreeRTOSConfig.h` for the STM32F401 target.
         - Modified Makefiles to include FreeRTOS sources and includes.
 
