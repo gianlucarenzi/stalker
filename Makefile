@@ -37,12 +37,12 @@ C_SOURCES =  \
 
 
 FREERTOS_C_SOURCES = \
-	3rdParty/FreeRTOS-Kernel/tasks.c \
-	3rdParty/FreeRTOS-Kernel/queue.c \
-	3rdParty/FreeRTOS-Kernel/list.c \
-	3rdParty/FreeRTOS-Kernel/timers.c \
-	3rdParty/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c \
-	3rdParty/FreeRTOS-Kernel/portable/MemMang/heap_4.c \
+	Middlewares/3rdParty/FreeRTOS-Kernel/tasks.c \
+	Middlewares/3rdParty/FreeRTOS-Kernel/queue.c \
+	Middlewares/3rdParty/FreeRTOS-Kernel/list.c \
+	Middlewares/3rdParty/FreeRTOS-Kernel/timers.c \
+	Middlewares/3rdParty/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c \
+	Middlewares/3rdParty/FreeRTOS-Kernel/portable/MemMang/heap_4.c \
 
 
 C_SOURCES += \
