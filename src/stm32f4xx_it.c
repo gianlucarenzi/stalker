@@ -31,12 +31,16 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
+#include "FreeRTOS.h"
+#include "task.h"
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
+#include "portmacro.h"
 
 /* External variables --------------------------------------------------------*/
 extern HCD_HandleTypeDef hhcd_USB_OTG_FS;
+extern void xPortSysTickHandler(void);
 
 /**
   * @brief  This function handles NMI interrupt.
@@ -121,13 +125,18 @@ void PendSV_Handler(void)
 * @brief This function handles System tick timer.
 * @retval None
 */
-/*
 void SysTick_Handler(void)
 {
+	/* USER CODE BEGIN SysTick_IRQn 0 */
 	HAL_IncTick();
-	HAL_SYSTICK_IRQHandler();
+	if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED)
+	{
+		xPortSysTickHandler();
+	}
+	/* USER CODE END SysTick_IRQn 0 */
 }
-*/
+
+/******************************************************************************/
 
 /**
   * @brief  This function handles USB On The Go FS global interrupt.
