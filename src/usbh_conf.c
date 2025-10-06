@@ -87,8 +87,8 @@ void HAL_HCD_MspInit(HCD_HandleTypeDef* hcdHandle)
 		/* Peripheral clock enable */
 		__HAL_RCC_USB_OTG_FS_CLK_ENABLE();
 
-		/* Peripheral interrupt init */
-		HAL_NVIC_SetPriority(OTG_FS_IRQn, 0, 0);
+		/* Enable Interrupt on USB OTG FS */
+		HAL_NVIC_SetPriority(OTG_FS_IRQn, 5, 0);
 		HAL_NVIC_EnableIRQ(OTG_FS_IRQn);
 	} else {
 		DBG_E("hcdHandle->Instance NOT USB_OTG_FS\r\n");

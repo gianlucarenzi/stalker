@@ -100,7 +100,7 @@ ifeq ($(AMIBERRY_EASTER_EGG), yes)
 endif
 
 # Generate dependency information
-CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
+CFLAGS += -MMD -MP -MF"$(@D)/$(@F:.o=.d)"
 
 
 #######################################
@@ -158,6 +158,6 @@ clean:
 #######################################
 # dependencies
 #######################################
--include $(wildcard $(BUILD_DIR)/*.d)
+-include $(shell find $(BUILD_DIR) -name '*.d')
 
 # *** EOF ***
