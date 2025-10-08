@@ -82,6 +82,10 @@ void HAL_MspInit(void)
   HAL_NVIC_SetPriority(PendSV_IRQn, 15, 0);
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 15, 0);
+  
+  /* WWDG_IRQn interrupt configuration - set to safe priority for FreeRTOS */
+  HAL_NVIC_SetPriority(WWDG_IRQn, 6, 0);
+  HAL_NVIC_EnableIRQ(WWDG_IRQn);
 
   /* USER CODE BEGIN MspInit 1 */
 
