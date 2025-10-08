@@ -61,6 +61,7 @@ extern void UART_Enable(UART_HandleTypeDef *ptr);
 extern void USART2_IRQHandler(void);
 extern void OTG_FS_USB_Enable(HCD_HandleTypeDef *ptr);
 extern void OTG_FS_IRQHandler(void);
+extern void WWDG_IRQHandler(void);
 
 /* the following symbols are defined in the GNU linker script */
 extern uint32_t *__appflash_start;

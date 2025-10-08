@@ -42,6 +42,9 @@
 extern HCD_HandleTypeDef hhcd_USB_OTG_FS;
 extern void xPortSysTickHandler(void);
 
+/* WWDG handle - declared here for interrupt handler */
+static WWDG_HandleTypeDef hwwdg;
+
 /**
   * @brief  This function handles NMI interrupt.
   * @retval None
@@ -146,4 +149,24 @@ void OTG_FS_IRQHandler(void)
 {
 	/* USER CODE END OTG_FS_IRQn 0 */
 	HAL_HCD_IRQHandler(&hhcd_USB_OTG_FS);
+}
+
+/**
+  * @brief  This function handles Window Watchdog interrupt.
+  * @retval None
+  */
+void WWDG_IRQHandler(void)
+{
+	/* Check if WWDG is actually enabled and configured */
+	if (__HAL_RCC_WWDG_IS_CLK_ENABLED())
+	{
+		/* If WWDG is enabled, disable it to prevent further interrupts */
+		__HAL_RCC_WWDG_CLK_DISABLE();
+	}
+	
+	/* Clear any pending WWDG interrupt flags */
+	if (WWDG->SR & WWDG_SR_EWIF)
+	{
+		WWDG->SR &= ~WWDG_SR_EWIF;
+	}
 }
