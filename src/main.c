@@ -192,6 +192,14 @@ int main(void)
 	/* MCU Configuration----------------------------------------------------------*/
 	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
 	HAL_Init();
+	
+	/* Disable WWDG if it was enabled by bootloader */
+	if (__HAL_RCC_WWDG_IS_CLK_ENABLED())
+	{
+		/* Disable WWDG clock to prevent unwanted interrupts */
+		__HAL_RCC_WWDG_CLK_DISABLE();
+	}
+	
 	/* Configure the system clock */
 	SystemClock_Config();
 
