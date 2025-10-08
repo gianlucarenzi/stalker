@@ -170,6 +170,10 @@ void SystemInit(void)
   #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
     SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */
   #endif
+
+  /* Disable WWDG to prevent unwanted resets after bootloader */
+  RCC->APB1ENR &= ~RCC_APB1ENR_WWDGEN;
+
   /* Reset the RCC clock configuration to the default reset state ------------*/
   /* Set HSION bit */
   RCC->CR |= (uint32_t)0x00000001;
