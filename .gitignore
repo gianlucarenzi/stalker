@@ -6,3 +6,5 @@
 *.DS_Store
 /hw/AmigaKeyboardAdapters/A1200-Internal/A1200MPU-Adapter-cache.lib
 /stalkb-bootloader/build/
+/.project
+/.cproject
