@@ -30,10 +30,11 @@ But if you think a little more, it is catching all the keystrokes you do,
 
 so basically it is stalking you! ;-)
 
-# Rendered Images
-# [![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-f.png "Board Front")](#features)
-# [![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-b.png "Board Back")](#features)
-# [![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter.png "Board Overall")](#features)
+Rendered Images
+---------------
+[![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-f.png "Board Front")](#features)
+[![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-b.png "Board Back")](#features)
+[![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter.png "Board Overall")](#features)
 
 Upgrading with Linux and OpenOCD and STLinkV2 Programmer/Debugger
 -----------------------------------------------------------------
