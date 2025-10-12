@@ -93,7 +93,7 @@ void usb_task(void *pvParameters)
 	TickType_t last_wake_time;
 	const TickType_t task_frequency = pdMS_TO_TICKS(10); // 10ms cycle
 	
-	DBG_I("USB Task started\r\n");
+	DBG_W("USB Task started\r\n");
 	
 	usb_task_state = TASK_STATE_RUNNING;
 	
@@ -174,7 +174,7 @@ static void usb_task_handle_connection_state(void)
 		switch (usb_app_state)
 		{
 			case APPLICATION_READY:
-				DBG_I("USB Keyboard connected and ready\r\n");
+				DBG_W("USB Keyboard connected and ready\r\n");
 				usbhost = USBH_GetHost();
 				if (usbhost != NULL && USBH_HID_GetDeviceType(usbhost) == HID_KEYBOARD)
 				{
@@ -184,11 +184,16 @@ static void usb_task_handle_connection_state(void)
 				break;
 				
 			case APPLICATION_DISCONNECT:
-				DBG_I("USB Keyboard disconnected\r\n");
+				DBG_W("USB Keyboard disconnected\r\n");
 				keyboard_ready = 0;
 				usbhost = NULL;
 				break;
-				
+
+			case APPLICATION_IDLE:
+				DBG_W("USB Keyboard IDLE\r\n");
+				keyboard_ready = 0;
+				break;
+
 			default:
 				DBG_N("USB Application state: %d\r\n", usb_app_state);
 				keyboard_ready = 0;
@@ -223,12 +228,26 @@ static void usb_task_handle_connection_state(void)
 				state_change_time = current_time;
 				if (++blink_count > 10)
 				{
-					DBG_I("Waiting for USB HID Keyboard connection\r\n");
+					DBG_W("Waiting for USB HID Keyboard connection\r\n");
 					blink_count = 0;
 				}
 			}
 			break;
-			
+
+		case APPLICATION_IDLE:
+			/* Slower blink */
+			if ((current_time - state_change_time) >= pdMS_TO_TICKS(1000))
+			{
+				led_toggle_status();
+				state_change_time = current_time;
+				if (++blink_count > 10)
+				{
+					DBG_W("Application IDLE\r\n");
+					blink_count = 0;
+				}
+			}
+			break;
+
 		default:
 			/* Fast blink - device not supported or other states */
 			if ((current_time - state_change_time) >= pdMS_TO_TICKS(100))
@@ -237,7 +256,8 @@ static void usb_task_handle_connection_state(void)
 				state_change_time = current_time;
 				if (++blink_count > 10)
 				{
-					DBG_I("USB device not supported or in transition\r\n");
+					DBG_E("USB device issue on transition: Application state %d\r\n",
+							usb_app_state);
 					blink_count = 0;
 				}
 			}
