@@ -25,17 +25,17 @@ include Makefile.common
 # C sources
 C_SOURCES =  \
 	src/main.c \
+	src/freertos.c \
 	src/usb_host.c \
 	src/usbh_conf.c \
 	src/stm32f4xx_it.c \
 	src/stm32f4xx_hal_msp.c \
-	src/syscall.c \
+	src/stm32f4xx_hal_timebase_TIM.c \
 	src/system_stm32f4xx.c \
+	src/syscall.c \
 	src/amiga.c \
 	src/usb_task.c \
 	src/amiga_task.c \
-	src/stm32f4xx_hal_timebase_TIM.c \
-	src/freertos.c \
 
 
 C_SOURCES += \
