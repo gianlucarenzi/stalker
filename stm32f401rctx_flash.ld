@@ -56,7 +56,7 @@ _estack = 0x20010000;    /* end of RAM */
 _Min_Heap_Size = 0x200;      /* required amount of heap  */
 _Min_Stack_Size = 0x1000; /* required amount of stack */
 
-_BOOTLOADER_SIZE_ = 0x000; /* 16K */
+_BOOTLOADER_SIZE_ = 0x4000; /* 16K */
 
 /*
  * Change the MCU FLASH size accordingly with the device STM32F401 you are
