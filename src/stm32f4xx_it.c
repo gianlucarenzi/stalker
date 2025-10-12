@@ -4,7 +4,7 @@
   * @brief   Interrupt Service Routines.
   ******************************************************************************
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * COPYRIGHT(c) 2025 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -36,137 +36,199 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
-#include "portmacro.h"
+#include "cmsis_os.h"
+
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
 extern HCD_HandleTypeDef hhcd_USB_OTG_FS;
-extern void xPortSysTickHandler(void);
 
-/* WWDG handle - declared here for interrupt handler */
-static WWDG_HandleTypeDef hwwdg;
+extern TIM_HandleTypeDef htim1;
+
+/******************************************************************************/
+/*            Cortex-M4 Processor Interruption and Exception Handlers         */
+/******************************************************************************/
 
 /**
-  * @brief  This function handles NMI interrupt.
-  * @retval None
-  */
+* @brief This function handles Non maskable interrupt.
+*/
 void NMI_Handler(void)
 {
+  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+
+  /* USER CODE END NonMaskableInt_IRQn 0 */
+  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+
+  /* USER CODE END NonMaskableInt_IRQn 1 */
 }
 
 /**
-  * @brief  This function handles Hard Fault interrupt.
-  * @retval None
-  */
+* @brief This function handles Hard fault interrupt.
+*/
 void HardFault_Handler(void)
 {
-	while (1)
-	{
-	}
+  /* USER CODE BEGIN HardFault_IRQn 0 */
+
+  /* USER CODE END HardFault_IRQn 0 */
+  while (1)
+  {
+    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+    /* USER CODE END W1_HardFault_IRQn 0 */
+  }
+  /* USER CODE BEGIN HardFault_IRQn 1 */
+
+  /* USER CODE END HardFault_IRQn 1 */
 }
 
 /**
 * @brief This function handles Memory management fault.
-* @retval None
 */
 void MemManage_Handler(void)
 {
-	while (1)
-	{
-	}
+  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+
+  /* USER CODE END MemoryManagement_IRQn 0 */
+  while (1)
+  {
+    /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
+    /* USER CODE END W1_MemoryManagement_IRQn 0 */
+  }
+  /* USER CODE BEGIN MemoryManagement_IRQn 1 */
+
+  /* USER CODE END MemoryManagement_IRQn 1 */
 }
 
 /**
 * @brief This function handles Pre-fetch fault, memory access fault.
-* @retval None
 */
 void BusFault_Handler(void)
 {
-	while (1)
-	{
-	}
+  /* USER CODE BEGIN BusFault_IRQn 0 */
+
+  /* USER CODE END BusFault_IRQn 0 */
+  while (1)
+  {
+    /* USER CODE BEGIN W1_BusFault_IRQn 0 */
+    /* USER CODE END W1_BusFault_IRQn 0 */
+  }
+  /* USER CODE BEGIN BusFault_IRQn 1 */
+
+  /* USER CODE END BusFault_IRQn 1 */
 }
 
 /**
 * @brief This function handles Undefined instruction or illegal state.
-* @retval None
 */
 void UsageFault_Handler(void)
 {
-	while (1)
-	{
-	}
+  /* USER CODE BEGIN UsageFault_IRQn 0 */
+
+  /* USER CODE END UsageFault_IRQn 0 */
+  while (1)
+  {
+    /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
+    /* USER CODE END W1_UsageFault_IRQn 0 */
+  }
+  /* USER CODE BEGIN UsageFault_IRQn 1 */
+
+  /* USER CODE END UsageFault_IRQn 1 */
 }
 
 /**
 * @brief This function handles System service call via SWI instruction.
-* @retval None
 */
-/*
-void SVC_Handler(void)
+__weak void SVC_Handler(void)
 {
+  /* USER CODE BEGIN SVCall_IRQn 0 */
+
+  /* USER CODE END SVCall_IRQn 0 */
+  /* USER CODE BEGIN SVCall_IRQn 1 */
+
+  /* USER CODE END SVCall_IRQn 1 */
 }
-*/
+
 
 /**
 * @brief This function handles Debug monitor.
-* @retval None
 */
-void DebugMon_Handler(void)
+__weak void DebugMon_Handler(void)
 {
+  /* USER CODE BEGIN DebugMonitor_IRQn 0 */
+
+  /* USER CODE END DebugMonitor_IRQn 0 */
+  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
+
+  /* USER CODE END DebugMonitor_IRQn 1 */
 }
 
 /**
 * @brief This function handles Pendable request for system service.
-* @retval None
 */
-/*
-void PendSV_Handler(void)
+
+__weak void PendSV_Handler(void)
 {
+  /* USER CODE BEGIN PendSV_IRQn 0 */
+
+  /* USER CODE END PendSV_IRQn 0 */
+  /* USER CODE BEGIN PendSV_IRQn 1 */
+
+  /* USER CODE END PendSV_IRQn 1 */
 }
-*/
+
+
 /**
 * @brief This function handles System tick timer.
-* @retval None
 */
 void SysTick_Handler(void)
 {
-	/* USER CODE BEGIN SysTick_IRQn 0 */
-	HAL_IncTick();
-	if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED)
-	{
-		xPortSysTickHandler();
-	}
-	/* USER CODE END SysTick_IRQn 0 */
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
+  osSystickHandler();
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
 }
 
 /******************************************************************************/
+/* STM32F4xx Peripheral Interrupt Handlers                                    */
+/* Add here the Interrupt Handlers for the used peripherals.                  */
+/* For the available peripheral interrupt handler names,                      */
+/* please refer to the startup file (startup_stm32f4xx.s).                    */
+/******************************************************************************/
 
 /**
-  * @brief  This function handles USB On The Go FS global interrupt.
-  * @retval None
-  */
+* @brief This function handles TIM1 update interrupt and TIM10 global interrupt.
+*/
+void TIM1_UP_TIM10_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 0 */
+
+  /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim1);
+  /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
+
+  /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
+}
+
+/**
+* @brief This function handles USB On The Go FS global interrupt.
+*/
 void OTG_FS_IRQHandler(void)
 {
-	/* USER CODE END OTG_FS_IRQn 0 */
-	HAL_HCD_IRQHandler(&hhcd_USB_OTG_FS);
+  /* USER CODE BEGIN OTG_FS_IRQn 0 */
+
+  /* USER CODE END OTG_FS_IRQn 0 */
+  HAL_HCD_IRQHandler(&hhcd_USB_OTG_FS);
+  /* USER CODE BEGIN OTG_FS_IRQn 1 */
+
+  /* USER CODE END OTG_FS_IRQn 1 */
 }
 
-/**
-  * @brief  This function handles Window Watchdog interrupt.
-  * @retval None
-  */
-void WWDG_IRQHandler(void)
-{
-	/* Check if WWDG is actually enabled and configured */
-	if (__HAL_RCC_WWDG_IS_CLK_ENABLED())
-	{
-		/* If WWDG is enabled, disable it to prevent further interrupts */
-		__HAL_RCC_WWDG_CLK_DISABLE();
-	}
-	
-	/* Clear any pending WWDG interrupt flags */
-	if (WWDG->SR & WWDG_SR_EWIF)
-	{
-		WWDG->SR &= ~WWDG_SR_EWIF;
-	}
-}
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
