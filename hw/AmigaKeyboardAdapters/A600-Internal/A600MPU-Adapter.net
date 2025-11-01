@@ -86,11 +86,11 @@
     (comp (ref U1)
       (value 6571R4_PLCC44_MPUKEY_REV)
       (footprint RetroBitLab:PLCC-44_THT-Socket_3D)
-      (libsource (lib AmigaComponents) (part 6571R4_PLCC44_MPUKEY_REV) (description "Microprocessor Keyboard MPU Amiga 600 (version PLCC 44 pins)"))
+      (libsource (lib RetroBitLab) (part 6571R4_PLCC44_MPUKEY_REV) (description "Microprocessor Keyboard MPU Amiga 600 (version PLCC 44 pins)"))
       (sheetpath (names /) (tstamps /))
       (tstamp 5BECAC84)))
   (libparts
-    (libpart (lib AmigaComponents) (part 6571R4_PLCC44_MPUKEY_REV)
+    (libpart (lib RetroBitLab) (part 6571R4_PLCC44_MPUKEY_REV)
       (description "Microprocessor Keyboard MPU Amiga 600 (version PLCC 44 pins)")
       (fields
         (field (name Reference) U)
@@ -179,8 +179,8 @@
         (pin (num 1) (name ~) (type passive))
         (pin (num 2) (name ~) (type passive)))))
   (libraries
-    (library (logical AmigaComponents)
-      (uri /home/gianluca/Progetti/RetroBitLab-Library/AmigaComponents.lib))
+    (library (logical RetroBitLab)
+      (uri /home/gianluca/Progetti/RetroBitLab-Library/RetroBitLab.lib))
     (library (logical Connector)
       (uri /usr/share/kicad/library/Connector.lib))
     (library (logical Connector_Generic)

@@ -552,35 +552,35 @@
       <fields>
         <field name="LCSC">C74524</field>
       </fields>
-      <libsource lib="AmigaComponents" part="STM32F401RBTx" description=""/>
+      <libsource lib="RetroBitLab" part="STM32F401RBTx" description=""/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>60858D17</tstamp>
     </comp>
     <comp ref="LOGO1">
       <value>USB</value>
       <footprint>RetroBitLab:USB_PLUG_15x15mm</footprint>
-      <libsource lib="AmigaComponents" part="LOGO" description="Any valid LOGO Images can be placed here"/>
+      <libsource lib="RetroBitLab" part="LOGO" description="Any valid LOGO Images can be placed here"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>6368B065</tstamp>
     </comp>
     <comp ref="LOGO2">
       <value>GPL</value>
       <footprint>Symbol:KiCad-Logo2_12mm_SilkScreen</footprint>
-      <libsource lib="AmigaComponents" part="LOGO" description="Any valid LOGO Images can be placed here"/>
+      <libsource lib="RetroBitLab" part="LOGO" description="Any valid LOGO Images can be placed here"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>6368CBB3</tstamp>
     </comp>
     <comp ref="LOGO3">
       <value>STALKER!</value>
       <footprint>RetroBitLab:Symbol_GNU-GPL_SilkScreen_Small</footprint>
-      <libsource lib="AmigaComponents" part="LOGO" description="Any valid LOGO Images can be placed here"/>
+      <libsource lib="RetroBitLab" part="LOGO" description="Any valid LOGO Images can be placed here"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>63696ADE</tstamp>
     </comp>
     <comp ref="LOGO4">
       <value>Stalker Logo</value>
       <footprint>RetroBitLab:Stalker_16.1x17.3mm</footprint>
-      <libsource lib="AmigaComponents" part="LOGO" description="Any valid LOGO Images can be placed here"/>
+      <libsource lib="RetroBitLab" part="LOGO" description="Any valid LOGO Images can be placed here"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>6365EFCE</tstamp>
     </comp>
@@ -590,7 +590,7 @@
       <fields>
         <field name="LCSC">C386738</field>
       </fields>
-      <libsource lib="AmigaComponents" part="USB_A_SMD_LCSC" description="USB Type A connector"/>
+      <libsource lib="RetroBitLab" part="USB_A_SMD_LCSC" description="USB Type A connector"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>636EB3F3</tstamp>
     </comp>
@@ -604,14 +604,14 @@
     </comp>
   </components>
   <libparts>
-    <libpart lib="AmigaComponents" part="LOGO">
+    <libpart lib="RetroBitLab" part="LOGO">
       <description>Any valid LOGO Images can be placed here</description>
       <fields>
         <field name="Reference">L</field>
         <field name="Value">LOGO</field>
       </fields>
     </libpart>
-    <libpart lib="AmigaComponents" part="STM32F401RBTx">
+    <libpart lib="RetroBitLab" part="STM32F401RBTx">
       <aliases>
         <alias>STM32F401RCTx</alias>
       </aliases>
@@ -690,7 +690,7 @@
         <pin num="64" name="VDD" type="power_in"/>
       </pins>
     </libpart>
-    <libpart lib="AmigaComponents" part="USB_A_SMD_LCSC">
+    <libpart lib="RetroBitLab" part="USB_A_SMD_LCSC">
       <description>USB Type A connector</description>
       <footprints>
         <fp>USB*</fp>
@@ -1084,8 +1084,8 @@
     </libpart>
   </libparts>
   <libraries>
-    <library logical="AmigaComponents">
-      <uri>/home/debian/Progetti/RetroBitLab-Library/AmigaComponents.lib</uri>
+    <library logical="RetroBitLab">
+      <uri>/home/debian/Progetti/RetroBitLab-Library/RetroBitLab.lib</uri>
     </library>
     <library logical="Connector_Generic">
       <uri>/usr/share/kicad/library/Connector_Generic.lib</uri>

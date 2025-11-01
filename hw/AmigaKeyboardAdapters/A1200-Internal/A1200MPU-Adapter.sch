@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L AmigaComponents:A1200U13_REV_PLCC44 U1
+L RetroBitLab:A1200U13_REV_PLCC44 U1
 U 1 1 5BE895D2
 P 5750 3650
 F 0 "U1" H 6450 5500 50  0000 C CNN
