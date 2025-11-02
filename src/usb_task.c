@@ -247,7 +247,7 @@ void usb_task(void *pvParameters)
 					{
 						#ifdef __EASTER_EGG__
 						usb_task_send_string("NO USB Found Keyboard Device. Please Connect - Amiga Is Back!\n");
-						#endif`
+						#endif
 						DBG_I("Waiting USB HID Keyboard!\r\nPlease Connect\r\n");
 						count = 0;
 					}
