@@ -10,8 +10,8 @@
   *                 - Amiga Task: Handles Amiga keyboard protocol and GPIO
   *
   * @author         RetrobitLab
-  * @version        v1.5-rtos
-  * @date           2024
+  * @version        v2.0-rtos
+  * @date           2025
   *
   * This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
@@ -92,7 +92,7 @@ QueueHandle_t led_queue = NULL;
 static int debuglevel = DBG_INFO;
 
 /** @brief Firmware build version string with timestamp */
-static const char *fwBuild = "v1.6-RTOS BUILD: " __TIME__ "-" __DATE__;
+static const char *fwBuild = "v2.0-rc-RTOS BUILD: " __TIME__ "-" __DATE__;
 
 /** @brief UART handle for debug communication */
 static UART_HandleTypeDef huart2;
