@@ -26,6 +26,7 @@
 #include "debug.h"
 #include "syscall.h"
 #include "main.h"
+#include "amiga.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -63,16 +64,40 @@ static int keyboard_ready = 0;
 /** @brief Current keyboard LED state bitmask */
 static keyboard_led_t current_keyboard_led = 0;
 
-/** @brief Timestamp of last LED initialization */
-static TickType_t last_led_init_time = 0;
-
 /* Private function prototypes -----------------------------------------------*/
 static void usb_task_process_keyboard(void);
 static void usb_task_handle_led_messages(void);
-static void usb_task_handle_connection_state(void);
-static void led_toggle_status(void);
+void usb_task_send_string(const char *str);
 
 /* Private functions ---------------------------------------------------------*/
+static void led_light(int state)
+{
+	int tpval = GPIO_PIN_RESET;
+
+	if (!!state)
+	{
+		tpval = GPIO_PIN_SET;
+	}
+	else
+	{
+		tpval = GPIO_PIN_RESET;
+	}
+	HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, tpval);
+}
+
+static void led_toggle(void)
+{
+	static int tpval = 0;
+	if (tpval == 0)
+	{
+		tpval = 1;
+	}
+	else
+	{
+		tpval = 0;
+	}
+	led_light(tpval);
+}
 
 /**
   * @brief  USB Task main function
@@ -91,8 +116,12 @@ static void led_toggle_status(void);
 void usb_task(void *pvParameters)
 {
 	TickType_t last_wake_time;
+	TickType_t g_timer = 0;
 	const TickType_t task_frequency = pdMS_TO_TICKS(10); // 10ms cycle
-	
+	int timerOneShot = 1;
+	TickType_t current_time;
+	int count = 0;
+
 	DBG_W("USB Task started\r\n");
 	
 	usb_task_state = TASK_STATE_RUNNING;
@@ -106,24 +135,174 @@ void usb_task(void *pvParameters)
 	for (;;)
 	{
 		/* Handle USB Host processing */
-		if (usb_initialized)
+		if (!usb_initialized)
 		{
-			MX_USB_HOST_Process();
-			usb_app_state = USBH_ApplicationState();
+			DBG_I("MX_USB_HOST_Init()\r\n");
+			/* Initialize USB HOST OTG FS */
+			MX_USB_HOST_Init();
+			usb_initialized = ! usb_initialized;
 		}
-		
-		/* Handle connection state changes */
-		usb_task_handle_connection_state();
-		
-		/* Process keyboard data if available */
-		if (usb_app_state == APPLICATION_READY && keyboard_ready)
+
+		MX_USB_HOST_Process();
+		usb_app_state = USBH_ApplicationState();
+
+		// Se risulta connessa la tastiera USB
+		if (usb_app_state == APPLICATION_READY)
 		{
-			usb_task_process_keyboard();
+			DBG_N("APPLICATION READY\n\r");
+			usbhost = USBH_GetHost();
+			if (usbhost != NULL)
+			{
+				// Controlliamo che abbiamo collegato una tastiera
+				if (USBH_HID_GetDeviceType(usbhost) == HID_KEYBOARD)
+				{
+					if ( !timerOneShot )
+					{
+						timerOneShot = !timerOneShot;
+						DBG_I("#### KEYBOARD CONNECTED ####\r\n");
+						g_timer = xTaskGetTickCount();
+					}
+
+					if ( !keyboard_ready )
+					{
+						DBG_N("### BOARD LED ON ### WAIT 500msec FOR LEDS\r\n");
+						led_light(0);
+						current_time = xTaskGetTickCount() - g_timer;
+						if (current_time >= pdMS_TO_TICKS(500))
+						{
+							DBG_I("### KEYBOARD LED TOGGLE ###\r\n");
+							usb_keyboard_led_init_sequence(usbhost);
+							keyboard_ready = 1;
+							current_keyboard_led = 0;
+						}
+					}
+
+					// Get data from keyboard
+					if (USBH_Keybd(usbhost) == 0)
+					{
+						DBG_N("HAVE A KEY EVENT\r\n");
+						// Send the keypress to Amiga Task
+						usb_task_process_keyboard();
+						usb_task_handle_led_messages();
+					}
+					else
+					{
+						// In IDLE mode, check if there are some
+						// RESET request on the CLOCK line.
+						// Any EXTERNAL Amiga keyboard will assert low
+						// the clock line for more than 500msec to
+						// obtain the SYSTEM RESET REQUEST, so do we.
+
+						// All Amiga RESET Logic is done into Amiga Task
+						// so here we do not need anything more...
+						DBG_N("No data from USB Keyboard\r\n");
+					}
+				}
+				else
+				{
+					// No valid keyboard
+					keyboard_ready = 0;
+					// Quick blink on device-not-supported
+					DBG_I("#### HID Device NOT SUPPORTED ####\r\n");
+					if (!timerOneShot)
+					{
+						timerOneShot = !timerOneShot;
+						g_timer = xTaskGetTickCount();
+					}
+
+					current_time = xTaskGetTickCount() - g_timer;
+					if (current_time >= pdMS_TO_TICKS(100))
+					{
+						DBG_E("UNKNOWN USB DEVICE count: %d\r\n", count);
+						led_toggle();
+						g_timer = xTaskGetTickCount();
+						if (count++ > 10)
+						{
+							#ifdef __EASTER_EGG__
+							DBG_N("EASTER EGG SENDING STRING:\r\n\tNOT USB Keyboard, but HID Compliant. Please Connect a real USB HID Keyboard!\n");
+							#endif
+							DBG_N("Waiting a REAL USB Keyboard - Amiga Is Back!\r\n");
+							count = 0;
+						}
+					}
+				}
+			}
+			else
+			{
+				// Pretty Quick blink on no-hid device plugged
+				DBG_I("NO HID DEVICE FOUND.\r\n");
+				keyboard_ready = 0;
+				if (!timerOneShot)
+				{
+					timerOneShot = !timerOneShot;
+					g_timer = xTaskGetTickCount();
+				}
+				current_time = xTaskGetTickCount() - g_timer;
+				if (current_time >= pdMS_TO_TICKS(250))
+				{
+					DBG_N("NO HID DEVICE FOUND\r\n");
+					led_toggle();
+					g_timer = xTaskGetTickCount();
+					if (count++ > 10)
+					{
+						#ifdef __EASTER_EGG__
+						usb_task_send_string("NO USB Found Keyboard Device. Please Connect - Amiga Is Back!\n");
+						#endif`
+						DBG_I("Waiting USB HID Keyboard!\r\nPlease Connect\r\n");
+						count = 0;
+					}
+				}
+			}
 		}
-		
-		/* Handle LED messages from Amiga task */
-		usb_task_handle_led_messages();
-		
+		else
+		{
+			// We need to manage:
+			//
+			// APPLICATION_START
+			//
+			// APPLICATION_DISCONNECT
+			//
+			// APPLICATION IDLE
+			switch( usb_app_state )
+			{
+				case APPLICATION_START:
+					DBG_N("APPLICATION START\r\n");
+					vTaskDelay(10);
+					break;
+				case APPLICATION_DISCONNECT:
+					DBG_N("APPLICATION DISCONNECT\r\n");
+					break;
+				case APPLICATION_IDLE:
+					DBG_N("APPLICATION IDLE\r\n");
+				default:
+					break;
+			}
+			keyboard_ready = 0;
+			// On first run, we start a timer and every 1/2 second we
+			// toggle LED Pin
+			if (timerOneShot)
+			{
+				DBG_E("UNCONNECTED USB HID KEYBOARD. PLEASE CONNECT\r\n");
+				g_timer = xTaskGetTickCount();
+				timerOneShot = 0;
+			}
+			// slow blink on no device connected
+			current_time = xTaskGetTickCount() - g_timer;
+			if (current_time >= pdMS_TO_TICKS(500))
+			{
+				DBG_N("WAIT INSERT USB KEYBOARD count: %d\r\n", count);
+				led_toggle();
+				g_timer = xTaskGetTickCount();
+				if (count++ > 10)
+				{
+					#ifdef __EASTER_EGG__
+					usb_task_send_string("NO USB Keyboard Device Connected. Please Connect! Amiga Is Back!\n");
+					#endif
+					DBG_I("Waiting USB HID Keyboard!\r\nPlease Connect\r\n");
+					count = 0;
+				}
+			}
+		}
 		/* Wait for the next cycle */
 		vTaskDelayUntil(&last_wake_time, task_frequency);
 	}
@@ -141,128 +320,11 @@ void usb_task_init(void)
 {
 	DBG_N("USB Task initialization\r\n");
 	
-	/* Initialize USB HOST OTG FS */
-	MX_USB_HOST_Init();
-	usb_initialized = 1;
+//	/* Initialize USB HOST OTG FS */
+//	MX_USB_HOST_Init();
+//	usb_initialized = 1;
 	
 	DBG_N("USB Task initialization complete\r\n");
-}
-
-/**
-  * @brief  Handle USB connection state changes and status indication
-  * @details Manages USB device connection/disconnection events and provides visual
-  *          feedback through status LED blinking patterns:
-  *          - APPLICATION_READY: Solid LED, keyboard initialization
-  *          - APPLICATION_DISCONNECT: Slow blink (500ms)
-  *          - Other states: Fast blink (100ms)
-  * @param  None
-  * @retval None
-  * @note   Automatically initializes keyboard LEDs after connection delay
-  */
-static void usb_task_handle_connection_state(void)
-{
-	static ApplicationTypeDef prev_state = APPLICATION_IDLE;
-	static TickType_t state_change_time = 0;
-	static int blink_count = 0;
-	
-	if (prev_state != usb_app_state)
-	{
-		state_change_time = xTaskGetTickCount();
-		blink_count = 0;
-		prev_state = usb_app_state;
-		
-		switch (usb_app_state)
-		{
-			case APPLICATION_READY:
-				DBG_W("USB Keyboard connected and ready\r\n");
-				usbhost = USBH_GetHost();
-				if (usbhost != NULL && USBH_HID_GetDeviceType(usbhost) == HID_KEYBOARD)
-				{
-					keyboard_ready = 0; // Will be set to 1 after LED init
-					last_led_init_time = xTaskGetTickCount();
-				}
-				break;
-				
-			case APPLICATION_DISCONNECT:
-				DBG_W("USB Keyboard disconnected\r\n");
-				keyboard_ready = 0;
-				usbhost = NULL;
-				break;
-
-			case APPLICATION_IDLE:
-				DBG_W("USB Keyboard IDLE\r\n");
-				keyboard_ready = 0;
-				break;
-
-			default:
-				DBG_N("USB Application state: %d\r\n", usb_app_state);
-				keyboard_ready = 0;
-				break;
-		}
-	}
-	
-	/* Handle LED blinking based on state */
-	TickType_t current_time = xTaskGetTickCount();
-	
-	switch (usb_app_state)
-	{
-		case APPLICATION_READY:
-			if (!keyboard_ready && usbhost != NULL)
-			{
-				/* Wait for LED initialization delay */
-				if ((current_time - last_led_init_time) >= pdMS_TO_TICKS(LED_INIT_DELAY_MS))
-				{
-					DBG_V("Initializing keyboard LEDs\r\n");
-					usb_keyboard_led_init_sequence(usbhost);
-					keyboard_ready = 1;
-					current_keyboard_led = 0;
-				}
-			}
-			break;
-			
-		case APPLICATION_DISCONNECT:
-			/* Slow blink - no device connected */
-			if ((current_time - state_change_time) >= pdMS_TO_TICKS(500))
-			{
-				led_toggle_status();
-				state_change_time = current_time;
-				if (++blink_count > 10)
-				{
-					DBG_W("Waiting for USB HID Keyboard connection\r\n");
-					blink_count = 0;
-				}
-			}
-			break;
-
-		case APPLICATION_IDLE:
-			/* Slower blink */
-			if ((current_time - state_change_time) >= pdMS_TO_TICKS(1000))
-			{
-				led_toggle_status();
-				state_change_time = current_time;
-				if (++blink_count > 10)
-				{
-					DBG_W("Application IDLE\r\n");
-					blink_count = 0;
-				}
-			}
-			break;
-
-		default:
-			/* Fast blink - device not supported or other states */
-			if ((current_time - state_change_time) >= pdMS_TO_TICKS(100))
-			{
-				led_toggle_status();
-				state_change_time = current_time;
-				if (++blink_count > 10)
-				{
-					DBG_E("USB device issue on transition: Application state %d\r\n",
-							usb_app_state);
-					blink_count = 0;
-				}
-			}
-			break;
-	}
 }
 
 /**
@@ -278,27 +340,23 @@ static void usb_task_handle_connection_state(void)
 static void usb_task_process_keyboard(void)
 {
 	if (usbhost == NULL) return;
-	
-	/* Get keyboard data */
-	if (USBH_Keybd(usbhost) == 0)
+
+	keyboard_code_t *scancode = USBH_GetScanCode();
+	if (scancode != NULL)
 	{
-		keyboard_code_t *scancode = USBH_GetScanCode();
-		if (scancode != NULL)
+		/* Prepare message for Amiga task */
+		keyboard_message_t msg;
+		msg.keycode = *scancode;
+		msg.timestamp = xTaskGetTickCount();
+		
+		/* Send to Amiga task */
+		if (xQueueSend(keyboard_queue, &msg, 0) != pdTRUE)
 		{
-			/* Prepare message for Amiga task */
-			keyboard_message_t msg;
-			msg.keycode = *scancode;
-			msg.timestamp = xTaskGetTickCount();
-			
-			/* Send to Amiga task */
-			if (xQueueSend(keyboard_queue, &msg, 0) != pdTRUE)
-			{
-				DBG_W("Failed to send keyboard data to Amiga task\r\n");
-			}
-			else
-			{
-				DBG_V("Keyboard data sent to Amiga task\r\n");
-			}
+			DBG_W("Failed to send keyboard data to Amiga task\r\n");
+		}
+		else
+		{
+			DBG_V("Keyboard data sent to Amiga task\r\n");
 		}
 	}
 }
@@ -316,7 +374,7 @@ static void usb_task_process_keyboard(void)
 static void usb_task_handle_led_messages(void)
 {
 	led_message_t led_msg;
-	
+
 	/* Check for LED messages from Amiga task */
 	while (xQueueReceive(led_queue, &led_msg, 0) == pdTRUE)
 	{
@@ -325,37 +383,43 @@ static void usb_task_handle_led_messages(void)
 		switch (led_msg.led_status)
 		{
 			case LED_CAPS_LOCK_OFF:
+				DBG_V("CAPS LOCK LED OFF\r\n");
 				current_keyboard_led &= ~CAPS_LOCK_LED;
 				usb_keyboard_led_set(usbhost, current_keyboard_led);
 				break;
 				
 			case LED_CAPS_LOCK_ON:
+				DBG_V("CAPS LOCK LED ON\r\n");
 				current_keyboard_led |= CAPS_LOCK_LED;
 				usb_keyboard_led_set(usbhost, current_keyboard_led);
 				break;
 				
 			case LED_NUM_LOCK_OFF:
+				DBG_V("NUM LOCK LED OFF\r\n");
 				current_keyboard_led &= ~NUM_LOCK_LED;
 				usb_keyboard_led_set(usbhost, current_keyboard_led);
 				break;
 				
 			case LED_NUM_LOCK_ON:
+				DBG_V("NUM LOCK LED ON\r\n");
 				current_keyboard_led |= NUM_LOCK_LED;
 				usb_keyboard_led_set(usbhost, current_keyboard_led);
 				break;
 				
 			case LED_SCROLL_LOCK_OFF:
+				DBG_V("SCROLL LOCK LED OFF\r\n");
 				current_keyboard_led &= ~SCROLL_LOCK_LED;
 				usb_keyboard_led_set(usbhost, current_keyboard_led);
 				break;
 				
 			case LED_SCROLL_LOCK_ON:
+				DBG_V("SCROLL LOCK LED ON\r\n");
 				current_keyboard_led |= SCROLL_LOCK_LED;
 				usb_keyboard_led_set(usbhost, current_keyboard_led);
 				break;
 				
 			case LED_RESET_BLINK:
-				DBG_I("Reset occurred - reinitializing keyboard LEDs\r\n");
+				DBG_I("Reset occurred from Amiga Side - reinitializing keyboard LEDs\r\n");
 				usb_keyboard_led_init_sequence(usbhost);
 				current_keyboard_led = 0;
 				break;
@@ -365,6 +429,18 @@ static void usb_task_handle_led_messages(void)
 				break;
 		}
 	}
+}
+
+/**
+  * @brief  Send a string to the Amiga keyboard interface
+  * @details This function takes a string, converts each character to Amiga scancodes,
+  *          and sends them as key press/release events to the Amiga via amikb_notify.
+  * @param  str: The string to be sent.
+  * @retval None
+  */
+void usb_task_send_string(const char *str)
+{
+	// TO BE IMPLEMENTED!
 }
 
 /**
@@ -432,33 +508,4 @@ void usb_keyboard_led_init_sequence(USBH_HandleTypeDef *usbhost)
 	/* Final state: all LEDs off */
 	usb_keyboard_led_set(usbhost, 0);
 	DBG_N("Keyboard LED initialization sequence complete\r\n");
-}
-
-/**
-  * @brief  Get USB task state
-  * @details Returns the current state of the USB task for monitoring and debugging purposes.
-  * @param  None
-  * @retval task_state_t: Current task state (TASK_STATE_INIT, TASK_STATE_RUNNING, etc.)
-  * @note   Used for task health monitoring and system diagnostics
-  */
-task_state_t usb_task_get_state(void)
-{
-	return usb_task_state;
-}
-
-/**
-  * @brief  Toggle status LED
-  * @details Toggles the status LED (TP1) to provide visual indication of USB task activity
-  *          and system state. Used for different blinking patterns based on USB connection status.
-  * @param  None
-  * @retval None
-  * @note   Controls TP1_Pin on TP1_GPIO_Port
-  *         LED state is maintained in static variable for toggle operation
-  */
-static void led_toggle_status(void)
-{
-	static int led_state = 0;
-	
-	led_state = !led_state;
-	HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, led_state ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
