@@ -154,12 +154,8 @@ static void amiga_task_process_keyboard_data(void)
 		
 		/* Process the keyboard data through Amiga protocol */
 		led_status_t led_status = amikb_process(&kbd_msg.keycode);
-		
-		/* Send LED status back to USB task if needed */
-		if (led_status != NO_LED)
-		{
-			amiga_task_send_led_status(led_status);
-		}
+		DBG_V("Led status: %d\r\n", led_status);
+		amiga_task_send_led_status(led_status);
 		
 		/* Update Amiga ready state */
 		if (!amiga_ready)
@@ -264,14 +260,49 @@ static void amiga_task_send_led_status(led_status_t status)
 	led_message_t led_msg;
 	led_msg.led_status = status;
 	led_msg.timestamp = xTaskGetTickCount();
-	
+
 	if (xQueueSend(led_queue, &led_msg, pdMS_TO_TICKS(10)) != pdTRUE)
 	{
 		DBG_W("Failed to send LED status to USB task\r\n");
 	}
 	else
 	{
-		DBG_V("LED status %d sent to USB task\r\n", status);
+		DBG_N("LED status %d sent to USB task\r\n", status);
+		switch( status )
+		{
+			case LED_CAPS_LOCK_OFF:
+				DBG_N("CAPS LOCK LED OFF\r\n");
+				break;
+				
+			case LED_CAPS_LOCK_ON:
+				DBG_N("CAPS LOCK LED ON\r\n");
+				break;
+				
+			case LED_NUM_LOCK_OFF:
+				DBG_N("NUM LOCK LED OFF\r\n");
+				break;
+				
+			case LED_NUM_LOCK_ON:
+				DBG_N("NUM LOCK LED ON\r\n");
+				break;
+				
+			case LED_SCROLL_LOCK_OFF:
+				DBG_N("SCROLL LOCK LED OFF\r\n");
+				break;
+				
+			case LED_SCROLL_LOCK_ON:
+				DBG_N("SCROLL LOCK LED ON\r\n");
+				break;
+				
+			case LED_RESET_BLINK:
+				DBG_N("Reset occurred from Amiga Side - reinitializing keyboard LEDs\r\n");
+				break;
+			
+			case NO_LED:
+			default:
+				DBG_N("NO ACTION FOR LEDs\r\n");
+				break;
+		}
 	}
 }
 
