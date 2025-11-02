@@ -183,7 +183,6 @@ void usb_task(void *pvParameters)
 						DBG_N("HAVE A KEY EVENT\r\n");
 						// Send the keypress to Amiga Task
 						usb_task_process_keyboard();
-						usb_task_handle_led_messages();
 					}
 					else
 					{
@@ -303,6 +302,8 @@ void usb_task(void *pvParameters)
 				}
 			}
 		}
+		/* Reading from the led status from Amiga Side is always possible */
+		usb_task_handle_led_messages();
 		/* Wait for the next cycle */
 		vTaskDelayUntil(&last_wake_time, task_frequency);
 	}
@@ -339,7 +340,11 @@ void usb_task_init(void)
   */
 static void usb_task_process_keyboard(void)
 {
-	if (usbhost == NULL) return;
+	if (usbhost == NULL)
+	{
+		DBG_E("No usbhost ready yet.\r\n");
+		return;
+	}
 
 	keyboard_code_t *scancode = USBH_GetScanCode();
 	if (scancode != NULL)
@@ -358,6 +363,10 @@ static void usb_task_process_keyboard(void)
 		{
 			DBG_V("Keyboard data sent to Amiga task\r\n");
 		}
+	}
+	else
+	{
+		DBG_E("No ScanCode received. Weird?\r\n");
 	}
 }
 
@@ -424,8 +433,8 @@ static void usb_task_handle_led_messages(void)
 				current_keyboard_led = 0;
 				break;
 				
+			case NO_LED:
 			default:
-				DBG_V("No LED action required\r\n");
 				break;
 		}
 	}
@@ -460,7 +469,7 @@ void usb_keyboard_led_set(USBH_HandleTypeDef *usbhost, keyboard_led_t led)
 	USBH_StatusTypeDef status;
 	int retry_count = USB_REPORT_RETRY;
 	
-	DBG_N("Setting USB keyboard LED: 0x%02x\r\n", led);
+	DBG_W("Setting USB keyboard LED: 0x%02x\r\n", led);
 	
 	for (int i = 0; i < retry_count; i++)
 	{
@@ -472,7 +481,7 @@ void usb_keyboard_led_set(USBH_HandleTypeDef *usbhost, keyboard_led_t led)
 			break;
 		}
 		
-		vTaskDelay(pdMS_TO_TICKS(1)); // Small delay between retries
+		vTaskDelay(pdMS_TO_TICKS(10)); // Small delay between retries
 	}
 }
 
