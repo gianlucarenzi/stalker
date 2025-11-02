@@ -66,6 +66,7 @@
 #include "debug.h"
 #include "stm32f4xx_it.h"
 #include "amiga.h"
+#include "eeprom.h"
 
 /* FreeRTOS includes */
 #include "FreeRTOS.h"
@@ -76,6 +77,8 @@
 #include "task_communication.h"
 #include "usb_task.h"
 #include "amiga_task.h"
+
+EepromMode current_mode = AMIGA_MODE; // Default mode
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -92,7 +95,7 @@ QueueHandle_t led_queue = NULL;
 static int debuglevel = DBG_INFO;
 
 /** @brief Firmware build version string with timestamp */
-static const char *fwBuild = "v2.0-rc-RTOS BUILD: " __TIME__ "-" __DATE__;
+static const char *fwBuild = "v2.0.1-rc-RTOS BUILD: " __TIME__ "-" __DATE__;
 
 /** @brief UART handle for debug communication */
 static UART_HandleTypeDef huart2;
@@ -187,6 +190,9 @@ static void create_tasks_and_queues(void)
   */
 int main(void)
 {
+	// Read EEPROM configuration
+	uint32_t eeprom_value;
+
 	_write_ready(SYSCALL_NOTREADY, &huart2);
 
 	/* MCU Configuration----------------------------------------------------------*/
@@ -213,6 +219,44 @@ int main(void)
 	banner();
 
 	DBG_I("Starting FreeRTOS-based USB to Amiga Keyboard Adapter\r\n");
+
+	if (eeprom_read(EEPROM_MODE_CONFIG, &eeprom_value) == HAL_OK)
+	{
+		if (eeprom_value == 0xFFFFFFFF)
+		{
+			DBG_I("EEPROM is uninitialized. Saving default mode (AMIGA_MODE)...\r\n");
+			if (eeprom_write(EEPROM_MODE_CONFIG, AMIGA_MODE) == HAL_OK)
+			{
+				DBG_I("Default mode saved successfully.\r\n");
+				current_mode = AMIGA_MODE;
+			}
+			else
+			{
+				DBG_E("Failed to save default mode to EEPROM.\r\n");
+			}
+		}
+		else
+		{
+			current_mode = (EepromMode)eeprom_value;
+			if (current_mode == AMIGA_MODE)
+			{
+				DBG_I("EEPROM Mode: AMIGA_MODE\r\n");
+			}
+			else if (current_mode == PC_MODE)
+			{
+				DBG_I("EEPROM Mode: PC_MODE\r\n");
+			}
+			else
+			{
+				DBG_W("EEPROM Mode: Unknown value (0x%lx), defaulting to AMIGA_MODE\r\n", eeprom_value);
+				current_mode = AMIGA_MODE;
+			}
+		}
+	}
+	else
+	{
+		DBG_E("Failed to read EEPROM_MODE_CONFIG, defaulting to AMIGA_MODE\r\n");
+	}
 
 	/* Create tasks and queues */
 	create_tasks_and_queues();
