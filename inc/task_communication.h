@@ -14,11 +14,11 @@ extern QueueHandle_t keyboard_queue;
 extern QueueHandle_t led_queue;
 
 /* Task priorities */
-#define USB_TASK_PRIORITY       3
+#define USB_TASK_PRIORITY       5
 #define AMIGA_TASK_PRIORITY     2
 
 /* Task stack sizes */
-#define USB_TASK_STACK_SIZE     (configMINIMAL_STACK_SIZE * 4)
+#define USB_TASK_STACK_SIZE     (configMINIMAL_STACK_SIZE * 8)
 #define AMIGA_TASK_STACK_SIZE   (configMINIMAL_STACK_SIZE * 2)
 
 /* Communication structures */
