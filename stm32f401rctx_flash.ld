@@ -70,7 +70,8 @@ _MCU_FLASH_SIZE_ = 0x20000;
 MEMORY
 {
 	BOOT (rx)	: ORIGIN = 0x08000000, LENGTH = _BOOTLOADER_SIZE_
-	FLASH (rx)	: ORIGIN = 0x08000000 + _BOOTLOADER_SIZE_, LENGTH = _MCU_FLASH_SIZE_ - _BOOTLOADER_SIZE_
+	FLASH (rx)	: ORIGIN = 0x08000000 + _BOOTLOADER_SIZE_, LENGTH = _MCU_FLASH_SIZE_ - _BOOTLOADER_SIZE_ - 4K
+	EEPROM (rx)	: ORIGIN = 0x08000000 + _MCU_FLASH_SIZE_ - 4K, LENGTH = 4K
 	RAM (xrw)	: ORIGIN = 0x20000000, LENGTH = 64K
 }
 
@@ -163,6 +164,12 @@ SECTIONS
 
   /* used by the startup to initialize data */
   _sidata = LOADADDR(.data);
+
+  .eeprom_section (NOLOAD) :
+  {
+    . = ALIGN(4);
+    _eeprom_start = .;
+  } >EEPROM
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
   .data :
