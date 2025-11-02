@@ -682,7 +682,7 @@ static led_status_t amikb_send(uint8_t code, int press);
 static uint8_t scancode_to_amiga(uint8_t lkey)
 {
 	uint8_t i = 0, keyvalue = lkey;
-	DBG_N("Enter with 0x%02x lkey ScanCode\r\n", lkey);
+	DBG_V("Enter with 0x%02x lkey ScanCode\r\n", lkey);
 
 	for (i = 0; i < KEYCODE_TAB_SIZE; i++)
 	{
@@ -707,7 +707,7 @@ static uint8_t scancode_to_amiga(uint8_t lkey)
 static uint8_t ascii_to_scancode(uint8_t ascii)
 {
 	uint8_t i = 0, keyvalue = ascii;
-	DBG_N("Enter with '%c' 0x%02x ASCII\r\n", ascii, ascii);
+	DBG_V("Enter with '%c' 0x%02x ASCII\r\n", ascii, ascii);
 
 	for (i = 0; i < KEYCODE_TAB_SIZE; i++)
 	{
@@ -718,7 +718,7 @@ static uint8_t ascii_to_scancode(uint8_t ascii)
 		}
 	}
 
-	DBG_N("Exit with: 0x%02x ScanCode\r\n", keyvalue);
+	DBG_V("Exit with: 0x%02x ScanCode\r\n", keyvalue);
 	return keyvalue;
 }
 
@@ -731,7 +731,7 @@ void amikb_startup(void)
 	uint8_t AMIGA_INITPOWER = 0xFD; //11111101
 	uint8_t AMIGA_TERMPOWER = 0xFE; //11111110
 
-	DBG_N("Enter\r\n");
+	DBG_V("Enter\r\n");
 
 	// De-assert nRESET for Amiga...
 	amikb_reset();
@@ -743,7 +743,7 @@ void amikb_startup(void)
 	udelay(200);
 	amikb_send((uint8_t) AMIGA_TERMPOWER, 0); // send "terminate power-up"
 
-	DBG_N("Exit\r\n");
+	DBG_V("Exit\r\n");
 }
 
 static int keyboard_is_present = 0;
@@ -839,7 +839,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 	int i;
 	led_status_t rval = NO_LED;
 
-	DBG_N("Amiga Keycode 0x%02x - %s\r\n", keycode, press ? "PRESSED" : "RELEASED");
+	DBG_V("Amiga Keycode 0x%02x - %s\r\n", keycode, press ? "PRESSED" : "RELEASED");
 	if (keycode == 0x62 || keycode == 0x68 || keycode == 0x1c) // Caps Lock, Num Lock or Scroll Lock Pressed or Released
 	{
 		// caps lock doesn't get a key release event when the key is released
@@ -860,7 +860,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 					}
 					else
 					{
-						DBG_N("### IGNORING RELEASE FOR CAPS LOCK ###\n\r");
+						DBG_V("### IGNORING RELEASE FOR CAPS LOCK ###\n\r");
 						// Toggle for next time press
 						capslk = 1;
 						prev_keycode = 0;
@@ -877,7 +877,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 					}
 					else
 					{
-						DBG_N("### SEND TURN-OFF CAPS LOCK LED. ALL LOWERCASE FROM NOW ###\r\n");
+						DBG_V("### SEND TURN-OFF CAPS LOCK LED. ALL LOWERCASE FROM NOW ###\r\n");
 						capslk = 0;
 						rval = LED_CAPS_LOCK_OFF;
 						prev_keycode = 0;
@@ -897,7 +897,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 					}
 					else
 					{
-						DBG_N("### IGNORING RELEASE FOR NUM LOCK ###\n\r");
+						DBG_V("### IGNORING RELEASE FOR NUM LOCK ###\n\r");
 						// Toggle for next time press
 						numlk = 1;
 						prev_keycode = 0;
@@ -914,7 +914,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 					}
 					else
 					{
-						DBG_N("### SEND TURN-OFF NUM LOCK LED. NUMERIC KEYPAD UNLOCKED FROM NOW ###\r\n");
+						DBG_V("### SEND TURN-OFF NUM LOCK LED. NUMERIC KEYPAD UNLOCKED FROM NOW ###\r\n");
 						numlk = 0;
 						rval = LED_NUM_LOCK_OFF;
 						prev_keycode = 0;
@@ -934,7 +934,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 					}
 					else
 					{
-						DBG_N("### IGNORING RELEASE FOR SCROLL LOCK ###\n\r");
+						DBG_V("### IGNORING RELEASE FOR SCROLL LOCK ###\n\r");
 						// Toggle for next time press
 						scrolllk = 1;
 						prev_keycode = 0;
@@ -951,7 +951,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 					}
 					else
 					{
-						DBG_N("### SEND TURN-OFF SCROLL LOCK LED. SCROLL IS UNLOCKED FROM NOW ###\r\n");
+						DBG_V("### SEND TURN-OFF SCROLL LOCK LED. SCROLL IS UNLOCKED FROM NOW ###\r\n");
 						scrolllk = 0;
 						rval = LED_SCROLL_LOCK_OFF;
 						prev_keycode = 0;
@@ -1017,7 +1017,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 
 	HAL_GPIO_WritePin(GPIOC, KBD_DATA_Pin, GPIO_PIN_SET); // Set KBD_DATA pin
 
-	DBG_N("DATA AND CLOCK AS INPUTS. WAITING FOR SYNC FROM CPU\r\n");
+	DBG_V("DATA AND CLOCK AS INPUTS. WAITING FOR SYNC FROM CPU\r\n");
 	amikb_direction( DAT_INPUT );
 
 #ifdef REAL_AMIKEYBOARD_SYNC
@@ -1061,7 +1061,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 void amikb_reset(void)
 {
 	amikb_direction(DAT_OUTPUT);
-	DBG_N("Enter\r\n");
+	DBG_V("Enter\r\n");
 	HAL_GPIO_WritePin(GPIOC, KBD_RESET_Pin, GPIO_PIN_RESET); // Clear KBD_RESET pin
 	HAL_GPIO_WritePin(GPIOC, KBD_CLOCK_Pin, GPIO_PIN_RESET); // Clear KBD_CLOCK pin
 	mdelay(600);
@@ -1071,7 +1071,7 @@ void amikb_reset(void)
 	capslk = 0;
 	numlk = 0;
 	scrolllk = 0;
-	DBG_N("Exit\r\n");
+	DBG_V("Exit\r\n");
 }
 
 /**
@@ -1349,116 +1349,3 @@ led_status_t amikb_process(keyboard_code_t *data)
 	DBG_N("Exit with rval: %d\r\n", rval);
 	return rval;
 }
-
-/**
- * @brief  Converts a string to uppercase.
- * @param  s: The string to convert.
- * @retval None
- **/
-static void upper_string(char s[])
-{
-	int c = 0;
-
-	while (s[c] != '\0')
-	{
-		if (s[c] >= 'a' && s[c] <= 'z')
-		{
-			s[c] = s[c] - 32;
-		}
-		c++;
-	}
-}
-
-#ifndef __AMIBERRY_EASTER_EGG__
-/**
- * @brief  Sends a string to the Amiga.
- * @param  ptr: A pointer to the string to send.
- * @retval None
- **/
-void amikb_notify(const char *ptr)
-{
-	int i;
-	char *upper = NULL;
-	led_status_t rval = NO_LED;
-
-	DBG_N("Enter\r\n");
-	if (ptr != NULL)
-	{
-		DBG_V("String %s\n\r", ptr);
-		upper = malloc(strlen(ptr) + 1);
-		if (upper != NULL)
-		{
-			strcpy(upper, ptr);
-			upper_string(upper);
-			rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), 1);
-			for (i = 0; i < strlen(ptr); i++)
-			{
-				// Mandiamo prima una pressione del carattere corrispondente
-				rval |= amikb_send(scancode_to_amiga(ascii_to_scancode(upper[i])), 1);
-				// ...poi al termine un rilascio dello stesso carattere
-				rval |= amikb_send(scancode_to_amiga(ascii_to_scancode(upper[i])), 0);
-			}
-			rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), 0);
-		}
-	}
-
-	if (upper != NULL)
-	{
-		free(upper);
-	}
-	DBG_N("Exit\n");
-}
-#else
-/**
- * @brief  Sends a string to the Amiga, with an Easter egg.
- * @param  ptr: A pointer to the string to send.
- * @retval None
- **/
-void amikb_notify(const char *ptr)
-{
-	int i;
-	char *upper = NULL;
-	led_status_t rval = NO_LED;
-	const char *amiberry = " AMIBERRY IS CREATED AND MAINTAINED BY DIMITRIS PANOKOSTAS. THANKS FOR ALL!";
-	char msg[1024]; // 1K buffer
-	int total_len = 0;
-
-	DBG_N("Enter\r\n");
-	memset(msg, 0, 1024);
-
-	if (ptr != NULL)
-	{
-		DBG_V("String %s\n\r", ptr);
-		upper = malloc(strlen(ptr) + 1);
-		if (upper != NULL)
-		{
-			strcpy(upper, ptr);
-			upper_string(upper);
-			// Now we can chain two (uppercase) strings together
-			strncpy(msg, upper, sizeof(msg) - 1);
-			total_len = strlen(upper);
-			if ((total_len + strlen(amiberry)) < sizeof(msg))
-			{
-				strcat(msg, amiberry);
-			}
-			// Send shift pressed first
-			rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), 1);
-			for (i = 0; i < strlen(msg); i++)
-			{
-				// Send the character pressed
-				rval |= amikb_send(scancode_to_amiga(ascii_to_scancode(msg[i])), 1);
-				// ...and release of the same character
-				rval |= amikb_send(scancode_to_amiga(ascii_to_scancode(msg[i])), 0);
-			}
-			// Now release shift
-			rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), 0);
-		}
-	}
-
-	if (upper != NULL)
-	{
-		free(upper);
-	}
-	DBG_N("Exit\n");
-}
-#endif
