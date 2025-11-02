@@ -17,6 +17,7 @@
 #include "syscall.h"
 #include "amiga.h"
 #include "debug.h"
+#include "eeprom.h"
 
 static int debuglevel = DBG_INFO;
 
@@ -1302,6 +1303,9 @@ led_status_t amikb_process(keyboard_code_t *data)
 			maybe_reset--;
 	}
 
+	// There is a special case: the Keyboard does not have a real RIGHT GUI
+	// In this case we can use the KEY_APPLICATION (KEY COMPOSE) as RIGHT GUI
+
 	// Send all pressed key
 	for (i = 0; i < KEY_PRESSED_MAX; i++)
 	{
@@ -1323,9 +1327,10 @@ led_status_t amikb_process(keyboard_code_t *data)
 					DBG_V("Sending the KEY_PRESS for NEW Keycode: 0x%02x\r\n",
 						data->keys[i]);
 					rval |= amikb_send(scancode_to_amiga(data->keys[i]), 1 /* Pressed */);
-					if (data->keys[i] == KEY_DELETE)
+					if (data->keys[i] == KEY_DELETE ||
+						data->keys[i] == KEY_APPLICATION )
 					{
-						DBG_V("MAY BE RESET (KEY DELETE AS PC) ??? %d\r\n", maybe_reset);
+						DBG_V("MAY BE RESET (KEY DELETE AS PC or KEY_APPLICATION) ??? %d\r\n", maybe_reset);
 						maybe_reset++;
 					}
 					else
