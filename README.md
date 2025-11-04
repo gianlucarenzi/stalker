@@ -18,7 +18,7 @@ An additional feature of the adapter is its "Bootloader" function, allowing for 
 
 ## Software Features
 *   **Real-Time Operating System**: Built on FreeRTOS for robust, real-time performance and task management.
-*   **Extended HID Support**: The firmware can operate in **Report Protocol** (with a fallback to Boot Protocol), allowing it to parse detailed HID report descriptors. This enables support for keys beyond the standard boot keyboard, such as multimedia and system control keys (e.g., Volume, Mute, Play/Pause).
+*   **Extended HID Support**: The firmware first attempts to operate in **Boot Protocol** for broader compatibility. If the Boot Protocol is not supported, it falls back to **Report Protocol**, allowing it to parse detailed HID report descriptors. This enables support for keys beyond the standard boot keyboard, such as multimedia and system control keys (e.g., Volume, Mute, Play/Pause).
 *   **Advanced Key Mapping**:
     *   Standard USB scancodes are translated to Amiga scancodes on the fly.
     *   Extended HID events (e.g., from the Consumer or System usage pages) are mapped to special `CTRL+ALT+Fn` key combinations. This allows an Amiga-side helper application to react to these events.
