@@ -22,6 +22,7 @@ An additional feature of the adapter is its "Bootloader" function, allowing for 
 *   **Advanced Key Mapping**:
     *   Standard USB scancodes are translated to Amiga scancodes on the fly.
     *   Extended HID events (e.g., from the Consumer or System usage pages) are mapped to special `CTRL+ALT+Fn` key combinations. This allows an Amiga-side helper application to react to these events.
+*   **Runtime Mode Switching**: The adapter's operating mode (Amiga or PC) can be toggled at runtime using the key combination `Left CTRL + Left ALT + Left SHIFT + P`. The selected mode is saved to EEPROM and persists across power cycles.
 *   **Asynchronous Logging**: A dedicated logger task handles serial output, preventing other critical tasks (like USB polling or Amiga communication) from being blocked by slow serial writes. Log messages are color-coded by severity for easy debugging.
 *   **Modular Architecture**: The firmware is divided into independent tasks for USB handling, Amiga communication, and event processing, communicating via message queues.
 
