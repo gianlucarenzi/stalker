@@ -37,6 +37,7 @@ C_SOURCES =  \
 	src/usb_task.c \
 	src/amiga_task.c \
 	src/eeprom.c \
+	src/hid_report.c \
 
 
 C_SOURCES += \

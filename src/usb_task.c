@@ -27,7 +27,7 @@
 #include "syscall.h"
 #include "main.h"
 #include "amiga.h"
-
+#include "hid_report.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 
@@ -166,11 +166,19 @@ void usb_task(void *pvParameters)
 					if ( !keyboard_ready )
 					{
 						DBG_N("### BOARD LED ON ### WAIT 500msec FOR LEDS\r\n");
+						/* Info: HID protocol was requested to REPORT at class activation.
+						 * If device doesn't support it, library keeps BOOT protocol.
+						 * Future: here we can query and parse report descriptors. */
 						led_light(0);
 						current_time = xTaskGetTickCount() - g_timer;
 						if (current_time >= pdMS_TO_TICKS(500))
 						{
 							DBG_I("### KEYBOARD LED TOGGLE ###\r\n");
+							/* HOOK: request and parse HID report descriptor for extended keys */
+							(void)hid_report_init_for_interface(usbhost, 0);
+							if (hid_report_parse_descriptor(usbhost, 0) != 0) {
+								DBG_W("HID report descriptor parsing failed or not supported\r\n");
+							}
 							usb_keyboard_led_init_sequence(usbhost);
 							keyboard_ready = 1;
 							current_keyboard_led = 0;
