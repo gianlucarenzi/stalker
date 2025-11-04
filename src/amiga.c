@@ -19,6 +19,8 @@
 #include "debug.h"
 #include "eeprom.h"
 
+extern EepromMode current_mode;
+
 static int debuglevel = DBG_INFO;
 
 #define KEY_NONE                               0x00
@@ -1142,7 +1144,6 @@ bool amikb_reset_check(void)
  **/
 led_status_t amikb_process(keyboard_code_t *data)
 {
-	static int maybe_reset = 0;
 	int i;
 	led_status_t rval = NO_LED; /* 0 means no USB interaction such as leds, ... */
 	static keyboard_code_t prevkeycode = {
@@ -1204,14 +1205,6 @@ led_status_t amikb_process(keyboard_code_t *data)
 		DBG_V("LEFT KEYALT %s\r\n",
 			prevkeycode.laltpressed == 1 ? "PRESSED" : "RELEASED");
 		rval |= amikb_send(scancode_to_amiga(KEY_LEFTALT), prevkeycode.laltpressed, 1);
-		if (prevkeycode.laltpressed == 1)
-		{
-			maybe_reset++;
-			DBG_V("MAY BE RESET (LEFT ALT)??? %d\r\n", maybe_reset);
-		}
-		else
-		if (maybe_reset > 0)
-			maybe_reset--;
 	}
 
 	// LEFT CTRL
@@ -1225,14 +1218,6 @@ led_status_t amikb_process(keyboard_code_t *data)
 		DBG_V("LEFT KEYCTRL %s\r\n",
 			prevkeycode.lctrlpressed == 1 ? "PRESSED" : "RELEASED");
 		rval |= amikb_send(scancode_to_amiga(KEY_LEFTCONTROL), prevkeycode.lctrlpressed, 1);
-		if (prevkeycode.lctrlpressed == 1)
-		{
-			maybe_reset++;
-			DBG_V("MAY BE RESET (LEFT CONTROL)??? %d\r\n", maybe_reset);
-		}
-		else
-		if (maybe_reset > 0)
-			maybe_reset--;
 	}
 
 	// LEFT GUI
@@ -1246,14 +1231,6 @@ led_status_t amikb_process(keyboard_code_t *data)
 		DBG_V("LEFT KEYGUI %s\r\n",
 			prevkeycode.lguipressed == 1 ? "PRESSED" : "RELEASED");
 		rval |= amikb_send(scancode_to_amiga(KEY_LEFT_GUI), prevkeycode.lguipressed, 1);
-		if (prevkeycode.lguipressed == 1)
-		{
-			maybe_reset++;
-			DBG_V("MAY BE RESET (LEFT GUI)??? %d\r\n", maybe_reset);
-		}
-		else
-		if (maybe_reset > 0)
-			maybe_reset--;
 	}
 
 	// ----------------------------------------------- RIGHT
@@ -1281,14 +1258,6 @@ led_status_t amikb_process(keyboard_code_t *data)
 		DBG_V("RIGHT KEYALT %s\r\n",
 			prevkeycode.raltpressed == 1 ? "PRESSED" : "RELEASED");
 		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTALT), prevkeycode.raltpressed, 1);
-		if (prevkeycode.raltpressed == 1)
-		{
-			maybe_reset++;
-			DBG_V("MAY BE RESET (RIGHT ALT)??? %d\r\n", maybe_reset);
-		}
-		else
-		if (maybe_reset > 0)
-			maybe_reset--;
 	}
 
 	// RIGHT CTRL
@@ -1302,14 +1271,6 @@ led_status_t amikb_process(keyboard_code_t *data)
 		DBG_V("RIGHT KEYCTRL %s\r\n",
 			prevkeycode.rctrlpressed == 1 ? "PRESSED" : "RELEASED");
 		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTCONTROL), prevkeycode.rctrlpressed, 1);
-		if (prevkeycode.rctrlpressed == 1)
-		{
-			maybe_reset++;
-			DBG_V("MAY BE RESET (RIGHT CTRL)??? %d\r\n", maybe_reset);
-		}
-		else
-		if (maybe_reset > 0)
-			maybe_reset--;
 	}
 
 	// RIGHT GUI
@@ -1323,18 +1284,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 		DBG_V("RIGHT KEYGUI %s\r\n",
 			prevkeycode.rguipressed == 1 ? "PRESSED" : "RELEASED");
 		rval |= amikb_send(scancode_to_amiga(KEY_RIGHT_GUI), prevkeycode.rguipressed, 1);
-		if (prevkeycode.rguipressed == 1)
-		{
-			maybe_reset++;
-			DBG_V("MAY BE RESET (RIGHT GUI)??? %d\r\n", maybe_reset);
-		}
-		else
-		if (maybe_reset > 0)
-			maybe_reset--;
 	}
-
-	// There is a special case: the Keyboard does not have a real RIGHT GUI
-	// In this case we can use the KEY_APPLICATION (KEY COMPOSE) as RIGHT GUI
 
 	// Send all pressed key
 	for (i = 0; i < KEY_PRESSED_MAX; i++)
@@ -1357,28 +1307,54 @@ led_status_t amikb_process(keyboard_code_t *data)
 					DBG_V("Sending the KEY_PRESS for NEW Keycode: 0x%02x\r\n",
 						data->keys[i]);
 					rval |= amikb_send(scancode_to_amiga(data->keys[i]), 1 /* Pressed */, 1);
-					if (data->keys[i] == KEY_DELETE ||
-						data->keys[i] == KEY_APPLICATION )
-					{
-						DBG_V("MAY BE RESET (KEY DELETE AS PC or KEY_APPLICATION) ??? %d\r\n", maybe_reset);
-						maybe_reset++;
-					}
-					else
-					if (maybe_reset > 0)
-						maybe_reset--;
 				}
 				prevkeycode.keys[i] = data->keys[i];
 			}
 		}
 	}
 
-	DBG_V("MAY BE RESET TOTAL??? %d\r\n", maybe_reset);
-	if (maybe_reset >= OK_RESET)
+	// Check for reset condition
+	bool ctrl_pressed = data->lctrl || data->rctrl;
+	bool alt_pressed = data->lalt || data->ralt;
+	bool lgui_pressed = data->lgui;
+	bool rgui_pressed = data->rgui;
+	bool app_pressed = false;
+	bool del_pressed = false;
+	bool reset_triggered = false;
+
+	for (i = 0; i < KEY_PRESSED_MAX; i++)
+	{
+		if (data->keys[i] == KEY_DELETE)
+		{
+		del_pressed = true;
+		}
+		if (data->keys[i] == KEY_APPLICATION)
+		{
+			app_pressed = true;
+		}
+	}
+
+	if (current_mode == PC_MODE)
+	{
+		if (ctrl_pressed && alt_pressed && del_pressed)
+		{
+			reset_triggered = true;
+		}
+	}
+	else
+	{
+		// AMIGA_MODE
+		if (ctrl_pressed && lgui_pressed && (rgui_pressed || app_pressed))
+		{
+			reset_triggered = true;
+		}
+	}
+
+	if (reset_triggered)
 	{
 		DBG_I("#### <SYSTEM RESET> ####\r\n");
 		amikb_reset(1);
 		rval = LED_RESET_BLINK;
-		maybe_reset = 0;
 	}
 
 	DBG_N("Exit with rval: %d\r\n", rval);
