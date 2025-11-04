@@ -95,6 +95,9 @@ QueueHandle_t led_queue = NULL;
 /* Extended HID input events queue */
 QueueHandle_t extended_input_queue = NULL;
 
+/** @brief Global queue handle for keyboard injection data communication (extended -> Amiga) */
+QueueHandle_t keyboard_inject_queue = NULL;
+
 /** @brief Debug level for application logging */
 static int debuglevel = DBG_INFO;
 
@@ -168,8 +171,18 @@ static void create_tasks_and_queues(void)
 		_Error_Handler(__FILE__, __LINE__);
 	}
 
+	keyboard_inject_queue = xQueueCreate(KEYBOARD_INJECT_QUEUE_SIZE, sizeof(keyboard_message_t));
+	if (keyboard_inject_queue == NULL)
+	{
+		DBG_E("Failed to create keyboard inject queue\r\n");
+		_Error_Handler(__FILE__, __LINE__);
+	}
+
 	/* Create logger tasks (serial + extended) */
 	logger_init_create_tasks();
+
+	/* Create extended to amiga bridge task */
+	extended_bridge_init_create_task();
 
 	/* Create USB task */
 	if (xTaskCreate(usb_task, "USB_Task", USB_TASK_STACK_SIZE, NULL, USB_TASK_PRIORITY, &usb_task_handle) != pdPASS)

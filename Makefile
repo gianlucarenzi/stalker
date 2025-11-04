@@ -39,6 +39,7 @@ C_SOURCES =  \
 	src/eeprom.c \
 	src/hid_report.c \
 	src/logger.c \
+	src/extended_bridge.c \
 
 
 C_SOURCES += \

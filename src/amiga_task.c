@@ -165,6 +165,17 @@ static void amiga_task_process_keyboard_data(void)
 			DBG_I("Amiga keyboard interface is now ready\r\n");
 		}
 	}
+
+	/* Check for injected keyboard messages */
+	while (xQueueReceive(keyboard_inject_queue, &kbd_msg, 0) == pdTRUE)
+	{
+		DBG_V("Received injected keyboard data\r\n");
+		
+		/* Process the keyboard data through Amiga protocol */
+		led_status_t led_status = amikb_process(&kbd_msg.keycode);
+		DBG_V("Led status: %d\r\n", led_status);
+		amiga_task_send_led_status(led_status);
+	}
 }
 
 /**
