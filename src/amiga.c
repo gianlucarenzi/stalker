@@ -1176,6 +1176,17 @@ led_status_t amikb_process(keyboard_code_t *data)
 		.keys[5]        = 0,
 		.keyspressed[5] = 0,
 	};
+	static bool mode_toggle_combo_active = false;
+	bool toggle_lctrl_pressed;
+	bool toggle_lalt_pressed;
+	bool toggle_lshift_pressed;
+	bool p_pressed;
+	bool ctrl_pressed;
+	bool lgui_pressed;
+	bool rgui_pressed;
+	bool app_pressed;
+	bool del_pressed;
+	bool reset_triggered;
 
 	DBG_N("Enter\r\n");
 
@@ -1313,20 +1324,56 @@ led_status_t amikb_process(keyboard_code_t *data)
 		}
 	}
 
+	// Check for mode toggle combination
+	toggle_lctrl_pressed = data->lctrl;
+	toggle_lalt_pressed = data->lalt;
+	toggle_lshift_pressed = data->lshift;
+	p_pressed = false;
+
+	for (i = 0; i < KEY_PRESSED_MAX; i++) {
+		if (data->keys[i] == KEY_P) {
+			p_pressed = true;
+		}
+	}
+
+	if (toggle_lctrl_pressed && toggle_lalt_pressed && toggle_lshift_pressed && p_pressed)
+	{
+		if (!mode_toggle_combo_active)
+		{
+			mode_toggle_combo_active = true;
+
+			if (current_mode == AMIGA_MODE)
+			{
+				current_mode = PC_MODE;
+				eeprom_write(EEPROM_MODE_CONFIG, PC_MODE);
+				DBG_I("Switched to PC_MODE and saved to EEPROM\r\n");
+			}
+			else
+			{
+				current_mode = AMIGA_MODE;
+				eeprom_write(EEPROM_MODE_CONFIG, AMIGA_MODE);
+				DBG_I("Switched to AMIGA_MODE and saved to EEPROM\r\n");
+			}
+		}
+	}
+	else
+	{
+		mode_toggle_combo_active = false;
+	}
+
 	// Check for reset condition
-	bool ctrl_pressed = data->lctrl || data->rctrl;
-	bool alt_pressed = data->lalt || data->ralt;
-	bool lgui_pressed = data->lgui;
-	bool rgui_pressed = data->rgui;
-	bool app_pressed = false;
-	bool del_pressed = false;
-	bool reset_triggered = false;
+	ctrl_pressed = data->lctrl || data->rctrl;	bool alt_pressed = data->lalt || data->ralt;
+	lgui_pressed = data->lgui;
+	rgui_pressed = data->rgui;
+	app_pressed = false;
+	del_pressed = false;
+	reset_triggered = false;
 
 	for (i = 0; i < KEY_PRESSED_MAX; i++)
 	{
 		if (data->keys[i] == KEY_DELETE)
 		{
-		del_pressed = true;
+			del_pressed = true;
 		}
 		if (data->keys[i] == KEY_APPLICATION)
 		{
