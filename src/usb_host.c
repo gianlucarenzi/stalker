@@ -119,11 +119,22 @@ void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 
 		case HOST_USER_CLASS_ACTIVE:
 			DBG_N("HOST_USER_CLASS_ACTIVE: Application READY\r\n");
-			/* Try to switch HID to REPORT protocol (fallback to BOOT on failure) */
-			if (USBH_HID_SetProtocol(phost, 1 /* REPORT protocol */) == USBH_OK) {
-				DBG_I("HID protocol set to REPORT\r\n");
-			} else {
-				DBG_W("HID REPORT protocol not supported, staying in BOOT\r\n");
+			/* Try to switch HID to BOOT protocol. If not supported, try REPORT protocol. */
+			if (USBH_HID_SetProtocol(phost, 0 /* BOOT protocol */) == USBH_OK)
+			{
+				DBG_I("HID protocol set to BOOT\r\n");
+			}
+			else
+			{
+				DBG_W("HID BOOT protocol not supported. Trying REPORT protocol.\r\n");
+				if (USBH_HID_SetProtocol(phost, 1 /* REPORT protocol */) == USBH_OK)
+				{
+					DBG_I("HID protocol set to REPORT\r\n");
+				}
+				else
+				{
+					DBG_E("Neither BOOT nor REPORT protocol supported.\r\n");
+				}
 			}
 			Appli_state = APPLICATION_READY;
 			break;
