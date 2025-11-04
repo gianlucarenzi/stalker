@@ -124,7 +124,7 @@ void amiga_task_init(void)
 	amikb_gpio_init();
 	
 	/* Start Amiga keyboard protocol */
-	amikb_startup();
+	amikb_startup(1); // 1: use_OS vTaskDelay(), 0: don't use OS Timing (udelay, mdelay)
 	
 	/* Set Amiga as ready */
 	amikb_ready(0); // Initially not ready until USB keyboard is connected
@@ -201,7 +201,7 @@ static void amiga_task_check_reset_condition(void)
 				if (elapsed >= pdMS_TO_TICKS(RESET_TIMEOUT_MS))
 				{
 					DBG_I("Reset timeout elapsed - performing Amiga reset\r\n");
-					amiga_task_handle_reset();
+					amiga_task_handle_reset(1);
 					reset_timer_active = 0;
 				}
 			}
@@ -223,21 +223,21 @@ static void amiga_task_check_reset_condition(void)
   * @details Performs complete Amiga reset sequence including protocol reset and restart.
   *          Sends LED reset blink command to USB task to provide visual feedback of reset
   *          operation. This function is called when reset timeout is reached.
-  * @param  None
+  * @param  int use_OS: if it is true, the routines uses the 
   * @retval None
   * @note   Resets Amiga keyboard protocol state machine
   *         Triggers LED blink sequence on USB keyboard
   *         Restarts Amiga keyboard protocol after reset
   */
-void amiga_task_handle_reset(void)
+void amiga_task_handle_reset(int use_OS)
 {
 	DBG_I("Performing Amiga reset sequence\r\n");
 	
 	/* Perform the reset */
-	amikb_reset();
+	amikb_reset(use_OS);
 	
 	/* Restart the Amiga keyboard protocol */
-	amikb_startup();
+	amikb_startup(use_OS);
 	
 	/* Send LED reset blink status to USB task */
 	amiga_task_send_led_status(LED_RESET_BLINK);

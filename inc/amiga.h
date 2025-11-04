@@ -47,13 +47,13 @@ typedef enum {
 	SCROLL_LOCK_LED = (1 << 2),
 } keyboard_led_t;
 
-extern void amikb_startup(void);                          // Must be called within the Amiga Task
+extern void amikb_startup(int use_OS);                    // Must be called within the Amiga Task
 extern led_status_t amikb_process(keyboard_code_t *data); // Must be called within the Main Task
 extern void amikb_notify(const char *notify);             // Must be called within the Main Task
 extern void amikb_gpio_init(void);                        // Must be called within the Amiga Task
 extern void amikb_ready(int isready);                     // ?? Maybe both?
 extern bool amikb_reset_check(void);                      // Must be called within the Amiga Task
-extern void amikb_reset(void);                            // Must be called within the Amiga Task
+extern void amikb_reset(int use_OS);                      // Must be called within the Amiga Task
 extern void ll_amikb_send(uint8_t code, int press);       // Must be called within the Amiga Task
 
 typedef enum {

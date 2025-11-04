@@ -673,7 +673,7 @@ static unsigned char numlk = 0;
 static unsigned char scrolllk = 0;
 
 static void amikb_direction(kbd_dir dir);
-static led_status_t amikb_send(uint8_t code, int press);
+static led_status_t amikb_send(uint8_t code, int press, int use_OS);
 
 /**
  * @brief  Converts a USB HID scancode to an Amiga scancode.
@@ -727,7 +727,7 @@ static uint8_t ascii_to_scancode(uint8_t ascii)
  * @brief  Initializes the Amiga keyboard.
  * @retval None
  **/
-void amikb_startup(void)
+void amikb_startup(int use_OS)
 {
 	uint8_t AMIGA_INITPOWER = 0xFD; //11111101
 	uint8_t AMIGA_TERMPOWER = 0xFE; //11111110
@@ -735,14 +735,21 @@ void amikb_startup(void)
 	DBG_V("Enter\r\n");
 
 	// De-assert nRESET for Amiga...
-	amikb_reset();
+	amikb_reset(use_OS);
 
 	amikb_direction(DAT_OUTPUT); // Default
 
-	mdelay(1000);              // wait for sync
-	amikb_send((uint8_t) AMIGA_INITPOWER, 0); // send "initiate power-up"
+	if (use_OS)
+	{
+		vTaskDelay(pdMS_TO_TICKS(1000));
+	}
+	else
+	{
+		mdelay(1000);              // wait for sync
+	}
+	amikb_send((uint8_t) AMIGA_INITPOWER, 0, use_OS); // send "initiate power-up"
 	udelay(200);
-	amikb_send((uint8_t) AMIGA_TERMPOWER, 0); // send "terminate power-up"
+	amikb_send((uint8_t) AMIGA_TERMPOWER, 0, use_OS); // send "terminate power-up"
 
 	DBG_V("Exit\r\n");
 }
@@ -835,7 +842,7 @@ static void amikb_direction(kbd_dir dir)
  * @param  press: 1 if the key is pressed, 0 if it is released.
  * @retval The LED status.
  **/
-static led_status_t amikb_send(uint8_t keycode, int press)
+static led_status_t amikb_send(uint8_t keycode, int press, int use_OS)
 {
 	int i;
 	led_status_t rval = NO_LED;
@@ -990,6 +997,7 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 
 	// pulse the data line and wait for about 100us
 	HAL_GPIO_WritePin(GPIOC, KBD_DATA_Pin, GPIO_PIN_RESET); // KBD_DATA pin is LOW
+	// We cannot have udelay with FreeRTOS
 	udelay(20);
 	HAL_GPIO_WritePin(GPIOC, KBD_DATA_Pin, GPIO_PIN_SET); // KBD_DATA pin is HIGH
 	udelay(100);
@@ -1035,7 +1043,14 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 				if (sync == 0 || hshakepulse_ms == 0)
 					break;
 				hshakepulse_ms--;
-				mdelay(1);
+				if (use_OS)
+		{
+			vTaskDelay(pdMS_TO_TICKS(1));
+		}
+		else
+		{
+			mdelay(1);
+		}
 			}
 			if (hshakepulse_ms == 0)
 			{
@@ -1045,7 +1060,14 @@ static led_status_t amikb_send(uint8_t keycode, int press)
 	}
 #else
 #warning "USING TIMED HANDSHAKE"
-	mdelay(5); // handshake wait 500msec
+	if (use_OS)
+	{
+		vTaskDelay(pdMS_TO_TICKS(5)); // handshake wait 500msec
+	}
+	else
+	{
+		mdelay(5); // handshake wait 500msec
+	}
 #endif
 	// The following instructions should be useless as the port has been configured as input few
 	// lines above... :-/
@@ -1059,13 +1081,21 @@ static led_status_t amikb_send(uint8_t keycode, int press)
  * @brief  Resets the Amiga keyboard.
  * @retval None
  **/
-void amikb_reset(void)
+void amikb_reset(int use_OS)
 {
 	amikb_direction(DAT_OUTPUT);
 	DBG_V("Enter\r\n");
 	HAL_GPIO_WritePin(GPIOC, KBD_RESET_Pin, GPIO_PIN_RESET); // Clear KBD_RESET pin
 	HAL_GPIO_WritePin(GPIOC, KBD_CLOCK_Pin, GPIO_PIN_RESET); // Clear KBD_CLOCK pin
-	mdelay(600);
+	if (use_OS)
+	{
+		vTaskDelay(pdMS_TO_TICKS(600));
+	}
+	else
+	{
+		mdelay(600);
+	}
+
 	HAL_GPIO_WritePin(GPIOC, KBD_RESET_Pin, GPIO_PIN_SET);   // Set KBD_RESET pin
 	HAL_GPIO_WritePin(GPIOC, KBD_CLOCK_Pin, GPIO_PIN_SET);   // Set KBD_CLOCK pin
 	prev_keycode = 0xff;
@@ -1160,7 +1190,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.lshiftpressed = 0;
 		DBG_V("LEFT KEYSHIFT %s\r\n",
 			prevkeycode.lshiftpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), prevkeycode.lshiftpressed);
+		rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), prevkeycode.lshiftpressed, 1);
 	}
 
 	// LEFT ALT
@@ -1173,7 +1203,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.laltpressed = 0;
 		DBG_V("LEFT KEYALT %s\r\n",
 			prevkeycode.laltpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_LEFTALT), prevkeycode.laltpressed);
+		rval |= amikb_send(scancode_to_amiga(KEY_LEFTALT), prevkeycode.laltpressed, 1);
 		if (prevkeycode.laltpressed == 1)
 		{
 			maybe_reset++;
@@ -1194,7 +1224,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.lctrlpressed = 0;
 		DBG_V("LEFT KEYCTRL %s\r\n",
 			prevkeycode.lctrlpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_LEFTCONTROL), prevkeycode.lctrlpressed);
+		rval |= amikb_send(scancode_to_amiga(KEY_LEFTCONTROL), prevkeycode.lctrlpressed, 1);
 		if (prevkeycode.lctrlpressed == 1)
 		{
 			maybe_reset++;
@@ -1215,7 +1245,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.lguipressed = 0;
 		DBG_V("LEFT KEYGUI %s\r\n",
 			prevkeycode.lguipressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_LEFT_GUI), prevkeycode.lguipressed);
+		rval |= amikb_send(scancode_to_amiga(KEY_LEFT_GUI), prevkeycode.lguipressed, 1);
 		if (prevkeycode.lguipressed == 1)
 		{
 			maybe_reset++;
@@ -1237,7 +1267,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.rshiftpressed = 0;
 		DBG_V("RIGHT KEYSHIFT %s\r\n",
 			prevkeycode.rshiftpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTSHIFT), prevkeycode.rshiftpressed);
+		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTSHIFT), prevkeycode.rshiftpressed, 1);
 	}
 
 	// RIGHT ALT
@@ -1250,7 +1280,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.raltpressed = 0;
 		DBG_V("RIGHT KEYALT %s\r\n",
 			prevkeycode.raltpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTALT), prevkeycode.raltpressed);
+		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTALT), prevkeycode.raltpressed, 1);
 		if (prevkeycode.raltpressed == 1)
 		{
 			maybe_reset++;
@@ -1271,7 +1301,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.rctrlpressed = 0;
 		DBG_V("RIGHT KEYCTRL %s\r\n",
 			prevkeycode.rctrlpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTCONTROL), prevkeycode.rctrlpressed);
+		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTCONTROL), prevkeycode.rctrlpressed, 1);
 		if (prevkeycode.rctrlpressed == 1)
 		{
 			maybe_reset++;
@@ -1292,7 +1322,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.rguipressed = 0;
 		DBG_V("RIGHT KEYGUI %s\r\n",
 			prevkeycode.rguipressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_RIGHT_GUI), prevkeycode.rguipressed);
+		rval |= amikb_send(scancode_to_amiga(KEY_RIGHT_GUI), prevkeycode.rguipressed, 1);
 		if (prevkeycode.rguipressed == 1)
 		{
 			maybe_reset++;
@@ -1320,13 +1350,13 @@ led_status_t amikb_process(keyboard_code_t *data)
 				{
 					DBG_V("Sending the KEY_RELEASE for OLD Keycode: 0x%02x\r\n",
 						prevkeycode.keys[i]);
-					rval |= amikb_send(scancode_to_amiga(prevkeycode.keys[i]), 0 /* Released */);
+					rval |= amikb_send(scancode_to_amiga(prevkeycode.keys[i]), 0 /* Released */, 1);
 				}
 				else
 				{
 					DBG_V("Sending the KEY_PRESS for NEW Keycode: 0x%02x\r\n",
 						data->keys[i]);
-					rval |= amikb_send(scancode_to_amiga(data->keys[i]), 1 /* Pressed */);
+					rval |= amikb_send(scancode_to_amiga(data->keys[i]), 1 /* Pressed */, 1);
 					if (data->keys[i] == KEY_DELETE ||
 						data->keys[i] == KEY_APPLICATION )
 					{
@@ -1346,7 +1376,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 	if (maybe_reset >= OK_RESET)
 	{
 		DBG_I("#### <SYSTEM RESET> ####\r\n");
-		amikb_reset();
+		amikb_reset(1);
 		rval = LED_RESET_BLINK;
 		maybe_reset = 0;
 	}

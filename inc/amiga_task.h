@@ -20,6 +20,6 @@ void amiga_task_init(void);
 task_state_t amiga_task_get_state(void);
 
 /* Amiga reset management */
-void amiga_task_handle_reset(void);
+void amiga_task_handle_reset(int use_OS);
 
 #endif /* __AMIGA_TASK_H__ */

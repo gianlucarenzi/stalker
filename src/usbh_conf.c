@@ -598,6 +598,11 @@ uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe)
 	return toggle;
 }
 
+#if (USBH_USE_OS == 1)
+#include "FreeRTOS.h"
+#include "task.h"
+#endif
+
 /**
   * @brief  Delays for a specified time.
   * @param  Delay: Delay in ms
@@ -605,5 +610,9 @@ uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe)
   */
 void USBH_Delay(uint32_t Delay)
 {
+#if (USBH_USE_OS == 1)
+	vTaskDelay(Delay);
+#else
 	HAL_Delay(Delay);
+#endif
 }
