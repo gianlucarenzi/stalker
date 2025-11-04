@@ -38,6 +38,7 @@ C_SOURCES =  \
 	src/amiga_task.c \
 	src/eeprom.c \
 	src/hid_report.c \
+	src/logger.c \
 
 
 C_SOURCES += \

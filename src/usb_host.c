@@ -206,11 +206,11 @@ int USBH_Keybd(USBH_HandleTypeDef *phost)
 		for (i = 0; i < KEY_PRESSED_MAX; i++)
 		{
 			if (debuglevel >= DBG_VERBOSE) {
-				printf("--- KEY: %d -- KeyCODE: 0x%02x\r\n", i, k_pinfo->keys[i]);
+				DBG_V("--- KEY: %d -- KeyCODE: 0x%02x\r\n", i, k_pinfo->keys[i]);
 			}
 			keycode.keys[i] = k_pinfo->keys[i];
 		}
-		if (debuglevel >= DBG_VERBOSE) printf("\n\r");
+		if (debuglevel >= DBG_VERBOSE) { DBG_V("\n\r"); }
 		return 0;
 	}
 	else

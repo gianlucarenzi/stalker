@@ -191,6 +191,21 @@ void usb_task(void *pvParameters)
 						DBG_N("HAVE A KEY EVENT\r\n");
 						// Send the keypress to Amiga Task
 						usb_task_process_keyboard();
+						/* Best-effort attempt to fetch an extended INPUT report (Report Protocol)
+						 * Note: size capped; decoding is minimal/log-only for now. */
+						{
+							uint8_t raw[32];
+							if (USBH_HID_GetReport(usbhost, 0x01 /* INPUT */, 0 /* any */, raw, sizeof(raw)) == USBH_OK)
+							{
+								/* Provide a small callback to enqueue the event */
+								void enqueue_cb(const hid_input_event_t *evt) {
+									if (extended_input_queue) {
+										( void ) xQueueSend(extended_input_queue, evt, 0);
+									}
+								}
+								(void)hid_report_decode(usbhost, 0, raw, sizeof(raw), enqueue_cb);
+							}
+						}
 					}
 					else
 					{

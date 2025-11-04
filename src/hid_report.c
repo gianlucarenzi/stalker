@@ -12,6 +12,13 @@ static int debuglevel = DBG_INFO;
 
 /* simple container for discovered info (local static) */
 #define MAX_REPORT_IDS 8
+typedef struct {
+    uint8_t report_id;
+    hid_event_type_t type;
+} report_map_t;
+
+#define MAX_REPORT_MAP 8
+
 static struct {
     uint8_t inited;
     uint8_t has_kbd;
@@ -19,6 +26,8 @@ static struct {
     uint8_t has_system;
     uint8_t report_ids[MAX_REPORT_IDS];
     uint8_t report_ids_count;
+    report_map_t map[MAX_REPORT_MAP];
+    uint8_t map_count;
 } g_hid_info;
 
 static void hid_info_reset(void)
@@ -29,6 +38,7 @@ static void hid_info_reset(void)
     g_hid_info.has_system = 0;
     g_hid_info.report_ids_count = 0;
     for (int i = 0; i < MAX_REPORT_IDS; ++i) g_hid_info.report_ids[i] = 0;
+    g_hid_info.map_count = 0;
 }
 
 int hid_report_init_for_interface(USBH_HandleTypeDef *phost, uint8_t interface_number)
@@ -62,7 +72,6 @@ int hid_report_parse_descriptor(USBH_HandleTypeDef *phost, uint8_t interface_num
     /* Cap a reasonable max length */
     if (to_read > 512) to_read = 512;
 
-    static uint8_t desc_buf[512];
     if (USBH_HID_GetHIDReportDescriptor(phost, to_read) != USBH_OK) {
         DBG_W("USBH_HID_GetHIDReportDescriptor failed\r\n");
         /* Even if this fails, proceed cautiously; some stacks may forbid re-GET here */
@@ -102,8 +111,19 @@ int hid_report_parse_descriptor(USBH_HandleTypeDef *phost, uint8_t interface_num
                 if (usage_page == 0x0C) g_hid_info.has_consumer = 1;
                 if (usage_page == 0x01) g_hid_info.has_system = 1; /* Generic Desktop includes System Control */
             } else if (tag == 0x08) { /* REPORT_ID */
+                uint8_t rid = (uint8_t)(value & 0xFF);
                 if (g_hid_info.report_ids_count < MAX_REPORT_IDS) {
-                    g_hid_info.report_ids[g_hid_info.report_ids_count++] = (uint8_t)(value & 0xFF);
+                    g_hid_info.report_ids[g_hid_info.report_ids_count++] = rid;
+                }
+                /* naive mapping: use last seen usage_page to assign a type */
+                if (g_hid_info.map_count < MAX_REPORT_MAP) {
+                    hid_event_type_t t = HID_EVT_CONSUMER;
+                    if (usage_page == 0x07) t = HID_EVT_KEYBOARD;
+                    else if (usage_page == 0x01) t = HID_EVT_SYSTEM;
+                    else if (usage_page == 0x0C) t = HID_EVT_CONSUMER;
+                    g_hid_info.map[g_hid_info.map_count].report_id = rid;
+                    g_hid_info.map[g_hid_info.map_count].type = t;
+                    g_hid_info.map_count++;
                 }
             }
         }
@@ -128,10 +148,47 @@ int hid_report_decode(USBH_HandleTypeDef *phost,
                       uint16_t report_len,
                       void (*event_cb)(const hid_input_event_t *evt))
 {
-    (void)phost;
     (void)interface_number;
-    (void)report;
-    (void)report_len;
-    (void)event_cb;
-    return -1; /* not implemented yet */
+    if (phost == NULL || report == NULL || report_len == 0) return -1;
+
+    /* Minimal decoding strategy:
+     * - If the device uses Report IDs, the first byte is ReportID.
+     * - If ReportID==0 or not used, this may be a boot keyboard report (handled elsewhere).
+     * - For demonstration, we only log/report the ReportID and treat any non-zero payload bytes
+     *   as "pressed" flags for illustrative purposes. Real implementation needs mapping from
+     *   descriptor to usages/bitfields.
+     */
+    uint8_t report_id = report[0];
+
+    /* If there is a ReportID, typically the first byte is ReportID; we don't parse payload yet */
+    if (report_len > 1) {
+        /* Heuristic only; full parsing will use descriptor maps */
+        (void)report[1];
+    }
+
+    /* For now, only emit a synthetic event to indicate we received an extended report. */
+    hid_input_event_t evt;
+    USBH_HandleTypeDef *host = phost;
+    (void)host; /* not used yet */
+
+    /* Set event type based on mapping (if available) */
+    hid_event_type_t evt_type = HID_EVT_CONSUMER;
+    for (uint8_t i = 0; i < g_hid_info.map_count; ++i) {
+        if (g_hid_info.map[i].report_id == report_id) {
+            evt_type = g_hid_info.map[i].type;
+            break;
+        }
+    }
+    evt.type = evt_type;
+    evt.usage = (uint16_t)report_id; /* placeholder: using report_id as usage for visibility */
+    evt.pressed = 1; /* indicate activity */
+    evt.timestamp = 0; /* caller can set timestamp if desired */
+
+    if (event_cb) {
+        event_cb(&evt);
+    } else {
+        DBG_V("HID extended report received: report_id=%u, bytes=%u\r\n", report_id, (unsigned)report_len);
+    }
+
+    return 0;
 }

@@ -77,6 +77,7 @@
 #include "task_communication.h"
 #include "usb_task.h"
 #include "amiga_task.h"
+#include "hid_report.h"
 
 EepromMode current_mode = AMIGA_MODE; // Default mode
 
@@ -90,6 +91,9 @@ QueueHandle_t keyboard_queue = NULL;
 
 /** @brief Global queue handle for LED status communication (Amiga -> USB) */
 QueueHandle_t led_queue = NULL;
+
+/* Extended HID input events queue */
+QueueHandle_t extended_input_queue = NULL;
 
 /** @brief Debug level for application logging */
 static int debuglevel = DBG_INFO;
@@ -155,6 +159,17 @@ static void create_tasks_and_queues(void)
 		DBG_E("Failed to create LED queue\r\n");
 		_Error_Handler(__FILE__, __LINE__);
 	}
+
+	/* Create extended HID input queue */
+	extended_input_queue = xQueueCreate(EXT_INPUT_QUEUE_SIZE, sizeof(hid_input_event_t));
+	if (extended_input_queue == NULL)
+	{
+		DBG_E("Failed to create extended HID input queue\r\n");
+		_Error_Handler(__FILE__, __LINE__);
+	}
+
+	/* Create logger tasks (serial + extended) */
+	logger_init_create_tasks();
 
 	/* Create USB task */
 	if (xTaskCreate(usb_task, "USB_Task", USB_TASK_STACK_SIZE, NULL, USB_TASK_PRIORITY, &usb_task_handle) != pdPASS)

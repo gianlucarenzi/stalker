@@ -8,10 +8,12 @@
 /* Queue sizes */
 #define KEYBOARD_QUEUE_SIZE     10
 #define LED_QUEUE_SIZE          5
+#define EXT_INPUT_QUEUE_SIZE    10
 
 /* Queue handles - declared as extern, defined in main.c */
 extern QueueHandle_t keyboard_queue;
 extern QueueHandle_t led_queue;
+extern QueueHandle_t extended_input_queue;
 
 /* Task priorities */
 #define USB_TASK_PRIORITY       5
@@ -39,5 +41,8 @@ typedef enum {
 	TASK_STATE_ERROR,
 	TASK_STATE_SUSPENDED
 } task_state_t;
+
+/* Logger init */
+void logger_init_create_tasks(void);
 
 #endif /* __TASK_COMMUNICATION_H__ */

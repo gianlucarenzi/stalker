@@ -47,47 +47,42 @@ extern "C" {
 
 #define DBG_N(fmt, args...) \
   { if (debuglevel >= DBG_NOISY) {\
-		printf(ANSI_YELLOW); \
-		printRaw("NOISY", fmt,## args); \
-		printf(ANSI_RESET); \
+		log_enqueuef(ANSI_YELLOW "%s NOISY (%s): " fmt ANSI_RESET, __FILE__, __func__, ## args); \
 	} \
   }
 
 #define DBG_V(fmt, args...) \
   { if (debuglevel >= DBG_VERBOSE) {\
-		printf(ANSI_BLUE); \
-		printRaw("VERBOSE", fmt,## args); \
-		printf(ANSI_RESET); \
+		log_enqueuef(ANSI_BLUE "%s VERBOSE (%s): " fmt ANSI_RESET, __FILE__, __func__, ## args); \
 	} \
   }
 
 #define DBG_I(fmt, args...) \
   { if (debuglevel >= DBG_INFO) {\
-		printf(ANSI_GREEN); \
-		printRaw("INFO", fmt,## args); \
-		printf(ANSI_RESET); \
+		log_enqueuef(ANSI_GREEN "%s INFO (%s): " fmt ANSI_RESET, __FILE__, __func__, ## args); \
 	} \
   }
 
 #define DBG_W(fmt, args...) \
   { if (debuglevel >= DBG_INFO) {\
-	printf(ANSI_MAGENTA); \
-	printRaw("WARN", fmt,## args); \
-	printf(ANSI_RESET); \
+	log_enqueuef(ANSI_MAGENTA "%s WARN (%s): " fmt ANSI_RESET, __FILE__, __func__, ## args); \
 	} \
   }
 
 #define DBG_E(fmt, args...) \
   { \
-	printf(ANSI_RED); \
-	printRaw_E("Err", fmt, ## args); \
-	printf(ANSI_RESET); \
+	log_enqueuef(ANSI_RED "%s Err (%s): " fmt ANSI_RESET, __FILE__, __func__, ## args); \
   }
 
 #define DBG_ERROR   0
 #define DBG_INFO    1
 #define DBG_VERBOSE 2
 #define DBG_NOISY   3
+
+/* Async logger API (implemented in logger.c) */
+#include <stdint.h>
+int log_enqueue(const char* msg, uint16_t len);
+int log_enqueuef(const char* fmt, ...);
 
 #ifdef __cplusplus
 }
