@@ -102,6 +102,12 @@ Opening the project folder, you can compile all projects (application and bootlo
 make clean
 make
 ```
+
+### Debugging Features
+To enable specific debugging features, you can pass flags to the `make` command:
+
+*   **`DEBUG_USB_FLAG=1`**: Enables a visual indicator (LED toggle) on the status LED every time a USB interrupt is triggered. This is useful for low-level debugging of USB connection issues. Example: `make DEBUG_USB_FLAG=1`
+
 and then launch the corresponding script:
 
 *   `bootloader.sh` (to erase all the flash memory and program the bootloader)

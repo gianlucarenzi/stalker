@@ -15,6 +15,7 @@
 ######################################
 TARGET = stm32f401-usb-keyboard-amiga
 DEBUG ?= 0
+DEBUG_USB_FLAG ?= 0
 
 # Librerie et al.
 include Makefile.common
@@ -84,6 +85,10 @@ ifeq ($(DEBUG), 1)
 	ASM_SOURCES += \
 		src/profile_mcount_arm.s \
 
+endif
+
+ifeq ($(DEBUG_USB_FLAG), 1)
+	CFLAGS += -DDEBUG_USB
 endif
 
 EASTER_EGG ?= no

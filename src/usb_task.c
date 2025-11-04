@@ -85,7 +85,7 @@ static void led_light(int state)
 	HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, tpval);
 }
 
-static void led_toggle(void)
+void led_toggle(void)
 {
 	static int tpval = 0;
 	if (tpval == 0)

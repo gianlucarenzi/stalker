@@ -37,6 +37,8 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
 #include "cmsis_os.h"
+#include "debug.h"
+#include "usb_task.h"
 
 /* USER CODE BEGIN 0 */
 
@@ -46,6 +48,7 @@
 extern HCD_HandleTypeDef hhcd_USB_OTG_FS;
 
 extern TIM_HandleTypeDef htim1;
+extern int debuglevel;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */
@@ -227,6 +230,9 @@ void TIM1_UP_TIM10_IRQHandler(void)
 */
 void OTG_FS_IRQHandler(void)
 {
+#ifdef DEBUG_USB
+	led_toggle();
+#endif
 	/* USER CODE BEGIN OTG_FS_IRQn 0 */
 
 	/* USER CODE END OTG_FS_IRQn 0 */

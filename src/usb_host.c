@@ -52,7 +52,7 @@
 #include "usbh_core.h"
 #include "usbh_hid.h"
 
-static int debuglevel = DBG_INFO;
+int debuglevel = DBG_INFO;
 
 /* USB Host core handle declaration */
 static USBH_HandleTypeDef hUsbHostFS;
@@ -98,7 +98,7 @@ void MX_USB_HOST_Process(void)
   */
 void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 {
-	DBG_N("Enter with: phost %p - id: %d\r\n", phost, id);
+	DBG_I("USBH_UserProcess - Event ID: %d\r\n", id);
 
 	switch(id)
 	{
@@ -118,7 +118,7 @@ void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 			break;
 
 		case HOST_USER_CLASS_ACTIVE:
-			DBG_N("HOST_USER_CLASS_ACTIVE: Application READY\r\n");
+			DBG_I("USB Device Registered and Class Active.\r\n");
 			/* Try to switch HID to BOOT protocol. If not supported, try REPORT protocol. */
 			if (USBH_HID_SetProtocol(phost, 0 /* BOOT protocol */) == USBH_OK)
 			{
@@ -140,7 +140,7 @@ void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 			break;
 
 		case HOST_USER_CONNECTION:
-			DBG_N("HOST_USER_CONNECTION: Application START\r\n");
+			DBG_I("USB Device Connected. Starting enumeration.\r\n");
 			Appli_state = APPLICATION_START;
 			break;
 	}
