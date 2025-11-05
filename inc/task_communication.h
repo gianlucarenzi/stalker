@@ -23,7 +23,10 @@ extern QueueHandle_t keyboard_inject_queue;
 
 /* Task stack sizes */
 #define USB_TASK_STACK_SIZE     (configMINIMAL_STACK_SIZE * 8)
-#define AMIGA_TASK_STACK_SIZE   (configMINIMAL_STACK_SIZE * 3)  // Increased for safety margin
+#define AMIGA_TASK_STACK_SIZE   (configMINIMAL_STACK_SIZE * 4)  // Increased for safety margin
+
+/** @brief Macro for safe tick count comparison across overflow */
+#define TICKS_SINCE(prev) ((TickType_t)(xTaskGetTickCount() - (prev)))
 
 /* Communication structures */
 typedef struct {
