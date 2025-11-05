@@ -55,10 +55,10 @@ static void extended_to_amiga_task(void *pvParameters)
 {
     hid_input_event_t event;
     uint8_t function_key;
-    static bool active_usages[256] = {false};
-    static int ctrl_ref_count = 0;
-    static int alt_ref_count = 0;
-    static keyboard_code_t injected_keycode = {0};
+    static volatile bool active_usages[256] = {false};
+    static volatile int ctrl_ref_count = 0;
+    static volatile int alt_ref_count = 0;
+    static volatile keyboard_code_t injected_keycode = {0};
 
     DBG_I("Extended to Amiga bridge task started\r\n");
 
@@ -99,12 +99,19 @@ static void extended_to_amiga_task(void *pvParameters)
 
                 // Find a free slot for the function key
                 int i;
+                bool slot_found = false;
                 for (i = 0; i < KEY_PRESSED_MAX; i++) {
                     if (injected_keycode.keys[i] == 0) {
                         injected_keycode.keys[i] = function_key;
+                        slot_found = true;
                         break;
                     }
                 }
+
+                if (!slot_found) {
+                    DBG_W("Extended HID key buffer full (usage 0x%04X dropped)\r\n", event.usage);
+                }
+
                 msg.keycode = injected_keycode;
                 xQueueSend(keyboard_inject_queue, &msg, (TickType_t)10);
 
