@@ -56,10 +56,10 @@ static USBH_HandleTypeDef *usbhost = NULL;
 static ApplicationTypeDef usb_app_state = APPLICATION_DISCONNECT;
 
 /** @brief Flag indicating if USB host is initialized */
-static int usb_initialized = 0;
+static volatile int usb_initialized = 0;
 
 /** @brief Flag indicating if keyboard is ready for operation */
-static int keyboard_ready = 0;
+static volatile int keyboard_ready = 0;
 
 /** @brief Current keyboard LED state bitmask */
 static keyboard_led_t current_keyboard_led = 0;

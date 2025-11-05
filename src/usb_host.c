@@ -56,7 +56,7 @@ int debuglevel = DBG_INFO;
 
 /* USB Host core handle declaration */
 static USBH_HandleTypeDef hUsbHostFS;
-static ApplicationTypeDef Appli_state = APPLICATION_IDLE;
+static volatile ApplicationTypeDef Appli_state = APPLICATION_IDLE;
 
 /*
  * user callback declaration
