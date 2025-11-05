@@ -62,6 +62,14 @@ static void amiga_task_process_keyboard_data(void);
 static void amiga_task_check_reset_condition(void);
 static void amiga_task_send_led_status(led_status_t status);
 
+#ifndef USBH_USE_OS
+	#error "*** Please check out why USBH_USE_OS is not defined before."
+#endif
+// This isn't really needed here, because of we are running inside a FreeRTOS Task,
+// but this is not true for the callee. It could be called anyway if the system
+// falls back to the non-task structure so we need to differentiate it here.
+static int use_OS = USBH_USE_OS;
+
 /* Private functions ---------------------------------------------------------*/
 
 /**
@@ -132,7 +140,7 @@ void amiga_task_init(void)
 	amikb_gpio_init();
 	
 	/* Start Amiga keyboard protocol */
-	amikb_startup(1); // 1: use_OS vTaskDelay(), 0: don't use OS Timing (udelay, mdelay)
+	amikb_startup(use_OS);
 	
 	/* Set Amiga as ready */
 	amikb_ready(0); // Initially not ready until USB keyboard is connected
@@ -161,7 +169,7 @@ static void amiga_task_process_keyboard_data(void)
 		DBG_V("Received keyboard data from USB task\r\n");
 		
 		/* Process the keyboard data through Amiga protocol */
-		led_status_t led_status = amikb_process(&kbd_msg.keycode);
+		led_status_t led_status = amikb_process(&kbd_msg.keycode, use_OS);
 		DBG_V("Led status: %d\r\n", led_status);
 		amiga_task_send_led_status(led_status);
 		
@@ -180,7 +188,7 @@ static void amiga_task_process_keyboard_data(void)
 		DBG_V("Received injected keyboard data\r\n");
 		
 		/* Process the keyboard data through Amiga protocol */
-		led_status_t led_status = amikb_process(&kbd_msg.keycode);
+		led_status_t led_status = amikb_process(&kbd_msg.keycode, use_OS);
 		DBG_V("Led status: %d\r\n", led_status);
 		amiga_task_send_led_status(led_status);
 	}
