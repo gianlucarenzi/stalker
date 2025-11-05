@@ -51,6 +51,11 @@
 #include "stm32f4xx_it.h"
 #include "debug.h"
 
+#if (USBH_USE_OS == 1)
+    #include "FreeRTOS.h"
+    #include "task.h"
+#endif
+
 HCD_HandleTypeDef hhcd_USB_OTG_FS;
 extern void _Error_Handler(char * file, int line);
 static int debuglevel = DBG_INFO;
@@ -545,9 +550,12 @@ USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
 
 #if (USBH_USE_OS == 1)
 	// Verifica se lo scheduler è attivo prima di usare vTaskDelay
-	if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING) {
+	if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+	{
 		vTaskDelay(pdMS_TO_TICKS(200));  // Non-blocking: scheduler attivo
-	} else {
+	}
+	else
+	{
 		HAL_Delay(200);  // Fallback: pre-scheduler o scheduler sospeso
 	}
 #else
@@ -609,10 +617,6 @@ uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe)
 	return toggle;
 }
 
-#if (USBH_USE_OS == 1)
-#include "FreeRTOS.h"
-#include "task.h"
-#endif
 
 /**
   * @brief  Delays for a specified time.
@@ -622,7 +626,15 @@ uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe)
 void USBH_Delay(uint32_t Delay)
 {
 #if (USBH_USE_OS == 1)
-	vTaskDelay(Delay);
+	// Verifica se lo scheduler è attivo prima di usare vTaskDelay
+	if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+	{
+    	vTaskDelay(Delay);
+    }
+    else
+    {
+        HAL_Delay(Delay);    
+    }
 #else
 	HAL_Delay(Delay);
 #endif
