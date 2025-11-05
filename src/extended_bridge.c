@@ -62,7 +62,15 @@ static void extended_to_amiga_task(void *pvParameters)
 
     DBG_I("Extended to Amiga bridge task started\r\n");
 
-    for (;; ) {
+    /* Sanity check: verify queues are initialized */
+    if (extended_input_queue == NULL || keyboard_inject_queue == NULL)
+    {
+        DBG_E("FATAL: Extended bridge queues not initialized! Task suspended.\r\n");
+        vTaskSuspend(NULL);  // Suspend self permanently
+        return;
+    }
+
+    for (;;) {
         if (xQueueReceive(extended_input_queue, &event, portMAX_DELAY) == pdPASS) {
             function_key = usage_to_function_key(event.usage);
             if (function_key == 0) {

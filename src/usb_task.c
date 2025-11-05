@@ -123,9 +123,17 @@ void usb_task(void *pvParameters)
 	int count = 0;
 
 	DBG_W("USB Task started\r\n");
-	
+
 	usb_task_state = TASK_STATE_RUNNING;
-	
+
+	/* Sanity check: verify queues are initialized */
+	if (keyboard_queue == NULL || led_queue == NULL)
+	{
+		DBG_E("FATAL: USB task queues not initialized! Task suspended.\r\n");
+		vTaskSuspend(NULL);  // Suspend self permanently
+		return;
+	}
+
 	/* Initialize the task */
 	usb_task_init();
 	

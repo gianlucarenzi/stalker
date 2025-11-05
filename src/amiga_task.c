@@ -84,9 +84,17 @@ void amiga_task(void *pvParameters)
 	const TickType_t task_frequency = pdMS_TO_TICKS(RESET_CHECK_INTERVAL_MS);
 	
 	DBG_I("Amiga Task started\r\n");
-	
+
 	amiga_task_state = TASK_STATE_RUNNING;
-	
+
+	/* Sanity check: verify queues are initialized */
+	if (keyboard_queue == NULL || keyboard_inject_queue == NULL || led_queue == NULL)
+	{
+		DBG_E("FATAL: Amiga task queues not initialized! Task suspended.\r\n");
+		vTaskSuspend(NULL);  // Suspend self permanently
+		return;
+	}
+
 	/* Initialize the task */
 	amiga_task_init();
 	
