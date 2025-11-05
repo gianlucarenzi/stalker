@@ -45,9 +45,6 @@ static int debuglevel = DBG_INFO;
 /** @brief FreeRTOS task handle for Amiga task */
 TaskHandle_t amiga_task_handle = NULL;
 
-/** @brief Macro for safe tick count comparison across overflow */
-#define TICKS_SINCE(prev) ((TickType_t)(xTaskGetTickCount() - (prev)))
-
 /** @brief Current state of the Amiga task */
 static task_state_t amiga_task_state = TASK_STATE_INIT;
 
