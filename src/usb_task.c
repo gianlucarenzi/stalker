@@ -49,14 +49,11 @@ TaskHandle_t usb_task_handle = NULL;
 /** @brief Current state of the USB task */
 static task_state_t usb_task_state = TASK_STATE_INIT;
 
-/** @brief Macro for safe tick count comparison across overflow */
-#define TICKS_SINCE(prev) ((TickType_t)(xTaskGetTickCount() - (prev)))
-
 /** @brief USB Host handle for HID communication */
 static USBH_HandleTypeDef *usbhost = NULL;
 
 /** @brief Current USB application state */
-static ApplicationTypeDef usb_app_state = APPLICATION_DISCONNECT;
+static volatile ApplicationTypeDef usb_app_state = APPLICATION_DISCONNECT;
 
 /** @brief Flag indicating if USB host is initialized */
 static volatile int usb_initialized = 0;
