@@ -4,6 +4,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "amiga.h"
+#include "usbh_conf.h" // for USBH_USE_OS macro
 
 /* Queue sizes */
 #define KEYBOARD_QUEUE_SIZE     10
