@@ -49,6 +49,9 @@ TaskHandle_t usb_task_handle = NULL;
 /** @brief Current state of the USB task */
 static task_state_t usb_task_state = TASK_STATE_INIT;
 
+/** @brief Macro for safe tick count comparison across overflow */
+#define TICKS_SINCE(prev) ((TickType_t)(xTaskGetTickCount() - (prev)))
+
 /** @brief USB Host handle for HID communication */
 static USBH_HandleTypeDef *usbhost = NULL;
 
@@ -178,7 +181,7 @@ void usb_task(void *pvParameters)
 						 * If device doesn't support it, library keeps BOOT protocol.
 						 * Future: here we can query and parse report descriptors. */
 						led_light(0);
-						current_time = xTaskGetTickCount() - g_timer;
+						current_time = TICKS_SINCE(g_timer);
 						if (current_time >= pdMS_TO_TICKS(500))
 						{
 							DBG_I("### KEYBOARD LED TOGGLE ###\r\n");
@@ -240,7 +243,7 @@ void usb_task(void *pvParameters)
 						g_timer = xTaskGetTickCount();
 					}
 
-					current_time = xTaskGetTickCount() - g_timer;
+					current_time = TICKS_SINCE(g_timer);
 					if (current_time >= pdMS_TO_TICKS(100))
 					{
 						DBG_E("UNKNOWN USB DEVICE count: %d\r\n", count);
@@ -267,7 +270,7 @@ void usb_task(void *pvParameters)
 					timerOneShot = !timerOneShot;
 					g_timer = xTaskGetTickCount();
 				}
-				current_time = xTaskGetTickCount() - g_timer;
+				current_time = TICKS_SINCE(g_timer);
 				if (current_time >= pdMS_TO_TICKS(250))
 				{
 					DBG_N("NO HID DEVICE FOUND\r\n");
@@ -317,7 +320,7 @@ void usb_task(void *pvParameters)
 				timerOneShot = 0;
 			}
 			// slow blink on no device connected
-			current_time = xTaskGetTickCount() - g_timer;
+			current_time = TICKS_SINCE(g_timer);
 			if (current_time >= pdMS_TO_TICKS(500))
 			{
 				DBG_N("WAIT INSERT USB KEYBOARD count: %d\r\n", count);
