@@ -45,6 +45,9 @@ static int debuglevel = DBG_INFO;
 /** @brief FreeRTOS task handle for Amiga task */
 TaskHandle_t amiga_task_handle = NULL;
 
+/** @brief Macro for safe tick count comparison across overflow */
+#define TICKS_SINCE(prev) ((TickType_t)(xTaskGetTickCount() - (prev)))
+
 /** @brief Current state of the Amiga task */
 static task_state_t amiga_task_state = TASK_STATE_INIT;
 
@@ -52,10 +55,10 @@ static task_state_t amiga_task_state = TASK_STATE_INIT;
 static int amiga_ready = 0;
 
 /** @brief Timestamp when reset timer was started */
-static TickType_t reset_timer_start = 0;
+static volatile TickType_t reset_timer_start = 0;
 
 /** @brief Flag indicating if reset timer is active */
-static int reset_timer_active = 0;
+static volatile int reset_timer_active = 0;
 
 /* Private function prototypes -----------------------------------------------*/
 static void amiga_task_process_keyboard_data(void);
@@ -216,7 +219,7 @@ static void amiga_task_check_reset_condition(void)
 			else
 			{
 				/* Check if reset timeout has elapsed */
-				TickType_t elapsed = xTaskGetTickCount() - reset_timer_start;
+				TickType_t elapsed = TICKS_SINCE(reset_timer_start);
 				if (elapsed >= pdMS_TO_TICKS(RESET_TIMEOUT_MS))
 				{
 					DBG_I("Reset timeout elapsed - performing Amiga reset\r\n");

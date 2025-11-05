@@ -79,7 +79,7 @@
 #include "amiga_task.h"
 #include "hid_report.h"
 
-EepromMode current_mode = AMIGA_MODE; // Default mode
+volatile EepromMode current_mode = AMIGA_MODE; // Default mode
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/

@@ -21,6 +21,6 @@ typedef enum {
     PC_MODE = 0x01
 } EepromMode;
 
-extern EepromMode current_mode;
+extern volatile EepromMode current_mode;
 
 #endif /* __EEPROM_H */
