@@ -23,7 +23,7 @@ extern QueueHandle_t keyboard_inject_queue;
 
 /* Task stack sizes */
 #define USB_TASK_STACK_SIZE     (configMINIMAL_STACK_SIZE * 8)
-#define AMIGA_TASK_STACK_SIZE   (configMINIMAL_STACK_SIZE * 2)
+#define AMIGA_TASK_STACK_SIZE   (configMINIMAL_STACK_SIZE * 3)  // Increased for safety margin
 
 /* Communication structures */
 typedef struct {
