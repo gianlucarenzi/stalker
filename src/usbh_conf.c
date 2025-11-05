@@ -542,7 +542,18 @@ USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
 	{
 		DBG_E("Phost->id is NOT HOST_FS --> 0x%08x\n\r", phost->id);
 	}
-	HAL_Delay(200);
+
+#if (USBH_USE_OS == 1)
+	// Verifica se lo scheduler è attivo prima di usare vTaskDelay
+	if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING) {
+		vTaskDelay(pdMS_TO_TICKS(200));  // Non-blocking: scheduler attivo
+	} else {
+		HAL_Delay(200);  // Fallback: pre-scheduler o scheduler sospeso
+	}
+#else
+	HAL_Delay(200);  // No RTOS: blocking delay
+#endif
+
 	DBG_N("Exit\r\n");
 	return USBH_OK;
 }
