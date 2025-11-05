@@ -19,8 +19,6 @@
 #include "debug.h"
 #include "eeprom.h"
 
-extern EepromMode current_mode;
-
 static int debuglevel = DBG_INFO;
 
 #define KEY_NONE                               0x00
