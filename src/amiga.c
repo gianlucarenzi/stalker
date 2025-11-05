@@ -1140,7 +1140,7 @@ bool amikb_reset_check(void)
  * @param  data: A pointer to the keyboard code structure.
  * @retval The LED status.
  **/
-led_status_t amikb_process(keyboard_code_t *data)
+led_status_t amikb_process(keyboard_code_t *data, int use_OS)
 {
 	int i;
 	led_status_t rval = NO_LED; /* 0 means no USB interaction such as leds, ... */
@@ -1186,7 +1186,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 	bool del_pressed;
 	bool reset_triggered;
 
-	DBG_N("Enter\r\n");
+	DBG_N("Enter with use_OS: %d\r\n", use_OS);
 
 	// ----------------------------------------------- LEFT
 
@@ -1200,7 +1200,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.lshiftpressed = 0;
 		DBG_V("LEFT KEYSHIFT %s\r\n",
 			prevkeycode.lshiftpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), prevkeycode.lshiftpressed, 1);
+		rval |= amikb_send(scancode_to_amiga(KEY_LEFTSHIFT), prevkeycode.lshiftpressed, use_OS);
 	}
 
 	// LEFT ALT
@@ -1213,7 +1213,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.laltpressed = 0;
 		DBG_V("LEFT KEYALT %s\r\n",
 			prevkeycode.laltpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_LEFTALT), prevkeycode.laltpressed, 1);
+		rval |= amikb_send(scancode_to_amiga(KEY_LEFTALT), prevkeycode.laltpressed, use_OS);
 	}
 
 	// LEFT CTRL
@@ -1226,7 +1226,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.lctrlpressed = 0;
 		DBG_V("LEFT KEYCTRL %s\r\n",
 			prevkeycode.lctrlpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_LEFTCONTROL), prevkeycode.lctrlpressed, 1);
+		rval |= amikb_send(scancode_to_amiga(KEY_LEFTCONTROL), prevkeycode.lctrlpressed, use_OS);
 	}
 
 	// LEFT GUI
@@ -1239,7 +1239,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.lguipressed = 0;
 		DBG_V("LEFT KEYGUI %s\r\n",
 			prevkeycode.lguipressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_LEFT_GUI), prevkeycode.lguipressed, 1);
+		rval |= amikb_send(scancode_to_amiga(KEY_LEFT_GUI), prevkeycode.lguipressed, use_OS);
 	}
 
 	// ----------------------------------------------- RIGHT
@@ -1253,7 +1253,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.rshiftpressed = 0;
 		DBG_V("RIGHT KEYSHIFT %s\r\n",
 			prevkeycode.rshiftpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTSHIFT), prevkeycode.rshiftpressed, 1);
+		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTSHIFT), prevkeycode.rshiftpressed, use_OS);
 	}
 
 	// RIGHT ALT
@@ -1266,7 +1266,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.raltpressed = 0;
 		DBG_V("RIGHT KEYALT %s\r\n",
 			prevkeycode.raltpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTALT), prevkeycode.raltpressed, 1);
+		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTALT), prevkeycode.raltpressed, use_OS);
 	}
 
 	// RIGHT CTRL
@@ -1279,7 +1279,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.rctrlpressed = 0;
 		DBG_V("RIGHT KEYCTRL %s\r\n",
 			prevkeycode.rctrlpressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTCONTROL), prevkeycode.rctrlpressed, 1);
+		rval |= amikb_send(scancode_to_amiga(KEY_RIGHTCONTROL), prevkeycode.rctrlpressed, use_OS);
 	}
 
 	// RIGHT GUI
@@ -1292,7 +1292,7 @@ led_status_t amikb_process(keyboard_code_t *data)
 			prevkeycode.rguipressed = 0;
 		DBG_V("RIGHT KEYGUI %s\r\n",
 			prevkeycode.rguipressed == 1 ? "PRESSED" : "RELEASED");
-		rval |= amikb_send(scancode_to_amiga(KEY_RIGHT_GUI), prevkeycode.rguipressed, 1);
+		rval |= amikb_send(scancode_to_amiga(KEY_RIGHT_GUI), prevkeycode.rguipressed, use_OS);
 	}
 
 	// Send all pressed key
@@ -1309,13 +1309,13 @@ led_status_t amikb_process(keyboard_code_t *data)
 				{
 					DBG_V("Sending the KEY_RELEASE for OLD Keycode: 0x%02x\r\n",
 						prevkeycode.keys[i]);
-					rval |= amikb_send(scancode_to_amiga(prevkeycode.keys[i]), 0 /* Released */, 1);
+					rval |= amikb_send(scancode_to_amiga(prevkeycode.keys[i]), 0 /* Released */, use_OS);
 				}
 				else
 				{
 					DBG_V("Sending the KEY_PRESS for NEW Keycode: 0x%02x\r\n",
 						data->keys[i]);
-					rval |= amikb_send(scancode_to_amiga(data->keys[i]), 1 /* Pressed */, 1);
+					rval |= amikb_send(scancode_to_amiga(data->keys[i]), 1 /* Pressed */, use_OS);
 				}
 				prevkeycode.keys[i] = data->keys[i];
 			}
