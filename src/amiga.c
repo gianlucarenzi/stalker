@@ -17,7 +17,8 @@
 #include "syscall.h"
 #include "amiga.h"
 #include "debug.h"
-#include "eeprom.h"
+
+extern volatile reset_keypress_mode_t current_mode; // Defined in main.c
 
 static int debuglevel = DBG_INFO;
 
@@ -1044,13 +1045,13 @@ static led_status_t amikb_send(uint8_t keycode, int press, int use_OS)
 					break;
 				hshakepulse_ms--;
 				if (use_OS)
-		{
-			vTaskDelay(pdMS_TO_TICKS(1));
-		}
-		else
-		{
-			mdelay(1);
-		}
+				{
+					vTaskDelay(pdMS_TO_TICKS(1));
+				}
+				else
+				{
+					mdelay(1);
+				}
 			}
 			if (hshakepulse_ms == 0)
 			{
@@ -1343,14 +1344,12 @@ led_status_t amikb_process(keyboard_code_t *data, int use_OS)
 			if (current_mode == AMIGA_MODE)
 			{
 				current_mode = PC_MODE;
-				eeprom_write(EEPROM_MODE_CONFIG, PC_MODE);
-				DBG_I("Switched to PC_MODE and saved to EEPROM\r\n");
+				DBG_I("Switched to PC_MODE\r\n");
 			}
 			else
 			{
 				current_mode = AMIGA_MODE;
-				eeprom_write(EEPROM_MODE_CONFIG, AMIGA_MODE);
-				DBG_I("Switched to AMIGA_MODE and saved to EEPROM\r\n");
+				DBG_I("Switched to AMIGA_MODE\r\n");
 			}
 		}
 	}
