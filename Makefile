@@ -37,7 +37,6 @@ C_SOURCES =  \
 	src/amiga.c \
 	src/usb_task.c \
 	src/amiga_task.c \
-	src/eeprom.c \
 	src/hid_report.c \
 	src/logger.c \
 	src/extended_bridge.c \
