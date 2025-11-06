@@ -61,6 +61,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"
+#include "debug.h"
 
 /* USER CODE BEGIN INCLUDE */
 
@@ -117,7 +118,7 @@
 #define USBH_MAX_DATA_BUFFER      1024
 
 /*----------   -----------*/
-#define USBH_DEBUG_LEVEL      2
+#define USBH_DEBUG_LEVEL      3
 
 /*----------   -----------*/
 #define USBH_USE_OS      1
@@ -159,25 +160,20 @@
 /* DEBUG macros */
 
 #if (USBH_DEBUG_LEVEL > 0)
-#define USBH_UsrLog(...)    printf(__VA_ARGS__);\
-                            printf("\n");
+#define USBH_UsrLog(...)    printf("LOGUSB LEVEL > 0\n\r");
 #else
 #define USBH_UsrLog(...)
 #endif
 
 #if (USBH_DEBUG_LEVEL > 1)
 
-#define USBH_ErrLog(...)    printf("ERROR: ");\
-                            printf(__VA_ARGS__);\
-                            printf("\n");
+#define USBH_ErrLog(...)    printf("USB ERROR: " __VA_ARGS__);
 #else
 #define USBH_ErrLog(...)
 #endif
 
 #if (USBH_DEBUG_LEVEL > 2)
-#define USBH_DbgLog(...)    printf("DEBUG : ");\
-                            printf(__VA_ARGS__);\
-                            printf("\n");
+#define USBH_DbgLog(...)    printf("USB DEBUG : " __VA_ARGS__);
 #else
 #define USBH_DbgLog(...)
 #endif

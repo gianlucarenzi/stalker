@@ -81,4 +81,9 @@ typedef struct {
 
 extern QueueHandle_t queue;
 
+typedef enum {
+	AMIGA_MODE = 0,
+	PC_MODE,
+} reset_keypress_mode_t;
+
 #endif

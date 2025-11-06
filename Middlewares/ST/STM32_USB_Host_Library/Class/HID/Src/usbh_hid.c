@@ -140,6 +140,10 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
   uint8_t max_ep;
   uint8_t num = 0;
   uint8_t interface;
+#ifdef DEBUG_USB
+  USBH_UsrLog("USBH_HID_InterfaceInit");
+  USBH_UsrLog("  VID/PID: %04Xh/%04Xh", phost->device.DevDesc.idVendor, phost->device.DevDesc.idProduct);
+#endif
   
   USBH_StatusTypeDef status = USBH_FAIL ;
   HID_HandleTypeDef *HID_Handle;
@@ -161,16 +165,25 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
     /*Decode Bootclass Protocol: Mouse or Keyboard*/
     if(phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].bInterfaceProtocol == HID_KEYBRD_BOOT_CODE)
     {
+#ifdef DEBUG_USB
+      USBH_UsrLog("  Protocol: Keyboard");
+#endif
       USBH_UsrLog ("KeyBoard device found!"); 
       HID_Handle->Init =  USBH_HID_KeybdInit;     
     }
     else if(phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].bInterfaceProtocol  == HID_MOUSE_BOOT_CODE)		  
     {
+#ifdef DEBUG_USB
+      USBH_UsrLog("  Protocol: Mouse");
+#endif
       USBH_UsrLog ("Mouse device found!");         
       HID_Handle->Init =  USBH_HID_MouseInit;     
     }
     else
     {
+#ifdef DEBUG_USB
+      USBH_UsrLog("  Protocol: Unsupported (%d)", phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].bInterfaceProtocol);
+#endif
       USBH_UsrLog ("Protocol not supported.");  
       return USBH_FAIL;
     }
@@ -180,6 +193,12 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
     HID_Handle->ep_addr   = phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].Ep_Desc[0].bEndpointAddress;
     HID_Handle->length    = phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].Ep_Desc[0].wMaxPacketSize;
     HID_Handle->poll      = phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].Ep_Desc[0].bInterval ;
+
+#ifdef DEBUG_USB
+    USBH_UsrLog("  Endpoint address: %02Xh", HID_Handle->ep_addr);
+    USBH_UsrLog("  Max packet size: %d bytes", HID_Handle->length);
+    USBH_UsrLog("  Polling interval: %d ms", HID_Handle->poll);
+#endif
     
     if (HID_Handle->poll  < HID_MIN_POLL) 
     {
