@@ -66,7 +66,6 @@
 #include "debug.h"
 #include "stm32f4xx_it.h"
 #include "amiga.h"
-#include "eeprom.h"
 
 /* FreeRTOS includes */
 #include "FreeRTOS.h"
@@ -79,7 +78,7 @@
 #include "amiga_task.h"
 #include "hid_report.h"
 
-volatile EepromMode current_mode = AMIGA_MODE; // Default mode
+volatile reset_keypress_mode_t current_mode = AMIGA_MODE; // Default mode
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -102,7 +101,7 @@ QueueHandle_t keyboard_inject_queue = NULL;
 static int debuglevel = DBG_INFO;
 
 /** @brief Firmware build version string with timestamp */
-static const char *fwBuild = "v2.0.6-rc-RTOS BUILD: " __TIME__ "-" __DATE__;
+static const char *fwBuild = "v2.0.7-rc-RTOS BUILD: " __TIME__ "-" __DATE__;
 
 /** @brief UART handle for debug communication */
 static UART_HandleTypeDef huart2;
@@ -155,12 +154,20 @@ static void create_tasks_and_queues(void)
 		DBG_E("Failed to create keyboard queue\r\n");
 		_Error_Handler(__FILE__, __LINE__);
 	}
+	else
+	{
+		DBG_I("keyboard queue created\r\n");
+	}
 
 	led_queue = xQueueCreate(LED_QUEUE_SIZE, sizeof(led_message_t));
 	if (led_queue == NULL)
 	{
 		DBG_E("Failed to create LED queue\r\n");
 		_Error_Handler(__FILE__, __LINE__);
+	}
+	else
+	{
+		DBG_I("LED queue created\r\n");
 	}
 
 	/* Create extended HID input queue */
@@ -170,12 +177,20 @@ static void create_tasks_and_queues(void)
 		DBG_E("Failed to create extended HID input queue\r\n");
 		_Error_Handler(__FILE__, __LINE__);
 	}
+	else
+	{
+		DBG_I("extended HID input queue created\r\n");
+	}
 
 	keyboard_inject_queue = xQueueCreate(KEYBOARD_INJECT_QUEUE_SIZE, sizeof(keyboard_message_t));
 	if (keyboard_inject_queue == NULL)
 	{
 		DBG_E("Failed to create keyboard inject queue\r\n");
 		_Error_Handler(__FILE__, __LINE__);
+	}
+	else
+	{
+		DBG_I("keyboard inject queue created\r\n");
 	}
 
 	/* Create logger tasks (serial + extended) */
@@ -190,12 +205,20 @@ static void create_tasks_and_queues(void)
 		DBG_E("Failed to create USB task\r\n");
 		_Error_Handler(__FILE__, __LINE__);
 	}
+	else
+	{
+		DBG_I("USB_Task() created\r\n");
+	}
 
 	/* Create Amiga task */
 	if (xTaskCreate(amiga_task, "Amiga_Task", AMIGA_TASK_STACK_SIZE, NULL, AMIGA_TASK_PRIORITY, &amiga_task_handle) != pdPASS)
 	{
 		DBG_E("Failed to create Amiga task\r\n");
 		_Error_Handler(__FILE__, __LINE__);
+	}
+	else
+	{
+		DBG_I("Amiga_Task() created\r\n");
 	}
 
 	DBG_I("Tasks and queues created successfully\r\n");
@@ -218,9 +241,6 @@ static void create_tasks_and_queues(void)
   */
 int main(void)
 {
-	// Read EEPROM configuration
-	uint32_t eeprom_value;
-
 	_write_ready(SYSCALL_NOTREADY, &huart2);
 
 	/* MCU Configuration----------------------------------------------------------*/
@@ -244,47 +264,13 @@ int main(void)
 	MX_USART2_UART_Init(115200);
 	_write_ready(SYSCALL_READY, &huart2);
 
+#ifdef DEBUG_USB
+	printf(ANSI_RED "\r\n--- USB DEBUG ENABLED ---\r\n" ANSI_RESET);
+#endif
+
 	banner();
 
 	DBG_I("Starting FreeRTOS-based USB to Amiga Keyboard Adapter\r\n");
-
-	if (eeprom_read(EEPROM_MODE_CONFIG, &eeprom_value) == HAL_OK)
-	{
-		if (eeprom_value == 0xFFFFFFFF)
-		{
-			DBG_I("EEPROM is uninitialized. Saving default mode (AMIGA_MODE)...\r\n");
-			if (eeprom_write(EEPROM_MODE_CONFIG, AMIGA_MODE) == HAL_OK)
-			{
-				DBG_I("Default mode saved successfully.\r\n");
-				current_mode = AMIGA_MODE;
-			}
-			else
-			{
-				DBG_E("Failed to save default mode to EEPROM.\r\n");
-			}
-		}
-		else
-		{
-			current_mode = (EepromMode)eeprom_value;
-			if (current_mode == AMIGA_MODE)
-			{
-				DBG_I("EEPROM Mode: AMIGA_MODE\r\n");
-			}
-			else if (current_mode == PC_MODE)
-			{
-				DBG_I("EEPROM Mode: PC_MODE\r\n");
-			}
-			else
-			{
-				DBG_W("EEPROM Mode: Unknown value (0x%lx), defaulting to AMIGA_MODE\r\n", eeprom_value);
-				current_mode = AMIGA_MODE;
-			}
-		}
-	}
-	else
-	{
-		DBG_E("Failed to read EEPROM_MODE_CONFIG, defaulting to AMIGA_MODE\r\n");
-	}
 
 	/* Create tasks and queues */
 	create_tasks_and_queues();
