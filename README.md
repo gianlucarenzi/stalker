@@ -38,6 +38,55 @@ The main components are:
 
 These tasks communicate using queues, which buffer events and data, ensuring smooth, non-blocking operation.
 
+### Flash Memory Layout
+
+The firmware uses a specific memory layout to separate the bootloader, application, and EEPROM emulation data. This ensures that firmware updates do not overwrite the bootloader and that EEPROM data is persistent.
+
+The 256KB flash memory of the STM32F401RC is organized as follows:
+
+<br>
+
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Start Address</th>
+      <th>End Address</th>
+      <th>Size</th>
+      <th>Sector(s)</th>
+      <th>Area</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr bgcolor="#e6f2ff">
+      <td><code>0x08000000</code></td>
+      <td><code>0x08003FFF</code></td>
+      <td>16 KB</td>
+      <td>0</td>
+      <td><strong>Bootloader</strong></td>
+    </tr>
+    <tr bgcolor="#ffffcc">
+      <td><code>0x08004000</code></td>
+      <td><code>0x08007FFF</code></td>
+      <td>16 KB</td>
+      <td>1</td>
+      <td><strong>EEPROM Emulation</strong></td>
+    </tr>
+    <tr bgcolor="#e6ffe6">
+      <td><code>0x08008000</code></td>
+      <td><code>0x0803FFFF</code></td>
+      <td>224 KB</td>
+      <td>2-5</td>
+      <td><strong>Application Code</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+*   **Bootloader**: A 16KB section reserved for the bootloader, which allows for firmware updates.
+*   **EEPROM Emulation**: A 16KB flash sector dedicated to emulating EEPROM. This stores persistent settings, such as the current operating mode (Amiga/PC).
+*   **Application Code**: The main firmware, including FreeRTOS, USB stack, and keyboard handling logic.
+
 ### Data Flow Diagram
 
 The following diagram illustrates how keyboard events flow through the system:
