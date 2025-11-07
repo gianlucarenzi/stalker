@@ -335,7 +335,12 @@ USBH_StatusTypeDef USBH_HID_KeybdInit(USBH_HandleTypeDef *phost)
   USBH_UsrLog("USBH_HID_KeybdInit: HID_Handle->length = %d\r\n", HID_Handle->length);
   HID_Handle->pData = (uint8_t*)keybd_report_data;
   fifo_init(&HID_Handle->fifo, phost->device.Data, HID_QUEUE_SIZE * sizeof(keybd_report_data));
-  
+
+  /* For Boot Protocol keyboards, skip HID_IDLE (GET_REPORT via control)
+   * and go directly to HID_SYNC, since many keyboards don't support GET_REPORT */
+  HID_Handle->state = HID_SYNC;
+  USBH_UsrLog("USBH_HID_KeybdInit: Set state to HID_SYNC (skipping GET_REPORT)\r\n");
+
   return USBH_OK;    
 }
 

@@ -164,6 +164,14 @@ void usb_task(void *pvParameters)
 				DBG_I("usb_task: MX_USB_HOST_Process called %lu times, gState=%d\r\n",
 				      process_count, usbhost->gState);
 			}
+
+			// Read USB Host Port register to check physical connection status
+			uint32_t hprt = *(__IO uint32_t *)((uint32_t)USB_OTG_FS + USB_OTG_HOST_PORT_BASE);
+			DBG_I("USB HPRT register: 0x%08lx\r\n", hprt);
+			DBG_I("  PCSTS (Port Connect Status): %lu\r\n", (hprt >> 0) & 0x1);
+			DBG_I("  PCDET (Port Connect Detected): %lu\r\n", (hprt >> 1) & 0x1);
+			DBG_I("  PENA (Port Enable): %lu\r\n", (hprt >> 2) & 0x1);
+			DBG_I("  PSPD (Port Speed): %lu (0=HS, 1=FS, 2=LS)\r\n", (hprt >> 17) & 0x3);
 		}
 #endif
 
@@ -262,7 +270,7 @@ void usb_task(void *pvParameters)
 					if (current_time >= pdMS_TO_TICKS(100))
 					{
 						DBG_E("UNKNOWN USB DEVICE count: %d\r\n", count);
-						led_toggle();
+						// led_toggle(); // Commented to use only USB interrupt LED
 						g_timer = xTaskGetTickCount();
 						if (count++ > 10)
 						{
@@ -289,7 +297,7 @@ void usb_task(void *pvParameters)
 				if (current_time >= pdMS_TO_TICKS(250))
 				{
 					DBG_N("NO HID DEVICE FOUND\r\n");
-					led_toggle();
+					// led_toggle(); // Commented to use only USB interrupt LED
 					g_timer = xTaskGetTickCount();
 					if (count++ > 10)
 					{
@@ -339,7 +347,31 @@ void usb_task(void *pvParameters)
 			if (current_time >= pdMS_TO_TICKS(500))
 			{
 				DBG_N("WAIT INSERT USB KEYBOARD count: %d\r\n", count);
-				led_toggle();
+				// led_toggle(); // Commented to use only USB interrupt LED
+
+#ifdef DEBUG_USB
+				// Poll USB Host Port register to check if device is detected
+				uint32_t hprt = *(__IO uint32_t *)((uint32_t)USB_OTG_FS + USB_OTG_HOST_PORT_BASE);
+				DBG_I("USB HPRT=0x%08lx PCSTS=%lu PCDET=%lu PENA=%lu PSPD=%lu\r\n",
+				      hprt, (hprt >> 0) & 0x1, (hprt >> 1) & 0x1,
+				      (hprt >> 2) & 0x1, (hprt >> 17) & 0x3);
+
+				// If no device detected after several attempts, try forcing a port reset
+				// This helps with old USB 1.1 devices that have weak/slow pull-ups
+				if (count > 0 && (count % 4) == 0 && ((hprt & 0x1) == 0)) {
+					DBG_I("Forcing USB port bus reset to detect slow devices...\r\n");
+					// Trigger a port reset by setting PRST bit (bit 8) in HPRT
+					__IO uint32_t *hprt_reg = (__IO uint32_t *)((uint32_t)USB_OTG_FS + USB_OTG_HOST_PORT_BASE);
+					uint32_t hprt_val = *hprt_reg;
+					// Clear interrupt bits (W1C) and preserve others
+					hprt_val &= ~(USB_OTG_HPRT_PENA | USB_OTG_HPRT_PCDET | USB_OTG_HPRT_PENCHNG | USB_OTG_HPRT_POCCHNG);
+					*hprt_reg = hprt_val | USB_OTG_HPRT_PRST;  // Assert reset
+					vTaskDelay(pdMS_TO_TICKS(20));  // Hold reset for 20ms
+					*hprt_reg = hprt_val & ~USB_OTG_HPRT_PRST;  // De-assert reset
+					DBG_I("USB port reset completed\r\n");
+				}
+#endif
+
 				g_timer = xTaskGetTickCount();
 				if (count++ > 10)
 				{

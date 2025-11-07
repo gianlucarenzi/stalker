@@ -623,37 +623,40 @@ static USBH_StatusTypeDef USBH_HandleEnum (USBH_HandleTypeDef *phost)
   
   switch (phost->EnumState)
   {
-  case ENUM_IDLE:  
+  case ENUM_IDLE:
     /* Get Device Desc for only 1st 8 bytes : To get EP0 MaxPacketSize */
-    if ( USBH_Get_DevDesc(phost, 8) == USBH_OK)
     {
-      USBH_UsrLog("ENUM_IDLE: USBH_Get_DevDesc(8) OK\r\n");
-      phost->Control.pipe_size = phost->device.DevDesc.bMaxPacketSize;
+      USBH_StatusTypeDef devdesc_status = USBH_Get_DevDesc(phost, 8);
+      if (devdesc_status == USBH_OK)
+      {
+        USBH_UsrLog("ENUM_IDLE: USBH_Get_DevDesc(8) OK\r\n");
+        phost->Control.pipe_size = phost->device.DevDesc.bMaxPacketSize;
 
-      phost->EnumState = ENUM_GET_FULL_DEV_DESC;
-      
-      /* modify control channels configuration for MaxPacket size */
-      USBH_OpenPipe (phost,
-                           phost->Control.pipe_in,
-                           0x80,
-                           phost->device.address,
-                           phost->device.speed,
-                           USBH_EP_CONTROL,
-                           phost->Control.pipe_size); 
-      
-      /* Open Control pipes */
-      USBH_OpenPipe (phost,
-                           phost->Control.pipe_out,
-                           0x00,
-                           phost->device.address,
-                           phost->device.speed,
-                           USBH_EP_CONTROL,
-                           phost->Control.pipe_size);           
-      
-    }
-    else
-    {
-      USBH_ErrLog("ENUM_IDLE: USBH_Get_DevDesc(8) FAILED\r\n");
+        phost->EnumState = ENUM_GET_FULL_DEV_DESC;
+
+        /* modify control channels configuration for MaxPacket size */
+        USBH_OpenPipe (phost,
+                             phost->Control.pipe_in,
+                             0x80,
+                             phost->device.address,
+                             phost->device.speed,
+                             USBH_EP_CONTROL,
+                             phost->Control.pipe_size);
+
+        /* Open Control pipes */
+        USBH_OpenPipe (phost,
+                             phost->Control.pipe_out,
+                             0x00,
+                             phost->device.address,
+                             phost->device.speed,
+                             USBH_EP_CONTROL,
+                             phost->Control.pipe_size);
+
+      }
+      else
+      {
+        USBH_ErrLog("ERROR: ENUM_IDLE: USBH_Get_DevDesc(8) FAILED with status=%d (0=OK,1=FAIL,2=UNSUP,3=BUSY,4=NOT_SUP,5=UNREC,6=ERROR_SPD)\r\n", devdesc_status);
+      }
     }
     break;
     

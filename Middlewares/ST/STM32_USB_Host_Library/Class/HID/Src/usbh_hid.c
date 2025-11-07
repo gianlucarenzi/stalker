@@ -188,8 +188,12 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
 #ifdef DEBUG_USB
       USBH_UsrLog("  Protocol: Keyboard\r\n");
 #endif
-      USBH_UsrLog ("KeyBoard device found!\r\n"); 
-      HID_Handle->Init =  USBH_HID_KeybdInit;     
+      USBH_UsrLog ("KeyBoard device found!\r\n");
+      USBH_Delay(50);  // Give log queue time to flush
+      USBH_UsrLog ("DEBUG: After 'KeyBoard device found!' message\r\n");
+      HID_Handle->Init =  USBH_HID_KeybdInit;
+      USBH_Delay(50);  // Give log queue time to flush
+      USBH_UsrLog ("DEBUG: HID_Handle->Init set to USBH_HID_KeybdInit (%p)\r\n", (void*)HID_Handle->Init);
     }
     else if(phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].bInterfaceProtocol  == HID_MOUSE_BOOT_CODE)		  
     {
@@ -208,8 +212,12 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
       return USBH_FAIL;
     }
     
+    USBH_Delay(100);  // Give log queue time to flush
+    USBH_UsrLog ("DEBUG: Setting HID_Handle->state = HID_INIT\r\n");
     HID_Handle->state     = HID_INIT;
-    HID_Handle->ctl_state = HID_REQ_INIT; 
+    HID_Handle->ctl_state = HID_REQ_INIT;
+    USBH_Delay(50);
+    USBH_UsrLog ("DEBUG: Reading endpoint descriptor...\r\n");
     HID_Handle->ep_addr   = phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].Ep_Desc[0].bEndpointAddress;
     HID_Handle->length    = phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].Ep_Desc[0].wMaxPacketSize;
     HID_Handle->poll      = phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].Ep_Desc[0].bInterval ;
@@ -219,6 +227,7 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
     USBH_UsrLog("  Max packet size: %d bytes\r\n", HID_Handle->length);
     USBH_UsrLog("  Polling interval: %d ms\r\n", HID_Handle->poll);
 #endif
+    USBH_UsrLog ("DEBUG: Endpoint info logged\r\n");
     
     if (HID_Handle->poll  < HID_MIN_POLL) 
     {
@@ -272,7 +281,19 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
         USBH_LL_SetToggle (phost, HID_Handle->OutPipe, 0);        
       }
       
-    }  
+    }
+
+    USBH_UsrLog("USBH_HID_InterfaceInit: About to set status to USBH_OK\r\n");
+    USBH_UsrLog("USBH_HID_InterfaceInit: HID_Handle->Init function pointer = %p\r\n", (void*)HID_Handle->Init);
+
+    /* Workaround: Call Init function directly here since USBH_HID_Process may not be called at the right time */
+    if (HID_Handle->Init != NULL) {
+        USBH_UsrLog("USBH_HID_InterfaceInit: Calling Init function directly (workaround)\r\n");
+        HID_Handle->Init(phost);
+    } else {
+        USBH_UsrLog("USBH_HID_InterfaceInit: ERROR - Init function pointer is NULL!\r\n");
+    }
+
     status = USBH_OK;
   }
   return status;
@@ -418,7 +439,15 @@ static USBH_StatusTypeDef USBH_HID_Process(USBH_HandleTypeDef *phost)
   switch (HID_Handle->state)
   {
   case HID_INIT:
-    HID_Handle->Init(phost);
+    USBH_UsrLog("USBH_HID_Process: HID_INIT case - calling HID_Handle->Init(phost)\r\n");
+    USBH_UsrLog("USBH_HID_Process: HID_Handle->Init function pointer = %p\r\n", (void*)HID_Handle->Init);
+    if (HID_Handle->Init != NULL) {
+        HID_Handle->Init(phost);
+    } else {
+        USBH_UsrLog("USBH_HID_Process: ERROR - Init function pointer is NULL in HID_INIT!\r\n");
+    }
+    break;
+
   case HID_IDLE:
     if(USBH_HID_GetReport (phost,
                            0x01,
