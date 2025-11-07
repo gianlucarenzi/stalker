@@ -151,7 +151,10 @@ void usb_task(void *pvParameters)
 			usb_initialized = ! usb_initialized;
 		}
 
+		/* With USBH_USE_OS=0, we need to call MX_USB_HOST_Process manually */
+		// DBG_N("Before MX_USB_HOST_Process()\r\n");
 		MX_USB_HOST_Process();
+		// DBG_N("After MX_USB_HOST_Process()\r\n");
 		usb_app_state = USBH_ApplicationState();
 
 		// Se risulta connessa la tastiera USB
@@ -297,7 +300,7 @@ void usb_task(void *pvParameters)
 			{
 				case APPLICATION_START:
 					DBG_N("APPLICATION START\r\n");
-					vTaskDelay(10);
+					vTaskDelay(pdMS_TO_TICKS(50));
 					break;
 				case APPLICATION_DISCONNECT:
 					DBG_N("APPLICATION DISCONNECT\r\n");
@@ -333,10 +336,13 @@ void usb_task(void *pvParameters)
 				}
 			}
 		}
-		/* Reading from the led status from Amiga Side is always possible */
+		// DBG_N("Before usb_task_handle_led_messages()\r\n");
 		usb_task_handle_led_messages();
+		// DBG_N("After usb_task_handle_led_messages()\r\n");
 		/* Wait for the next cycle */
+		// DBG_N("Before vTaskDelayUntil()\r\n");
 		vTaskDelayUntil(&last_wake_time, task_frequency);
+		// DBG_N("After vTaskDelayUntil()\r\n");
 	}
 }
 
@@ -418,59 +424,68 @@ static void usb_task_handle_led_messages(void)
 	/* Check for LED messages from Amiga task */
 	while (xQueueReceive(led_queue, &led_msg, 0) == pdTRUE)
 	{
-		DBG_V("Received LED message: %d\r\n", led_msg.led_status);
-		
-		switch (led_msg.led_status)
+		// DBG_V("Received LED message: %d\r\n", led_msg.led_status);
+
+		// Only process LED messages if the USB application is ready
+		if (usb_app_state == APPLICATION_READY)
 		{
-			case LED_CAPS_LOCK_OFF:
-				DBG_V("CAPS LOCK LED OFF\r\n");
-				current_keyboard_led &= ~CAPS_LOCK_LED;
-				usb_keyboard_led_set(usbhost, current_keyboard_led);
-				break;
-				
-			case LED_CAPS_LOCK_ON:
-				DBG_V("CAPS LOCK LED ON\r\n");
-				current_keyboard_led |= CAPS_LOCK_LED;
-				usb_keyboard_led_set(usbhost, current_keyboard_led);
-				break;
-				
-			case LED_NUM_LOCK_OFF:
-				DBG_V("NUM LOCK LED OFF\r\n");
-				current_keyboard_led &= ~NUM_LOCK_LED;
-				usb_keyboard_led_set(usbhost, current_keyboard_led);
-				break;
-				
-			case LED_NUM_LOCK_ON:
-				DBG_V("NUM LOCK LED ON\r\n");
-				current_keyboard_led |= NUM_LOCK_LED;
-				usb_keyboard_led_set(usbhost, current_keyboard_led);
-				break;
-				
-			case LED_SCROLL_LOCK_OFF:
-				DBG_V("SCROLL LOCK LED OFF\r\n");
-				current_keyboard_led &= ~SCROLL_LOCK_LED;
-				usb_keyboard_led_set(usbhost, current_keyboard_led);
-				break;
-				
-			case LED_SCROLL_LOCK_ON:
-				DBG_V("SCROLL LOCK LED ON\r\n");
-				current_keyboard_led |= SCROLL_LOCK_LED;
-				usb_keyboard_led_set(usbhost, current_keyboard_led);
-				break;
-				
-			case LED_RESET_BLINK:
-				DBG_I("Reset occurred from Amiga Side - reinitializing keyboard LEDs\r\n");
-				usb_keyboard_led_init_sequence(usbhost);
-				current_keyboard_led = 0;
-				break;
-				
-			case NO_LED:
-			default:
-				break;
+			switch (led_msg.led_status)
+			{
+				case LED_CAPS_LOCK_OFF:
+					DBG_V("CAPS LOCK LED OFF\r\n");
+					current_keyboard_led &= ~CAPS_LOCK_LED;
+					usb_keyboard_led_set(usbhost, current_keyboard_led);
+					break;
+
+				case LED_CAPS_LOCK_ON:
+					DBG_V("CAPS LOCK LED ON\r\n");
+					current_keyboard_led |= CAPS_LOCK_LED;
+					usb_keyboard_led_set(usbhost, current_keyboard_led);
+					break;
+
+				case LED_NUM_LOCK_OFF:
+					DBG_V("NUM LOCK LED OFF\r\n");
+					current_keyboard_led &= ~NUM_LOCK_LED;
+					usb_keyboard_led_set(usbhost, current_keyboard_led);
+					break;
+
+				case LED_NUM_LOCK_ON:
+					DBG_V("NUM LOCK LED ON\r\n");
+					current_keyboard_led |= NUM_LOCK_LED;
+					usb_keyboard_led_set(usbhost, current_keyboard_led);
+					break;
+
+				case LED_SCROLL_LOCK_OFF:
+					DBG_V("SCROLL LOCK LED OFF\r\n");
+					current_keyboard_led &= ~SCROLL_LOCK_LED;
+					usb_keyboard_led_set(usbhost, current_keyboard_led);
+					break;
+
+				case LED_SCROLL_LOCK_ON:
+					DBG_V("SCROLL LOCK LED ON\r\n");
+					current_keyboard_led |= SCROLL_LOCK_LED;
+					usb_keyboard_led_set(usbhost, current_keyboard_led);
+					break;
+
+				case LED_RESET_BLINK:
+					DBG_I("Reset occurred from Amiga Side - reinitializing keyboard LEDs\r\n");
+					usb_keyboard_led_set(usbhost, 0); // Turn off all LEDs first
+					usb_keyboard_led_init_sequence(usbhost);
+					current_keyboard_led = 0;
+					break;
+
+				case NO_LED:
+				default:
+					break;
+			}
 		}
+		else
+		{
+			DBG_W("LED message received but USB not ready (state: %d). Discarding.\r\n", usb_app_state);
+		}
+		vTaskDelay(pdMS_TO_TICKS(1)); // Yield to other tasks if queue is busy
 	}
 }
-
 /**
   * @brief  Send a string to the Amiga keyboard interface
   * @details This function takes a string, converts each character to Amiga scancodes,

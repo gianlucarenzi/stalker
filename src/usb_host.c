@@ -108,7 +108,7 @@ void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 			break;
 
 		case HOST_USER_DISCONNECTION:
-			DBG_N("HOST_USER_DISCONNECTION: Application DISCONNECT\r\n");
+			DBG_I("HOST_USER_DISCONNECTION: USB Device Disconnected\r\n");
 			Appli_state = APPLICATION_DISCONNECT;
 			break;
 

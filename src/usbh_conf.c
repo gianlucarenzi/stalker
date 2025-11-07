@@ -50,11 +50,8 @@
 #include "usbh_core.h"
 #include "stm32f4xx_it.h"
 #include "debug.h"
-
-#if (USBH_USE_OS == 1)
-    #include "FreeRTOS.h"
-    #include "task.h"
-#endif
+#include "FreeRTOS.h"
+#include "task.h"
 
 HCD_HandleTypeDef hhcd_USB_OTG_FS;
 extern void _Error_Handler(char * file, int line);
@@ -94,7 +91,8 @@ void HAL_HCD_MspInit(HCD_HandleTypeDef* hcdHandle)
 		__HAL_RCC_USB_OTG_FS_CLK_ENABLE();
 
 		/* Enable Interrupt on USB OTG FS */
-		HAL_NVIC_SetPriority(OTG_FS_IRQn, 5, 0);
+		/* Priority must be >= configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY (5) for FreeRTOS */
+	HAL_NVIC_SetPriority(OTG_FS_IRQn, 6, 0);
 		HAL_NVIC_EnableIRQ(OTG_FS_IRQn);
 	} else {
 		DBG_E("hcdHandle->Instance NOT USB_OTG_FS\r\n");
@@ -149,8 +147,11 @@ void HAL_HCD_SOF_Callback(HCD_HandleTypeDef *hhcd)
   */
 void HAL_HCD_Connect_Callback(HCD_HandleTypeDef *hhcd)
 {
-	DBG_N("Called within IRQ\n\r");
+	/* DO NOT log from ISR - can cause system freeze */
+	// DBG_N("Called within IRQ\n\r");
+	// DBG_N("Before USBH_LL_Connect\r\n");
 	USBH_LL_Connect(hhcd->pData);
+	// DBG_N("After USBH_LL_Connect\r\n");
 }
 
 /**
@@ -160,6 +161,7 @@ void HAL_HCD_Connect_Callback(HCD_HandleTypeDef *hhcd)
   */
 void HAL_HCD_Disconnect_Callback(HCD_HandleTypeDef *hhcd)
 {
+	DBG_I("USB Disconnect detected - resetting USB stack\r\n");
 	USBH_LL_Disconnect(hhcd->pData);
 }
 
@@ -552,19 +554,15 @@ USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
 		DBG_E("Phost->id is NOT HOST_FS --> 0x%08x\n\r", phost->id);
 	}
 
-#if (USBH_USE_OS == 1)
-	// Verifica se lo scheduler è attivo prima di usare vTaskDelay
+	/* Always use vTaskDelay when FreeRTOS scheduler is running */
 	if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
 	{
-		vTaskDelay(pdMS_TO_TICKS(200));  // Non-blocking: scheduler attivo
+		vTaskDelay(pdMS_TO_TICKS(200));
 	}
 	else
 	{
-		HAL_Delay(200);  // Fallback: pre-scheduler o scheduler sospeso
+		HAL_Delay(200);  // Fallback: scheduler not started yet
 	}
-#else
-	HAL_Delay(200);  // No RTOS: blocking delay
-#endif
 
 	DBG_N("Exit\r\n");
 	return USBH_OK;
@@ -629,17 +627,15 @@ uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe)
   */
 void USBH_Delay(uint32_t Delay)
 {
-#if (USBH_USE_OS == 1)
-	// Verifica se lo scheduler è attivo prima di usare vTaskDelay
+	/* Always use vTaskDelay when FreeRTOS scheduler is running,
+	 * regardless of USBH_USE_OS setting, to avoid blocking other tasks */
 	if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
 	{
-    	vTaskDelay(Delay);
-    }
-    else
-    {
-        HAL_Delay(Delay);    
-    }
-#else
-	HAL_Delay(Delay);
-#endif
+		vTaskDelay(Delay);
+	}
+	else
+	{
+		/* Scheduler not started yet - use HAL_Delay */
+		HAL_Delay(Delay);
+	}
 }
