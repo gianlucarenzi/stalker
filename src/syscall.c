@@ -7,6 +7,8 @@
 #include "syscall.h"
 #include <stm32f4xx_hal.h> // per HAL_StatusTypeDef
 #include "debug.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 static t_syscall_status uart_initialize = SYSCALL_NOTREADY;
 static UART_HandleTypeDef *uart = NULL;
@@ -121,7 +123,15 @@ void udelay(uint32_t micros)
  */
 void mdelay(uint32_t millis)
 {
-	HAL_Delay(millis);
+	/* Use vTaskDelay if scheduler is running to avoid blocking other tasks */
+	if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+	{
+		vTaskDelay(pdMS_TO_TICKS(millis));
+	}
+	else
+	{
+		HAL_Delay(millis);
+	}
 }
 
 /**
