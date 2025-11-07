@@ -74,6 +74,7 @@ void HAL_HCD_MspInit(HCD_HandleTypeDef* hcdHandle)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
 	DBG_N("Called with handle: %p\r\n", hcdHandle);
+	DBG_I("HAL_HCD_MspInit: Initializing HCD MSP.\r\n");
 
 	if (hcdHandle->Instance==USB_OTG_FS)
 	{
@@ -98,6 +99,7 @@ void HAL_HCD_MspInit(HCD_HandleTypeDef* hcdHandle)
 	} else {
 		DBG_E("hcdHandle->Instance NOT USB_OTG_FS\r\n");
 	}
+	DBG_I("HAL_HCD_MspInit: HCD MSP initialized.\r\n");
 	DBG_N("Exit\r\n");
 }
 
@@ -189,6 +191,7 @@ USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost)
 {
 	/* Init USB_IP */
 	DBG_N("Enter with phost %p\r\n", phost);
+	DBG_I("USBH_LL_Init: Initializing USB Host Low Level Driver.\r\n");
 	if (phost->id == HOST_FS)
 	{
 		DBG_I("Linking the host driver to the stack\r\n");
@@ -211,6 +214,7 @@ USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost)
 		DBG_E("Cannot Link the host driver to the stack. "
 			"Not HOST_FS ---> 0x%08x\r\n", phost->id);
 	}
+	DBG_I("USBH_LL_Init: USB Host Low Level Driver initialized.\r\n");
 	return USBH_OK;
 }
 

@@ -141,8 +141,8 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
   uint8_t num = 0;
   uint8_t interface;
 #ifdef DEBUG_USB
-  USBH_UsrLog("USBH_HID_InterfaceInit");
-  USBH_UsrLog("  VID/PID: %04Xh/%04Xh", phost->device.DevDesc.idVendor, phost->device.DevDesc.idProduct);
+  USBH_UsrLog("USBH_HID_InterfaceInit\r\n");
+  USBH_UsrLog("  VID/PID: %04Xh/%04Xh\r\n", phost->device.DevDesc.idVendor, phost->device.DevDesc.idProduct);
 #endif
   
   USBH_StatusTypeDef status = USBH_FAIL ;
@@ -153,7 +153,7 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
   if(interface == 0xFF) /* No Valid Interface */
   {
     status = USBH_FAIL;  
-    USBH_DbgLog ("Cannot Find the interface for %s class.", phost->pActiveClass->Name);         
+    USBH_DbgLog ("Cannot Find the interface for %s class.\r\n", phost->pActiveClass->Name);         
   }
   else
   {
@@ -166,25 +166,25 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
     if(phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].bInterfaceProtocol == HID_KEYBRD_BOOT_CODE)
     {
 #ifdef DEBUG_USB
-      USBH_UsrLog("  Protocol: Keyboard");
+      USBH_UsrLog("  Protocol: Keyboard\r\n");
 #endif
-      USBH_UsrLog ("KeyBoard device found!"); 
+      USBH_UsrLog ("KeyBoard device found!\r\n"); 
       HID_Handle->Init =  USBH_HID_KeybdInit;     
     }
     else if(phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].bInterfaceProtocol  == HID_MOUSE_BOOT_CODE)		  
     {
 #ifdef DEBUG_USB
-      USBH_UsrLog("  Protocol: Mouse");
+      USBH_UsrLog("  Protocol: Mouse\r\n");
 #endif
-      USBH_UsrLog ("Mouse device found!");         
+      USBH_UsrLog ("Mouse device found!\r\n");         
       HID_Handle->Init =  USBH_HID_MouseInit;     
     }
     else
     {
 #ifdef DEBUG_USB
-      USBH_UsrLog("  Protocol: Unsupported (%d)", phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].bInterfaceProtocol);
+      USBH_UsrLog("  Protocol: Unsupported (%d)\r\n", phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].bInterfaceProtocol);
 #endif
-      USBH_UsrLog ("Protocol not supported.");  
+      USBH_UsrLog ("Protocol not supported.\r\n");  
       return USBH_FAIL;
     }
     
@@ -195,9 +195,9 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
     HID_Handle->poll      = phost->device.CfgDesc.Itf_Desc[phost->device.current_interface].Ep_Desc[0].bInterval ;
 
 #ifdef DEBUG_USB
-    USBH_UsrLog("  Endpoint address: %02Xh", HID_Handle->ep_addr);
-    USBH_UsrLog("  Max packet size: %d bytes", HID_Handle->length);
-    USBH_UsrLog("  Polling interval: %d ms", HID_Handle->poll);
+    USBH_UsrLog("  Endpoint address: %02Xh\r\n", HID_Handle->ep_addr);
+    USBH_UsrLog("  Max packet size: %d bytes\r\n", HID_Handle->length);
+    USBH_UsrLog("  Polling interval: %d ms\r\n", HID_Handle->poll);
 #endif
     
     if (HID_Handle->poll  < HID_MIN_POLL) 
@@ -426,14 +426,14 @@ static USBH_StatusTypeDef USBH_HID_Process(USBH_HandleTypeDef *phost)
     {
       if(HID_Handle->DataReady == 0)
       {
-        fifo_write(&HID_Handle->fifo, HID_Handle->pData, HID_Handle->length);
-        HID_Handle->DataReady = 1;
-        USBH_HID_EventCallback(phost);
+		fifo_write(&HID_Handle->fifo, HID_Handle->pData, HID_Handle->length);
+		HID_Handle->DataReady = 1;
+		USBH_HID_EventCallback(phost);
 #if (USBH_USE_OS == 1)
-    osMessagePut ( phost->os_event, USBH_URB_EVENT, 0);
-#endif          
+		osMessagePut ( phost->os_event, USBH_URB_EVENT, 0);
+#endif
       }
-    }
+	}
     else if(USBH_LL_GetURBState(phost , HID_Handle->InPipe) == USBH_URB_STALL) /* IN Endpoint Stalled */
     {
       
@@ -803,41 +803,10 @@ uint16_t  fifo_write(FIFO_TypeDef * f, const void * buf, uint16_t  nbytes)
         }
       }
     }
+	f->lock = 0;
+    return nbytes;
   }
-  f->lock = 0;
-  return nbytes;
+  return 0;
 }
 
 
-/**
-* @brief  The function is a callback about HID Data events
-*  @param  phost: Selected device
-* @retval None
-*/
-__weak void USBH_HID_EventCallback(USBH_HandleTypeDef *phost)
-{
-  
-}
-/**
-* @}
-*/ 
-
-/**
-* @}
-*/ 
-
-/**
-* @}
-*/
-
-
-/**
-* @}
-*/
-
-
-/**
-* @}
-*/
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -309,7 +309,7 @@ USBH_StatusTypeDef USBH_HID_SetIdle (USBH_HandleTypeDef *phost,
 USBH_StatusTypeDef USBH_HID_SetProtocol (USBH_HandleTypeDef *phost,
                                       uint8_t protocol);
 
-void USBH_HID_EventCallback(USBH_HandleTypeDef *phost);
+__weak void USBH_HID_EventCallback(USBH_HandleTypeDef *phost);
 
 HID_TypeTypeDef USBH_HID_GetDeviceType(USBH_HandleTypeDef *phost);
 

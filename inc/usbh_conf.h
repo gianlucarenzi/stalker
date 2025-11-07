@@ -160,20 +160,19 @@
 /* DEBUG macros */
 
 #if (USBH_DEBUG_LEVEL > 0)
-#define USBH_UsrLog(...)    printf("LOGUSB LEVEL > 0\n\r");
+#define USBH_UsrLog(...)    log_enqueuef(__VA_ARGS__);
 #else
 #define USBH_UsrLog(...)
 #endif
 
 #if (USBH_DEBUG_LEVEL > 1)
-
-#define USBH_ErrLog(...)    printf("USB ERROR: " __VA_ARGS__);
+#define USBH_ErrLog(...)    log_enqueuef("ERROR: "__VA_ARGS__);
 #else
 #define USBH_ErrLog(...)
 #endif
 
 #if (USBH_DEBUG_LEVEL > 2)
-#define USBH_DbgLog(...)    printf("USB DEBUG : " __VA_ARGS__);
+#define USBH_DbgLog(...)    log_enqueuef("DEBUG: "__VA_ARGS__);
 #else
 #define USBH_DbgLog(...)
 #endif
