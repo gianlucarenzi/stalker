@@ -91,8 +91,8 @@ void HAL_HCD_MspInit(HCD_HandleTypeDef* hcdHandle)
 		__HAL_RCC_USB_OTG_FS_CLK_ENABLE();
 
 		/* Enable Interrupt on USB OTG FS */
-		/* Priority must be >= configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY (5) for FreeRTOS */
-	HAL_NVIC_SetPriority(OTG_FS_IRQn, 6, 0);
+		/* Priority = configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY (5) - safe for FromISR APIs */
+	HAL_NVIC_SetPriority(OTG_FS_IRQn, 5, 0);
 		HAL_NVIC_EnableIRQ(OTG_FS_IRQn);
 	} else {
 		DBG_E("hcdHandle->Instance NOT USB_OTG_FS\r\n");

@@ -155,6 +155,18 @@ void usb_task(void *pvParameters)
 		// DBG_N("Before MX_USB_HOST_Process()\r\n");
 		MX_USB_HOST_Process();
 		// DBG_N("After MX_USB_HOST_Process()\r\n");
+
+#ifdef DEBUG_USB
+		static uint32_t process_count = 0;
+		if ((++process_count % 5000) == 0) {
+			usbhost = USBH_GetHost();
+			if (usbhost != NULL) {
+				DBG_I("usb_task: MX_USB_HOST_Process called %lu times, gState=%d\r\n",
+				      process_count, usbhost->gState);
+			}
+		}
+#endif
+
 		usb_app_state = USBH_ApplicationState();
 
 		// Se risulta connessa la tastiera USB
@@ -171,6 +183,9 @@ void usb_task(void *pvParameters)
 					{
 						timerOneShot = !timerOneShot;
 						DBG_I("#### KEYBOARD CONNECTED ####\r\n");
+#ifdef DEBUG_USB
+						DBG_I("#### USB HOST gState = %d (should be 10 for HOST_CLASS) ####\r\n", usbhost->gState);
+#endif
 						g_timer = xTaskGetTickCount();
 					}
 

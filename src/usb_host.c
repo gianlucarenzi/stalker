@@ -119,23 +119,7 @@ void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 
 		case HOST_USER_CLASS_ACTIVE:
 			DBG_I("USB Device Registered and Class Active.\r\n");
-			/* Try to switch HID to BOOT protocol. If not supported, try REPORT protocol. */
-			if (USBH_HID_SetProtocol(phost, 0 /* BOOT protocol */) == USBH_OK)
-			{
-				DBG_I("HID protocol set to BOOT\r\n");
-			}
-			else
-			{
-				DBG_W("HID BOOT protocol not supported. Trying REPORT protocol.\r\n");
-				if (USBH_HID_SetProtocol(phost, 1 /* REPORT protocol */) == USBH_OK)
-				{
-					DBG_I("HID protocol set to REPORT\r\n");
-				}
-				else
-				{
-					DBG_E("Neither BOOT nor REPORT protocol supported.\r\n");
-				}
-			}
+			/* Protocol is already set during class initialization, no need to set it again */
 			Appli_state = APPLICATION_READY;
 			break;
 

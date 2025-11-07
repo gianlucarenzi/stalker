@@ -43,6 +43,9 @@
 #include "usbh_hid.h"
 #include "usbh_hid_parser.h"
 
+extern volatile uint32_t usb_irq_count;
+extern volatile uint32_t hc_in_irq_count[16];
+
 
 /** @addtogroup USBH_LIB
 * @{
@@ -148,6 +151,23 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit (USBH_HandleTypeDef *phost)
   USBH_StatusTypeDef status = USBH_FAIL ;
   HID_HandleTypeDef *HID_Handle;
   
+  USBH_UsrLog("USBH_HID_InterfaceInit: Number of Interfaces = %d\r\n", phost->device.CfgDesc.bNumInterfaces);
+  for (uint8_t i = 0; i < phost->device.CfgDesc.bNumInterfaces; i++) {
+      USBH_UsrLog("  Interface %d: Class=%02Xh, SubClass=%02Xh, Protocol=%02Xh, NumEndpoints=%d\r\n",
+                  i,
+                  phost->device.CfgDesc.Itf_Desc[i].bInterfaceClass,
+                  phost->device.CfgDesc.Itf_Desc[i].bInterfaceSubClass,
+                  phost->device.CfgDesc.Itf_Desc[i].bInterfaceProtocol,
+                  phost->device.CfgDesc.Itf_Desc[i].bNumEndpoints);
+      for (uint8_t j = 0; j < phost->device.CfgDesc.Itf_Desc[i].bNumEndpoints; j++) {
+          USBH_UsrLog("    Endpoint %d: Address=%02Xh, Type=%02Xh, MaxPacketSize=%d\r\n",
+                      j,
+                      phost->device.CfgDesc.Itf_Desc[i].Ep_Desc[j].bEndpointAddress,
+                      phost->device.CfgDesc.Itf_Desc[i].Ep_Desc[j].bmAttributes & 0x03,
+                      phost->device.CfgDesc.Itf_Desc[i].Ep_Desc[j].wMaxPacketSize);
+      }
+  }
+
   interface = USBH_FindInterface(phost, phost->pActiveClass->ClassCode, HID_BOOT_CODE, 0xFF);
   
   if(interface == 0xFF) /* No Valid Interface */
@@ -315,6 +335,7 @@ static USBH_StatusTypeDef USBH_HID_ClassRequest(USBH_HandleTypeDef *phost)
     {
       
       USBH_HID_ParseHIDDesc(&HID_Handle->HID_Desc, phost->device.Data);
+      USBH_UsrLog("USBH_HID_ClassRequest: HID Report Descriptor Length (wItemLength) = %d\r\n", HID_Handle->HID_Desc.wItemLength);
       HID_Handle->ctl_state = HID_REQ_GET_REPORT_DESC;
     }
     
@@ -377,11 +398,27 @@ static USBH_StatusTypeDef USBH_HID_Process(USBH_HandleTypeDef *phost)
 {
   USBH_StatusTypeDef status = USBH_OK;
   HID_HandleTypeDef *HID_Handle =  (HID_HandleTypeDef *) phost->pActiveClass->pData;
-  
+    static uint8_t pcount = 0;
+
+#ifdef DEBUG_USB
+  static uint32_t process_call_count = 0;
+  static uint8_t last_state = 0xFF;
+
+  process_call_count++;
+  if ((process_call_count % 1000) == 0) {
+    USBH_DbgLog("USBH_HID_Process called %lu times, state=%d\r\n", process_call_count, HID_Handle->state);
+  }
+
+  if (HID_Handle->state != last_state) {
+    USBH_DbgLog("HID state: %d\r\n", HID_Handle->state);
+    last_state = HID_Handle->state;
+  }
+#endif
+
   switch (HID_Handle->state)
   {
   case HID_INIT:
-    HID_Handle->Init(phost); 
+    HID_Handle->Init(phost);
   case HID_IDLE:
     if(USBH_HID_GetReport (phost,
                            0x01,
@@ -409,21 +446,49 @@ static USBH_StatusTypeDef USBH_HID_Process(USBH_HandleTypeDef *phost)
     break;
     
   case HID_GET_DATA:
-
-    USBH_InterruptReceiveData(phost, 
+  {
+    USBH_StatusTypeDef status;
+#ifdef DEBUG_USB
+    if (pcount++ < 20) USBH_DbgLog("HID_GET_DATA: Starting interrupt receive (length=%d, pipe=%d)\r\n", HID_Handle->length, HID_Handle->InPipe);
+#endif
+    status = USBH_InterruptReceiveData(phost,
                               HID_Handle->pData,
                               HID_Handle->length,
                               HID_Handle->InPipe);
-    
+
+#ifdef DEBUG_USB
+    if (pcount <= 20) USBH_DbgLog("HID_GET_DATA: USBH_InterruptReceiveData returned %d\r\n", status);
+#endif
+
     HID_Handle->state = HID_POLL;
     HID_Handle->timer = phost->Timer;
     HID_Handle->DataReady = 0;
     break;
+  }
     
   case HID_POLL:
-    
-    if(USBH_LL_GetURBState(phost , HID_Handle->InPipe) == USBH_URB_DONE)
+  {
+    USBH_URBStateTypeDef urb_state = USBH_LL_GetURBState(phost, HID_Handle->InPipe);
+#ifdef DEBUG_USB
+    static uint32_t poll_check_count = 0;
+    static USBH_URBStateTypeDef last_urb_state = 0xFF;
+    poll_check_count++;
+
+    /* Log when URB state changes or every 100 checks (more frequent) */
+    if (urb_state != last_urb_state || (poll_check_count % 500) == 0) {
+      HCD_HandleTypeDef *pHCD = (HCD_HandleTypeDef *)phost->pData;
+      uint8_t ch_num = HID_Handle->InPipe;
+      USBH_DbgLog("HID_POLL: URB=%d check#%lu USB_IRQ=%lu CH_IRQ[%d]=%lu CH_STATE=%d\r\n",
+                  urb_state, poll_check_count, usb_irq_count, ch_num, hc_in_irq_count[ch_num], pHCD->hc[ch_num].state);
+      last_urb_state = urb_state;
+    }
+#endif
+
+    if(urb_state == USBH_URB_DONE)
     {
+#ifdef DEBUG_USB
+      USBH_DbgLog("HID_POLL: URB DONE, writing to FIFO\r\n");
+#endif
       if(HID_Handle->DataReady == 0)
       {
 		fifo_write(&HID_Handle->fifo, HID_Handle->pData, HID_Handle->length);
@@ -434,20 +499,35 @@ static USBH_StatusTypeDef USBH_HID_Process(USBH_HandleTypeDef *phost)
 #endif
       }
 	}
-    else if(USBH_LL_GetURBState(phost , HID_Handle->InPipe) == USBH_URB_STALL) /* IN Endpoint Stalled */
+    else if(urb_state == USBH_URB_STALL) /* IN Endpoint Stalled */
     {
-      
-      /* Issue Clear Feature on interrupt IN endpoint */ 
+#ifdef DEBUG_USB
+      USBH_DbgLog("HID_POLL: URB STALL detected\r\n");
+#endif
+
+      /* Issue Clear Feature on interrupt IN endpoint */
       if(USBH_ClrFeature(phost,
                          HID_Handle->ep_addr) == USBH_OK)
       {
         /* Change state to issue next IN token */
         HID_Handle->state = HID_GET_DATA;
       }
-    } 
-    
+    }
+    else if(urb_state == USBH_URB_NOTREADY) /* NAK received, device not ready */
+    {
+#ifdef DEBUG_USB
+      static uint32_t nak_log_count = 0;
+      if ((nak_log_count++ % 500) == 0) {
+        USBH_DbgLog("HID_POLL: URB NOTREADY (NAK), retrying transfer\r\n");
+      }
+#endif
+      /* Go back to GET_DATA to restart the transfer */
+      HID_Handle->state = HID_GET_DATA;
+    }
+
 
     break;
+  }
     
   default:
     break;
@@ -464,15 +544,27 @@ static USBH_StatusTypeDef USBH_HID_Process(USBH_HandleTypeDef *phost)
 static USBH_StatusTypeDef USBH_HID_SOFProcess(USBH_HandleTypeDef *phost)
 {
   HID_HandleTypeDef *HID_Handle =  (HID_HandleTypeDef *) phost->pActiveClass->pData;
-  
+
+#ifdef DEBUG_USB
+  static uint32_t sof_call_count = 0;
+  sof_call_count++;
+  if ((sof_call_count % 1000) == 0) {
+    USBH_DbgLog("SOF called %lu times, HID state=%d\r\n", sof_call_count, HID_Handle->state);
+  }
+#endif
+
   if(HID_Handle->state == HID_POLL)
   {
     if(( phost->Timer - HID_Handle->timer) >= HID_Handle->poll)
     {
+#ifdef DEBUG_USB
+     static uint8_t pcount = 0;
+     if (pcount++ < 20) USBH_DbgLog("SOF: Poll interval elapsed, moving to HID_GET_DATA\r\n");
+#endif
       HID_Handle->state = HID_GET_DATA;
 #if (USBH_USE_OS == 1)
     osMessagePut ( phost->os_event, USBH_URB_EVENT, 0);
-#endif       
+#endif
     }
   }
   return USBH_OK;
@@ -636,7 +728,7 @@ USBH_StatusTypeDef USBH_HID_SetProtocol(USBH_HandleTypeDef *phost,
   
   
   phost->Control.setup.b.bRequest = USB_HID_SET_PROTOCOL;
-  phost->Control.setup.b.wValue.w = protocol != 0 ? 0 : 1;
+  phost->Control.setup.b.wValue.w = protocol;
   phost->Control.setup.b.wIndex.w = 0;
   phost->Control.setup.b.wLength.w = 0;
   

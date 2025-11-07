@@ -796,11 +796,15 @@ uint32_t HAL_HCD_GetCurrentSpeed(HCD_HandleTypeDef *hhcd)
   *         This parameter can be a value from 1 to 15
   * @retval None
   */
+volatile uint32_t hc_in_irq_count[16] = {0};
+
 static void HCD_HC_IN_IRQHandler(HCD_HandleTypeDef *hhcd, uint8_t chnum)
 {
   USB_OTG_GlobalTypeDef *USBx = hhcd->Instance;
   uint32_t tmpreg = 0U;
-  
+
+  hc_in_irq_count[chnum]++;
+
   if ((USBx_HC(chnum)->HCINT) &  USB_OTG_HCINT_AHBERR)
   {
     __HAL_HCD_CLEAR_HC_INT(chnum, USB_OTG_HCINT_AHBERR);
@@ -884,7 +888,7 @@ static void HCD_HC_IN_IRQHandler(HCD_HandleTypeDef *hhcd, uint8_t chnum)
             (hhcd->hc[chnum].state == HC_DATATGLERR))
     {
       if(hhcd->hc[chnum].ErrCnt++ > 3U)
-      {      
+      {
         hhcd->hc[chnum].ErrCnt = 0U;
         hhcd->hc[chnum].urb_state = URB_ERROR;
       }
@@ -892,13 +896,14 @@ static void HCD_HC_IN_IRQHandler(HCD_HandleTypeDef *hhcd, uint8_t chnum)
       {
         hhcd->hc[chnum].urb_state = URB_NOTREADY;
       }
-      
+
       /* re-activate the channel  */
       tmpreg = USBx_HC(chnum)->HCCHAR;
       tmpreg &= ~USB_OTG_HCCHAR_CHDIS;
       tmpreg |= USB_OTG_HCCHAR_CHENA;
       USBx_HC(chnum)->HCCHAR = tmpreg;
     }
+
     __HAL_HCD_CLEAR_HC_INT(chnum, USB_OTG_HCINT_CHH);
     HAL_HCD_HC_NotifyURBChange_Callback(hhcd, chnum, hhcd->hc[chnum].urb_state);
   }  
@@ -912,26 +917,20 @@ static void HCD_HC_IN_IRQHandler(HCD_HandleTypeDef *hhcd, uint8_t chnum)
     __HAL_HCD_CLEAR_HC_INT(chnum, USB_OTG_HCINT_TXERR);
   }
   else if ((USBx_HC(chnum)->HCINT) &  USB_OTG_HCINT_NAK)
-  {  
-    if(hhcd->hc[chnum].ep_type == EP_TYPE_INTR)
-    {
-      __HAL_HCD_UNMASK_HALT_HC_INT(chnum); 
-      USB_HC_Halt(hhcd->Instance, chnum);  
-    }
-    
-     /* Clear the NAK flag before re-enabling the channel for new IN request */
+  {
+    /* Clear the NAK flag before re-enabling the channel for new IN request */
     hhcd->hc[chnum].state = HC_NAK;
     __HAL_HCD_CLEAR_HC_INT(chnum, USB_OTG_HCINT_NAK);
-    
-    if  ((hhcd->hc[chnum].ep_type == EP_TYPE_CTRL)||
-              (hhcd->hc[chnum].ep_type == EP_TYPE_BULK))
-    {
-      /* re-activate the channel */
-      tmpreg = USBx_HC(chnum)->HCCHAR;
-      tmpreg &= ~USB_OTG_HCCHAR_CHDIS;
-      tmpreg |= USB_OTG_HCCHAR_CHENA;
-      USBx_HC(chnum)->HCCHAR = tmpreg;
-    }
+
+    /* Set URB to NOTREADY for all endpoint types so application knows to retry */
+    hhcd->hc[chnum].urb_state = URB_NOTREADY;
+
+    /* Re-activate the channel immediately for all endpoint types */
+    /* This keeps the channel active and avoids halt/unhalt complexity */
+    tmpreg = USBx_HC(chnum)->HCCHAR;
+    tmpreg &= ~USB_OTG_HCCHAR_CHDIS;
+    tmpreg |= USB_OTG_HCCHAR_CHENA;
+    USBx_HC(chnum)->HCCHAR = tmpreg;
   }
 }
 

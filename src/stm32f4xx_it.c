@@ -228,8 +228,10 @@ void TIM1_UP_TIM10_IRQHandler(void)
 /**
 * @brief This function handles USB On The Go FS global interrupt.
 */
+volatile uint32_t usb_irq_count = 0;
 void OTG_FS_IRQHandler(void)
 {
+	usb_irq_count++;
 #ifdef DEBUG_USB
 	led_toggle();
 #endif
