@@ -328,9 +328,9 @@ USBH_StatusTypeDef USBH_HID_KeybdInit(USBH_HandleTypeDef *phost)
     keybd_report_data[x]=0;
   }
   
-  if(HID_Handle->length > (sizeof(keybd_report_data)/sizeof(uint32_t)))
+  if(HID_Handle->length > sizeof(keybd_report_data))
   {
-    HID_Handle->length = (sizeof(keybd_report_data)/sizeof(uint32_t));
+    HID_Handle->length = sizeof(keybd_report_data);
   }
   HID_Handle->pData = (uint8_t*)keybd_report_data;
   fifo_init(&HID_Handle->fifo, phost->device.Data, HID_QUEUE_SIZE * sizeof(keybd_report_data));
@@ -374,7 +374,13 @@ static USBH_StatusTypeDef USBH_HID_KeybdDecode(USBH_HandleTypeDef *phost)
   /*Fill report */
   if(fifo_read(&HID_Handle->fifo, &keybd_report_data, HID_Handle->length) ==  HID_Handle->length)
   {
-    
+    // Add log here
+    USBH_UsrLog("USBH_HID_KeybdDecode: Raw report data: ");
+    for (int i = 0; i < HID_Handle->length; i++) {
+        USBH_UsrLog("%02X ", ((uint8_t*)&keybd_report_data)[i]);
+    }
+    USBH_UsrLog("\r\n");
+
     keybd_info.lctrl=(uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &imp_0_lctrl, 0);
     keybd_info.lshift=(uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &imp_0_lshift, 0);
     keybd_info.lalt=(uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &imp_0_lalt, 0);
