@@ -7,6 +7,7 @@
 #include "debug.h"
 #include "task_communication.h"
 #include "hid_report.h"
+#include "portable.h"
 
 /* Public queue handle declared in main.c */
 extern QueueHandle_t extended_input_queue;
@@ -70,17 +71,46 @@ int log_enqueuef(const char* fmt, ...)
 
 	if (!serial_log_queue)
 	{
-		/* Fallback early */
+		/* Fallback early: write directly to UART/printf. */
+		/* NOTE: This is not ISR-safe and should only be used */
+		/* before the scheduler has started. */
 		serial_write(buf, (uint16_t)strnlen(buf, sizeof(buf)));
 		return 0;
 	}
-	return (xQueueSend(serial_log_queue, buf, 0) == pdTRUE) ? 0 : -1;
+
+	if (xPortIsInsideInterrupt())
+	{
+		BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+		if (xQueueSendFromISR(serial_log_queue, buf, &xHigherPriorityTaskWoken) != pdTRUE)
+		{
+			return -1;
+		}
+		portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+	}
+	else
+	{
+		if (xQueueSend(serial_log_queue, buf, 0) != pdTRUE)
+		{
+			return -1;
+		}
+	}
+
+	return 0;
 }
 
 static void serial_logger_task(void* arg)
 {
 	(void)arg;
 	char msg[SERIAL_LOG_MAXLEN];
+	switch (debuglevel) {
+		case DBG_NOISY:
+		case DBG_VERBOSE:
+		case DBG_INFO:
+			serial_write("\r\n### LOGGER TASK RUNNING ###\r\n", 29);
+			break;
+		default:
+			break;
+	}
 	DBG_I("serial_logger_task started\r\n");
 	for(;;)
 	{
