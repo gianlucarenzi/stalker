@@ -25,7 +25,7 @@ extern uint32_t _estack;
 
 /* Local variables */
 static int debuglevel = DBG_INFO;
-static const char *fwBuild = "v0.3 BUILD: " __TIME__ "-" __DATE__;
+static const char *fwBuild = "v0.4 BUILD: " __TIME__ "-" __DATE__;
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
@@ -43,7 +43,8 @@ static void MX_USART2_UART_Init(int baudrate);
 
 #define STM32_DFU_ROM_CODE 0x1FFF0000
 
-#define BOOT_1_PIN      GPIO_PIN_1 //STALKER V2 BOARD: PC1
+/* LED GPIOA0, BOOTMODE GPIOC1 */
+#define BOOT_1_PIN      GPIO_PIN_1
 #define BOOT_1_PORT     GPIOC
 #define BOOT_1_ENABLED  GPIO_PIN_RESET
 #define LED_1_PIN       GPIO_PIN_0
@@ -140,7 +141,7 @@ static inline int check_valid_application(uint32_t jumpAddress, uint32_t stackAd
 }
 
 /**
-  * @brief  The USB Bootloader.
+  * @brief  The USB DFU Bootloader.
   * @retval never reached
   * 
   * Tie the Amiga Reset Pin to ground for at least 1 second during
@@ -244,6 +245,7 @@ int main(void)
 
 			/* Set the vector table entries */
 			uint32_t msp_value = StackAddress;
+			__disable_irq(); // Disable all interrupts before jumping to application
 			SCB->VTOR = JumpAddress;
 			/* Set the STACK POINTER to the Application space */
 			__set_MSP(msp_value);

@@ -71,9 +71,6 @@ MEMORY
   RAM (xrw)     : ORIGIN = 0x20000000, LENGTH = 64K
 }
 
-/* Highest address of the user mode stack */
-_estack = ORIGIN(RAM) + LENGTH(RAM);    /* end of RAM */
-
 /* Define output sections */
 SECTIONS
 {
@@ -195,6 +192,7 @@ SECTIONS
   .ARM.attributes 0 : { *(.ARM.attributes) }
 }
 
+/* Highest address of the user mode stack */
 _estack = ORIGIN(RAM) + LENGTH(RAM);    /* end of RAM */
 
 /* Bootloader start address and Application start address as defined in MEMORY section */
