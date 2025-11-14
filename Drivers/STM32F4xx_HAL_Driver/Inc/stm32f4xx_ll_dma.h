@@ -6,29 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software is licensed under terms that can be found in the LICENSE file in
+  * the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -301,14 +284,24 @@ typedef struct
 /** @defgroup DMA_LL_EC_CHANNEL CHANNEL
   * @{
   */
-#define LL_DMA_CHANNEL_0                  0x00000000U                                                /* Select Channel0 of DMA Instance */
-#define LL_DMA_CHANNEL_1                  DMA_SxCR_CHSEL_0                                           /* Select Channel1 of DMA Instance */
-#define LL_DMA_CHANNEL_2                  DMA_SxCR_CHSEL_1                                           /* Select Channel2 of DMA Instance */
-#define LL_DMA_CHANNEL_3                  (DMA_SxCR_CHSEL_0 | DMA_SxCR_CHSEL_1)                      /* Select Channel3 of DMA Instance */
-#define LL_DMA_CHANNEL_4                  DMA_SxCR_CHSEL_2                                           /* Select Channel4 of DMA Instance */
-#define LL_DMA_CHANNEL_5                  (DMA_SxCR_CHSEL_2 | DMA_SxCR_CHSEL_0)                      /* Select Channel5 of DMA Instance */
-#define LL_DMA_CHANNEL_6                  (DMA_SxCR_CHSEL_2 | DMA_SxCR_CHSEL_1)                      /* Select Channel6 of DMA Instance */
-#define LL_DMA_CHANNEL_7                  (DMA_SxCR_CHSEL_2 | DMA_SxCR_CHSEL_1 | DMA_SxCR_CHSEL_0)   /* Select Channel7 of DMA Instance */
+#define LL_DMA_CHANNEL_0                  0x00000000U                                                                   /* Select Channel0 of DMA Instance */
+#define LL_DMA_CHANNEL_1                  DMA_SxCR_CHSEL_0                                                              /* Select Channel1 of DMA Instance */
+#define LL_DMA_CHANNEL_2                  DMA_SxCR_CHSEL_1                                                              /* Select Channel2 of DMA Instance */
+#define LL_DMA_CHANNEL_3                  (DMA_SxCR_CHSEL_0 | DMA_SxCR_CHSEL_1)                                         /* Select Channel3 of DMA Instance */
+#define LL_DMA_CHANNEL_4                  DMA_SxCR_CHSEL_2                                                              /* Select Channel4 of DMA Instance */
+#define LL_DMA_CHANNEL_5                  (DMA_SxCR_CHSEL_2 | DMA_SxCR_CHSEL_0)                                         /* Select Channel5 of DMA Instance */
+#define LL_DMA_CHANNEL_6                  (DMA_SxCR_CHSEL_2 | DMA_SxCR_CHSEL_1)                                         /* Select Channel6 of DMA Instance */
+#define LL_DMA_CHANNEL_7                  (DMA_SxCR_CHSEL_2 | DMA_SxCR_CHSEL_1 | DMA_SxCR_CHSEL_0)                      /* Select Channel7 of DMA Instance */
+#if defined (DMA_SxCR_CHSEL_3)
+#define LL_DMA_CHANNEL_8                  DMA_SxCR_CHSEL_3                                                              /* Select Channel8 of DMA Instance */
+#define LL_DMA_CHANNEL_9                  (DMA_SxCR_CHSEL_3 | DMA_SxCR_CHSEL_0)                                         /* Select Channel9 of DMA Instance */
+#define LL_DMA_CHANNEL_10                 (DMA_SxCR_CHSEL_3 | DMA_SxCR_CHSEL_1)                                         /* Select Channel10 of DMA Instance */
+#define LL_DMA_CHANNEL_11                 (DMA_SxCR_CHSEL_3 | DMA_SxCR_CHSEL_1 | DMA_SxCR_CHSEL_0)                      /* Select Channel11 of DMA Instance */
+#define LL_DMA_CHANNEL_12                 (DMA_SxCR_CHSEL_3 | DMA_SxCR_CHSEL_2)                                         /* Select Channel12 of DMA Instance */
+#define LL_DMA_CHANNEL_13                 (DMA_SxCR_CHSEL_3 | DMA_SxCR_CHSEL_2 | DMA_SxCR_CHSEL_0)                      /* Select Channel13 of DMA Instance */
+#define LL_DMA_CHANNEL_14                 (DMA_SxCR_CHSEL_3 | DMA_SxCR_CHSEL_2 | DMA_SxCR_CHSEL_1)                      /* Select Channel14 of DMA Instance */
+#define LL_DMA_CHANNEL_15                 (DMA_SxCR_CHSEL_3 | DMA_SxCR_CHSEL_2 | DMA_SxCR_CHSEL_1 | DMA_SxCR_CHSEL_0)   /* Select Channel15 of DMA Instance */
+#endif /* DMA_SxCR_CHSEL_3 */
 /**
   * @}
   */
@@ -1178,7 +1171,7 @@ __STATIC_INLINE void LL_DMA_SetCurrentTargetMem(DMA_TypeDef *DMAx, uint32_t Stre
 }
 
 /**
-  * @brief Set Current target (only in double buffer mode) to Memory 1 or Memory 0.
+  * @brief Get Current target (only in double buffer mode).
   * @rmtoll CR          CT           LL_DMA_GetCurrentTargetMem 
   * @param  DMAx DMAx Instance
   * @param  Stream This parameter can be one of the following values:
@@ -1616,7 +1609,7 @@ __STATIC_INLINE uint32_t LL_DMA_GetM2MDstAddress(DMA_TypeDef* DMAx, uint32_t Str
   */
 __STATIC_INLINE void LL_DMA_SetMemory1Address(DMA_TypeDef *DMAx, uint32_t Stream, uint32_t Address)
 {
-  MODIFY_REG(((DMA_Stream_TypeDef*)((uint32_t)((uint32_t)DMAx + STREAM_OFFSET_TAB[Stream])))->M1AR, DMA_SxM1AR_M1A, Address);
+  WRITE_REG(((DMA_Stream_TypeDef*)((uint32_t)((uint32_t)DMAx + STREAM_OFFSET_TAB[Stream])))->M1AR, Address);
 }
 
 /**
@@ -2736,7 +2729,7 @@ __STATIC_INLINE void LL_DMA_DisableIT_FE(DMA_TypeDef *DMAx, uint32_t Stream)
 }
 
 /**
-  * @brief Check if Half transfer interrup is enabled.
+  * @brief Check if Half transfer interrupt is enabled.
   * @rmtoll CR        HTIE         LL_DMA_IsEnabledIT_HT
   * @param  DMAx DMAx Instance
   * @param  Stream This parameter can be one of the following values:
@@ -2776,7 +2769,7 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_TE(DMA_TypeDef *DMAx, uint32_t Strea
 }
 
 /**
-  * @brief Check if Transfer complete interrup is enabled.
+  * @brief Check if Transfer complete interrupt is enabled.
   * @rmtoll CR        TCIE         LL_DMA_IsEnabledIT_TC
   * @param  DMAx DMAx Instance
   * @param  Stream This parameter can be one of the following values:
@@ -2816,7 +2809,7 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_DME(DMA_TypeDef *DMAx, uint32_t Stre
 }
 
 /**
-  * @brief Check if FIFO error interrup is enabled.
+  * @brief Check if FIFO error interrupt is enabled.
   * @rmtoll FCR        FEIE         LL_DMA_IsEnabledIT_FE
   * @param  DMAx DMAx Instance
   * @param  Stream This parameter can be one of the following values:
@@ -2873,4 +2866,3 @@ void LL_DMA_StructInit(LL_DMA_InitTypeDef *DMA_InitStruct);
 
 #endif /* __STM32F4xx_LL_DMA_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

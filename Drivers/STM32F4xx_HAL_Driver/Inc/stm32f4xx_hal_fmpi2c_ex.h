@@ -6,44 +6,25 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
+  * Copyright (c) 2016 STMicroelectronics.
+  * All rights reserved.
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __STM32F4xx_HAL_FMPI2C_EX_H
-#define __STM32F4xx_HAL_FMPI2C_EX_H
+#ifndef STM32F4xx_HAL_FMPI2C_EX_H
+#define STM32F4xx_HAL_FMPI2C_EX_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F446xx) || defined(STM32F412Zx) ||\
-    defined(STM32F412Vx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx)
-
+#if defined(FMPI2C_CR1_PE)
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
 
@@ -57,7 +38,6 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
-
 /** @defgroup FMPI2CEx_Exported_Constants FMPI2C Extended Exported Constants
   * @{
   */
@@ -85,22 +65,41 @@ extern "C" {
   */
 
 /* Exported macro ------------------------------------------------------------*/
-/* Exported functions --------------------------------------------------------*/
+/** @defgroup FMPI2CEx_Exported_Macros FMPI2C Extended Exported Macros
+  * @{
+  */
 
+/**
+  * @}
+  */
+
+/* Exported functions --------------------------------------------------------*/
 /** @addtogroup FMPI2CEx_Exported_Functions FMPI2C Extended Exported Functions
   * @{
   */
 
-/** @addtogroup FMPI2CEx_Exported_Functions_Group1 Extended features functions
-  * @brief    Extended features functions
+/** @addtogroup FMPI2CEx_Exported_Functions_Group1 Filter Mode Functions
   * @{
   */
-
 /* Peripheral Control functions  ************************************************/
 HAL_StatusTypeDef HAL_FMPI2CEx_ConfigAnalogFilter(FMPI2C_HandleTypeDef *hfmpi2c, uint32_t AnalogFilter);
 HAL_StatusTypeDef HAL_FMPI2CEx_ConfigDigitalFilter(FMPI2C_HandleTypeDef *hfmpi2c, uint32_t DigitalFilter);
+/**
+  * @}
+  */
+
+/** @addtogroup FMPI2CEx_Exported_Functions_Group3 Fast Mode Plus Functions
+  * @{
+  */
 void HAL_FMPI2CEx_EnableFastModePlus(uint32_t ConfigFastModePlus);
 void HAL_FMPI2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus);
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
 
 /* Private constants ---------------------------------------------------------*/
 /** @defgroup FMPI2CEx_Private_Constants FMPI2C Extended Private Constants
@@ -143,18 +142,9 @@ void HAL_FMPI2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus);
   * @}
   */
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-#endif /* STM32F410xx || STM32F446xx || STM32F412Zx || STM32F412Vx || STM32F412Rx || STM32F412Cx || STM32F413xx || STM32F423xx */  
+#endif /* FMPI2C_CR1_PE */
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __STM32F4xx_HAL_FMPI2C_EX_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+#endif /* STM32F4xx_HAL_FMPI2C_EX_H */
