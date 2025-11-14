@@ -46,7 +46,6 @@
 
 
 #include "stm32f4xx.h"
-#include "stm32f4xx_it.h" /* For symbols defined by the GNU linker script */
 
 #if !defined  (HSE_VALUE) 
   #define HSE_VALUE    ((uint32_t)25000000) /*!< Default value of the External oscillator in Hz */
@@ -101,14 +100,14 @@
 #if defined(VECT_TAB_SRAM)
 #define VECT_TAB_BASE_ADDRESS   SRAM_BASE       /*!< Vector Table base address field.
                                                      This value must be a multiple of 0x200. */
-#define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table base offset field.
-                                                     This value must be a multiple of 0x200. */
 #else
 #define VECT_TAB_BASE_ADDRESS   FLASH_BASE      /*!< Vector Table base address field.
                                                      This value must be a multiple of 0x200. */
-#define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table base offset field.
-                                                     This value must be a multiple of 0x200. */
 #endif /* VECT_TAB_SRAM */
+#if !defined(VECT_TAB_OFFSET)
+#define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table offset field.
+                                                     This value must be a multiple of 0x200. */
+#endif /* VECT_TAB_OFFSET */
 #endif /* USER_VECT_TAB_ADDRESS */
 /******************************************************************************/
 
@@ -179,8 +178,6 @@ void SystemInit(void)
   /* Configure the Vector Table location -------------------------------------*/
 #if defined(USER_VECT_TAB_ADDRESS)
   SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
-#else
-  SCB->VTOR = (uint32_t) &__bootflash_start;
 #endif /* USER_VECT_TAB_ADDRESS */
 }
 
@@ -222,7 +219,7 @@ void SystemInit(void)
   */
 void SystemCoreClockUpdate(void)
 {
-  uint32_t tmp = 0, pllvco = 0, pllp = 2, pllsource = 0, pllm = 2;
+  uint32_t tmp, pllvco, pllp, pllsource, pllm;
   
   /* Get SYSCLK source -------------------------------------------------------*/
   tmp = RCC->CFGR & RCC_CFGR_SWS;
