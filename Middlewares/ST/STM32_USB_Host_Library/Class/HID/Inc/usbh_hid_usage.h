@@ -1,35 +1,27 @@
 /**
   ******************************************************************************
-  * @file    usbh_hid_usage.c 
+  * @file    usbh_hid_usage.c
   * @author  MCD Application Team
-  * @version V3.2.2
-  * @date    07-July-2015
-  * @brief   This file contain the USAGE page codes              
+  * @brief   This file contain the USAGE page codes
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2015 STMicroelectronics</center></h2>
+  * Copyright (c) 2015 STMicroelectronics.
+  * All rights reserved.
   *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
+
 /* Define to prevent recursive  ----------------------------------------------*/
 #ifndef __USDH_HID_USAGE_H
 #define __USDH_HID_USAGE_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /** @addtogroup USBH_LIB
@@ -43,11 +35,11 @@
 /** @addtogroup USBH_HID_CLASS
   * @{
   */
-  
+
 /** @defgroup USBH_HID_USAGE
   * @brief This file is the Header file for usbh_hid_usage.c
   * @{
-  */ 
+  */
 
 
 /** @defgroup USBH_HID_USAGE_Exported_Types
@@ -174,7 +166,7 @@
 
 /**
   * @}
-  */ 
+  */
 
 #ifdef __cplusplus
 }
@@ -184,17 +176,16 @@
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  */
