@@ -8,6 +8,7 @@ The firmware incorporates advanced features such as dynamic mode switching betwe
 
 ## Features
 
+*   **Firmware Version:** `v3.0NG-RTOS`
 *   **USB HID Keyboard Host:** Full support for connecting and interpreting inputs from standard USB HID keyboards.
 *   **Amiga Keyboard Protocol Translation:** Seamless conversion of USB keyboard events into the native Amiga keyboard protocol.
 *   **Dynamic Mode Switching:** Toggle between Amiga and PC keyboard layouts using a dedicated key combination (`Left Control + Left Alt + Left Shift + P`). The selected mode is persistently stored in EEPROM.
@@ -18,6 +19,7 @@ The firmware incorporates advanced features such as dynamic mode switching betwe
     *   Supports hardware-initiated resets from the Amiga side.
 *   **Persistent Settings:** Utilizes internal EEPROM (or Flash emulation) for storing user preferences, such as the last selected operating mode.
 *   **Real-Time Operating System (RTOS):** Leverages FreeRTOS for efficient multi-tasking, ensuring responsive and reliable operation.
+*   **Easter Egg:** If no keyboard is connected, the firmware will periodically type out a message on the Amiga. This feature is enabled by a compile-time flag.
 
 ## Hardware Requirements
 
@@ -34,6 +36,11 @@ The firmware is structured around the STM32Cube HAL and FreeRTOS, providing a ro
 *   **USB Host Library:** Handles the complexities of USB communication, including device enumeration, configuration, and parsing of HID reports from connected keyboards.
 *   **Amiga Keyboard Protocol Driver:** Implements the specific timing and data exchange required for communication with the Amiga computer, translating generic USB HID scancodes into Amiga-specific scancodes.
 *   **EEPROM Driver:** Manages read and write operations to non-volatile memory, ensuring that user settings and configurations persist across power cycles.
+*   **Inter-Task Communication:** Tasks communicate using thread-safe FreeRTOS queues:
+    *   `keyboardQueueHandle`: Passes raw keyboard data from `usbTask` to `amigaTask`.
+    *   `ledQueueHandle`: Passes LED status changes (Caps/Num/Scroll lock) from `amigaTask` to `usbTask`.
+    *   `ledManagerQueueHandle`: Sends commands from `usbTask` to `led_manager_task` to control the onboard status LED.
+    *   `amigaTaskQueueHandle`: Used for sending internal commands (like reset notifications) to the `amigaTask` itself.
 
 ## Key Components (FreeRTOS Tasks)
 
@@ -41,7 +48,7 @@ The firmware is organized into several FreeRTOS tasks, each responsible for a sp
 
 ### `amigaTask`
 
-This task is the central hub for Amiga-related keyboard logic.
+This task is the central hub for Amiga-related keyboard logic. Its priority is `osPriorityLow`.
 
 *   **Initialization:** Sets up the Amiga keyboard interface and reads the initial operating mode from EEPROM.
 *   **Mode Management:** Determines and sets the `current_mode` (AMIGA_MODE or PC_MODE) based on saved settings or defaults.
@@ -79,16 +86,16 @@ graph TD
 **Timing Considerations for `amigaTask`:**
 *   `osMessageQueueGet(keyboardQueueHandle, ..., 0)`: This is a non-blocking call, ensuring the task doesn't halt waiting for keyboard input. Keyboard events are processed as soon as they are available.
 *   `osMessageQueueGet(amigaTaskQueueHandle, ..., 0)`: Also non-blocking, for internal task communication.
-*   `osDelay(10ms)`: A small delay introduced at the end of the loop to yield CPU time to other tasks and prevent busy-waiting, ensuring efficient resource utilization.
+*   `osDelay(10ms)`: A small delay introduced at the end of the loop to yield CPU time to other tasks and prevent busy-waiting. This results in a cycle time of approximately 10ms.
 *   `check_for_special_combos()` and `amiga_task_check_reset_condition()`: Both functions incorporate internal timers (e.g., `RESET_TIMEOUT_MS` of 500ms) to detect sustained key presses or Amiga clock line states, preventing spurious triggers.
 
 ### `usbTask`
 
-Responsible for all USB Host related operations, primarily interacting with USB keyboards.
+Responsible for all USB Host related operations, primarily interacting with USB keyboards. Its priority is `osPriorityNormal`.
 
 *   **USB Host Management:** Initializes and manages the USB Host stack.
 *   **Device Detection:** Monitors for the connection and disconnection of USB keyboards.
-*   **HID Report Processing:** Reads raw HID reports from connected keyboards.
+*   **HID Report Processing:** Reads raw HID reports from connected keyboards, sending an update only when the state changes.
 *   **Event Generation:** Parses HID data into a structured `keyboard_message_t` format.
 *   **Inter-Task Communication:** Sends processed keyboard messages to the `amigaTask` via `keyboardQueueHandle`.
 *   **LED Control:** Receives `led_status_t` commands from the `amigaTask` and controls the LEDs on the connected USB keyboard (e.g., Caps Lock, Num Lock).
@@ -102,40 +109,42 @@ graph TD
     C --> D{USBH_Process()};
     D --> E{Check for USB Keyboard State Changes};
     E -- Connected --> F{Read HID Report};
-    F --> G{Parse HID Data};
-    G --> H{Create keyboard_message_t};
+    F --> G{Parse HID Data & Check for Changes};
+    G -- State Changed --> H{Create keyboard_message_t};
     H --> I{osMessageQueuePut(keyboardQueueHandle, msg, 0)};
     I --> J{Check for LED Status Messages};
     J -- osOK --> K{Control USB Keyboard LEDs};
     K --> C;
     J -- Not osOK --> C;
+    G -- No Change --> J;
     E -- Disconnected --> L[Send Reset Event to amigaTask];
     L --> C;
 ```
 
 **Timing Considerations for `usbTask`:**
-*   `USBH_Process()`: This function is typically called frequently (e.g., every few milliseconds) to poll the USB state machine and handle ongoing USB transactions. Its execution time is variable depending on USB activity.
-*   HID Report Polling: The frequency of reading HID reports is often dictated by the USB HID descriptor of the connected keyboard (e.g., 8ms, 10ms). The `usbTask`'s loop should be fast enough to accommodate this polling rate.
+*   `USBH_Process()`: This function is the core of the USB host stack and is called in a loop.
+*   `osDelay(10ms)`: The task loop has a 10ms delay, making it responsive to USB events and LED control messages.
+*   HID Report Polling: The frequency of reading HID reports is often dictated by the USB HID descriptor of the connected keyboard (e.g., 8ms, 10ms). The `usbTask`'s loop is fast enough to accommodate this polling rate.
 *   `osMessageQueuePut(keyboardQueueHandle, msg, 0, 0)`: A non-blocking call to send keyboard events, ensuring the `usbTask` doesn't block if the `amigaTask` queue is temporarily full.
 
 ### `eeprom_task`
 
 Manages non-volatile storage operations.
 
-*   **Persistence:** Handles read and write requests for system settings (e.g., `current_mode`) to the internal EEPROM or Flash memory emulating EEPROM.
+*   **Persistence:** Handles asynchronous read and write requests for system settings (e.g., `current_mode`) to the internal EEPROM (emulated in Flash).
 *   **Reliability:** Ensures data integrity during storage operations.
 
 ### `led_manager_task`
 
-Controls visual feedback.
+Controls the onboard status LED for visual feedback. Its priority is `osPriorityLow`.
 
-*   **LED Control:** Receives `led_message_t` commands and manages the state of onboard LEDs or other visual indicators to reflect system status (e.g., current mode, reset sequence).
+*   **LED Control:** Receives commands via `ledManagerQueueHandle` from other tasks (like `usbTask`) and manages the state of the single onboard LED to reflect system status (e.g., solid ON for ready, blinking for waiting).
 
 ### `log_task`
 
 Handles system logging and debugging output.
 
-*   **Debug Output:** Processes and outputs debug messages generated by other tasks, typically via a UART interface to a connected terminal or debug probe.
+*   **Debug Output:** Processes and outputs debug messages generated by other tasks, typically via a UART interface to a connected terminal or debug probe. It is initialized at startup but does not run as a separate task.
 
 ## Build Instructions
 

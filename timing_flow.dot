@@ -42,7 +42,7 @@ digraph TimingFlow {
         
         // Amiga Task cycle
         subgraph cluster_amiga_cycle {
-            label="Amiga Task (Every 50ms)";
+            label="Amiga Task (Every 10ms)";
             style=filled;
             color=lightgreen;
             
@@ -104,7 +104,7 @@ digraph TimingFlow {
     convert_scancode -> amiga_send;
     amiga_send -> check_reset;
     check_reset -> send_led_status;
-    send_led_status -> receive_from_queue [label="50ms delay", style=dotted];
+    send_led_status -> receive_from_queue [label="10ms delay", style=dotted];
     
     // Protocol timing
     amiga_send -> set_data_line;
@@ -125,13 +125,12 @@ digraph TimingFlow {
     
     // Timing annotations
     timing_10ms [label="10ms", shape=ellipse, fillcolor=lightblue];
-    timing_50ms [label="50ms", shape=ellipse, fillcolor=lightblue];
     timing_20us [label="20μs", shape=ellipse, fillcolor=lightblue];
     timing_85us [label="85μs", shape=ellipse, fillcolor=lightblue];
     timing_500ms [label="500ms", shape=ellipse, fillcolor=lightblue];
     
     usb_host_process -> timing_10ms [style=dotted, color=gray];
-    receive_from_queue -> timing_50ms [style=dotted, color=gray];
+    receive_from_queue -> timing_10ms [style=dotted, color=gray];
     clock_pulse -> timing_20us [style=dotted, color=gray];
     wait_handshake -> timing_85us [style=dotted, color=gray];
     reset_detected -> timing_500ms [style=dotted, color=gray];

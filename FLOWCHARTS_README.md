@@ -21,8 +21,8 @@ Questo documento descrive i diagrammi di flusso del progetto **USB to Amiga Keyb
 - **Scopo**: Mostra il flusso dettagliato dei dati tra i componenti
 - **Dettagli inclusi**:
   - Strutture dati (keyboard_message_t, led_message_t)
-  - Timing dei task (10ms USB, 50ms Amiga)
-  - Priorità dei task (USB=3, Amiga=2)
+  - Timing dei task (10ms per tutti i task principali)
+  - Priorità dei task (USB=Normal, Amiga=Low, LedManager=Low)
   - Dettagli del protocollo Amiga
   - Dimensioni delle code FreeRTOS
 
@@ -43,22 +43,26 @@ Questo documento descrive i diagrammi di flusso del progetto **USB to Amiga Keyb
 
 | Task | Priorità | Ciclo | Stack | Responsabilità |
 |------|----------|-------|-------|----------------|
-| **USB Task** | 3 (Alta) | 10ms | 4x minimal | USB HID, LED, Stato connessione |
-| **Amiga Task** | 2 (Media) | 50ms | 2x minimal | GPIO, Protocollo Amiga, Reset |
+| **USB Task** | Normal | 10ms | 1024 | USB HID, LED, Stato connessione |
+| **Amiga Task** | Low | 10ms | 1024 | GPIO, Protocollo Amiga, Reset |
+| **LedManagerTask** | Low | Event-Driven | 512 | Gestione LED di stato onboard |
 
 ### **Comunicazione Inter-Task**
 
 | Coda | Dimensione | Direzione | Contenuto |
 |------|------------|-----------|-----------|
-| **keyboard_queue** | 10 messaggi | USB → Amiga | keyboard_message_t |
-| **led_queue** | 5 messaggi | Amiga → USB | led_message_t |
+| **keyboardQueue** | 16 messaggi | USB → Amiga | keyboard_message_t |
+| **ledQueue** | 16 messaggi | Amiga → USB | led_message_t |
+| **ledManagerQueue**| 32 messaggi | USB → LedManager| led_manager_message_t |
+| **amigaTaskQueue** | 8 messaggi | All → Amiga | AmigaTaskMsg_t |
+
 
 ### **Timing Critici**
 
 | Operazione | Timing | Descrizione |
 |------------|--------|-------------|
 | **USB Task Cycle** | 10ms | Ciclo principale USB task |
-| **Amiga Task Cycle** | 50ms | Ciclo principale Amiga task |
+| **Amiga Task Cycle** | 10ms | Ciclo principale Amiga task |
 | **Clock Pulse** | 20μs | Durata impulso clock Amiga |
 | **Handshake** | 85μs | Impulso handshake CPU Amiga |
 | **Reset Detection** | 500ms | Timeout per rilevamento reset |
@@ -90,7 +94,7 @@ Questo documento descrive i diagrammi di flusso del progetto **USB to Amiga Keyb
 
 ### **Runtime Operation**
 - **USB Task**: Gestisce USB HID e LED ogni 10ms
-- **Amiga Task**: Processa tastiera e gestisce reset ogni 50ms
+- **Amiga Task**: Processa tastiera e gestisce reset ogni 10ms
 - **Comunicazione**: Via code FreeRTOS thread-safe
 
 ## 📁 **File Generati**
@@ -134,4 +138,4 @@ dot -Tpng timing_flow.dot -o timing_flow.png -Gdpi=300
 - I diagrammi sono scalabili (formato SVG disponibile)
 
 ---
-**Generato automaticamente per il progetto USB to Amiga Keyboard Adapter v1.5-rtos**
+**Generato automaticamente per il progetto USB to Amiga Keyboard Adapter v3.0NG-RTOS**

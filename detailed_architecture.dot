@@ -1,100 +1,90 @@
 digraph DetailedArchitecture {
     // Graph settings
-    rankdir=LR;
+    graph [rankdir=LR, splines=ortho, nodesep=0.4];
     node [shape=record, style=filled, fontname="Arial", fontsize=9];
     edge [fontname="Arial", fontsize=8];
-    
-    // USB Side
-    subgraph cluster_usb_side {
-        label="USB Side";
+
+    // Hardware Layer
+    subgraph cluster_hw {
+        label="Hardware Layer";
+        style=filled;
+        color=lightgrey;
+        usb_keyboard [label="{USB Keyboard|HID Protocol}", fillcolor=lightcyan, shape=box3d];
+        amiga_computer [label="{Amiga Computer|Keyboard Port}", fillcolor=lightcyan, shape=box3d];
+        onboard_led [label="{Onboard LED}", fillcolor=lightcyan, shape=component];
+    }
+
+    // Main Application Layer
+    subgraph cluster_app {
+        label="Application Layer (FreeRTOS Tasks)";
         style=filled;
         color=lightblue;
-        
-        usb_keyboard [label="{USB Keyboard|HID Protocol}", fillcolor=lightcyan];
-        
-        subgraph cluster_usb_task_detail {
-            label="USB Task (10ms cycle)";
-            style=filled;
-            color=lightpink;
-            
-            usb_task_node [label="{USB Task|{MX_USB_HOST_Process()|USBH_Keybd()|LED Management|Status Indication}}", fillcolor=pink];
+
+        // Tasks
+        subgraph cluster_tasks {
+            label="Tasks";
+            style=invis;
+            usb_task_node [label="{usbKeyboardTask|Prio: Normal|Cycle: 10ms}", fillcolor=pink];
+            amiga_task_node [label="{amigaTask|Prio: Low|Cycle: 10ms}", fillcolor=lightgreen];
+            led_manager_task_node [label="{LedManagerTask|Prio: Low|Event-Driven}", fillcolor=lightgoldenrodyellow];
+            eeprom_task_node [label="{eeprom_task|Prio: Low|Event-Driven}", fillcolor=lightgoldenrodyellow];
         }
-        
-        usb_host_stack [label="{USB Host Stack|{USBH_HID|STM32 USB OTG|HAL Drivers}}", fillcolor=lightyellow];
-    }
-    
-    // FreeRTOS Core
-    subgraph cluster_freertos_core {
-        label="FreeRTOS Core";
-        style=filled;
-        color=lightcyan;
-        
-        scheduler_detail [label="{FreeRTOS Scheduler|{Task Switching|Priority Management|Timing Control}}", fillcolor=cyan];
-        
-        queues [label="{Inter-Task Queues|{keyboard_queue\\n(10 messages)|led_queue\\n(5 messages)}}", fillcolor=orange];
-    }
-    
-    // Amiga Side
-    subgraph cluster_amiga_side {
-        label="Amiga Side";
-        style=filled;
-        color=lightgreen;
-        
-        subgraph cluster_amiga_task_detail {
-            label="Amiga Task (50ms cycle)";
-            style=filled;
-            color=lightsteelblue;
-            
-            amiga_task_node [label="{Amiga Task|{Scancode Conversion|Protocol Timing|Reset Detection|GPIO Control}}", fillcolor=lightgreen];
+
+        // Queues
+        subgraph cluster_queues {
+            label="Inter-Task Queues";
+            style=invis;
+            keyboardQueue [label="{keyboardQueue|16 msgs|keyboard_message_t}", fillcolor=orange, shape=cylinder];
+            ledQueue [label="{ledQueue|16 msgs|led_message_t}", fillcolor=orange, shape=cylinder];
+            ledManagerQueue [label="{ledManagerQueue|32 msgs|led_manager_message_t}", fillcolor=orange, shape=cylinder];
+            amigaTaskQueue [label="{amigaTaskQueue|8 msgs|AmigaTaskMsg_t}", fillcolor=orange, shape=cylinder];
+            eepromQueue [label="{eepromQueue|...}", fillcolor=orange, shape=cylinder];
         }
-        
-        amiga_protocol_detail [label="{Amiga Protocol|{Clock/Data Lines|Handshake Timing|Reset Handling}}", fillcolor=lightyellow];
-        
-        amiga_computer [label="{Amiga Computer|Keyboard Port}", fillcolor=lightgray];
     }
-    
-    // Data structures
-    subgraph cluster_data_structures {
-        label="Data Structures";
+
+    // Driver Layer
+    subgraph cluster_drivers {
+        label="Driver & HAL Layer";
         style=filled;
-        color=wheat;
-        
-        keyboard_msg [label="{keyboard_message_t|{keycode|timestamp}}", fillcolor=wheat];
-        led_msg [label="{led_message_t|{led_status|timestamp}}", fillcolor=wheat];
-        keyboard_code [label="{keyboard_code_t|{Modifier keys|6 key array|Press states}}", fillcolor=wheat];
+        color=lightyellow;
+        usb_host_stack [label="{USB Host Stack|usbh_hid.c}", fillcolor=yellow];
+        amiga_protocol [label="{Amiga Protocol Driver|amiga.c}", fillcolor=yellow];
+        log_task [label="{Log Task / UART|log_task.c}", fillcolor=yellow];
     }
-    
-    // Main flow connections
-    usb_keyboard -> usb_host_stack [label="USB HID Reports"];
-    usb_host_stack -> usb_task_node [label="Keyboard Data"];
-    
-    usb_task_node -> queues [label="keyboard_message_t", color=blue];
-    queues -> amiga_task_node [label="keyboard_message_t", color=blue];
-    
-    amiga_task_node -> queues [label="led_message_t", color=red];
-    queues -> usb_task_node [label="led_message_t", color=red];
-    
-    amiga_task_node -> amiga_protocol_detail [label="GPIO Signals"];
-    amiga_protocol_detail -> amiga_computer [label="Clock/Data/Reset"];
-    
-    // Scheduler connections
-    scheduler_detail -> usb_task_node [label="10ms tick", style=dotted];
-    scheduler_detail -> amiga_task_node [label="50ms tick", style=dotted];
-    
-    // Data structure usage
-    usb_task_node -> keyboard_msg [style=dashed, label="creates"];
-    amiga_task_node -> led_msg [style=dashed, label="creates"];
-    amiga_task_node -> keyboard_code [style=dashed, label="processes"];
-    
-    // Timing annotations
-    usb_timing [label="{USB Task Timing|{Priority: 3 (High)|Cycle: 10ms|Stack: 4x minimal}}", shape=note, fillcolor=lightpink];
-    amiga_timing [label="{Amiga Task Timing|{Priority: 2 (Medium)|Cycle: 50ms|Stack: 2x minimal}}", shape=note, fillcolor=lightgreen];
-    
-    usb_task_node -> usb_timing [style=dotted, color=gray];
-    amiga_task_node -> amiga_timing [style=dotted, color=gray];
-    
-    // Protocol details
-    protocol_details [label="{Amiga Protocol Details|{Bit order: 6-5-4-3-2-1-0-7|Data inverted (0=HIGH, 1=LOW)|Clock pulse: 20μs|Handshake: 85μs pulse|Reset: 500ms clock low}}", shape=note, fillcolor=lightyellow];
-    
-    amiga_protocol_detail -> protocol_details [style=dotted, color=gray];
+
+
+    // Connections
+    // USB Keyboard -> USB Host -> usbTask
+    usb_keyboard -> usb_host_stack [label="HID Reports", style=bold];
+    usb_host_stack -> usb_task_node [label="Parsed HID Data"];
+
+    // usbTask -> keyboardQueue -> amigaTask
+    usb_task_node -> keyboardQueue [label="Posts key events"];
+    keyboardQueue -> amiga_task_node [label="Receives key events"];
+
+    // amigaTask -> ledQueue -> usbTask
+    amiga_task_node -> ledQueue [label="Posts LED state changes"];
+    ledQueue -> usb_task_node [label="Receives LED state"];
+
+    // usbTask -> ledManagerQueue -> ledManagerTask -> Onboard LED
+    usb_task_node -> ledManagerQueue [label="Posts status commands"];
+    ledManagerQueue -> led_manager_task_node [label="Receives commands"];
+    led_manager_task_node -> onboard_led [label="Controls LED GPIO"];
+
+    // amigaTask -> amigaTaskQueue -> amigaTask (self-messaging)
+    amiga_task_node -> amigaTaskQueue [label="Posts internal msgs\n(e.g., RESET_START)"];
+    amigaTaskQueue -> amiga_task_node [label="Receives internal msgs"];
+
+    // amigaTask -> Amiga Protocol Driver -> Amiga
+    amiga_task_node -> amiga_protocol [label="Sends Amiga scancodes"];
+    amiga_protocol -> amiga_computer [label="Clock/Data/Reset signals", style=bold];
+
+    // EEPROM Task connections
+    amiga_task_node -> eepromQueue [label="Requests save mode"];
+    eepromQueue -> eeprom_task_node [label="Receives requests"];
+
+    // Logging connections (conceptual)
+    usb_task_node -> log_task [style=dashed, color=grey, label="Logs info"];
+    amiga_task_node -> log_task [style=dashed, color=grey, label="Logs info"];
+    eeprom_task_node -> log_task [style=dashed, color=grey, label="Logs info"];
 }
