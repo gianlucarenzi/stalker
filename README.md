@@ -32,9 +32,9 @@ so basically it is stalking you! ;-)
 
 Rendered Images
 ---------------
-[![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-f.png "Board Front")](#features)
-[![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-b.png "Board Back")](#features)
-[![](hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter.png "Board Overall")](#features)
+[![](/hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-f.png "Board Front")](#features)
+[![](/hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter-b.png "Board Back")](#features)
+[![](/hw/AmigaKeyboardAdapters/StandAlone-Adapter/images/StandAlone-Adapter.png "Board Overall")](#features)
 
 Upgrading with Linux and OpenOCD and STLinkV2 Programmer/Debugger
 -----------------------------------------------------------------
@@ -78,7 +78,7 @@ Some information will be shown into the right bottom side of the same window, pl
 
 After, you will need to select the correct <b>FIRMWARE</b> file (<b>.hex file format</b>) clicking into the <b>Open File</b> tab button like in the following example:
 
-![pic3-select-hex](./img/pic3-select-hex.png)
+![pic3-select-hex](/img/pic3-select-hex.png)
 
 If the file is loaded correctly, the <b>Download button</b> needs to be pressed to start the programming/flashing procedure. It will takes few seconds to be completed.
 
