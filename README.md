@@ -78,7 +78,7 @@ Some information will be shown into the right bottom side of the same window, pl
 
 After, you will need to select the correct <b>FIRMWARE</b> file (<b>.hex file format</b>) clicking into the <b>Open File</b> tab button like in the following example:
 
-![pic3-select-hex](img/pic3-select-hex.png)
+![pic3-select-hex](./img/pic3-select-hex.png)
 
 If the file is loaded correctly, the <b>Download button</b> needs to be pressed to start the programming/flashing procedure. It will takes few seconds to be completed.
 
