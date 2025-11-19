@@ -31,7 +31,7 @@ static int debuglevel = DBG_INFO;
 /* KEY definitions moved to usb_hid_keys.h */
 
 
-#define KEYCODE_TAB_SIZE      121
+#define KEYCODE_TAB_SIZE      122
 
 static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 {
@@ -137,6 +137,7 @@ static const uint8_t scancodeamiga[KEYCODE_TAB_SIZE][2] =
 	{KEY_KEYPAD_SLASH,           0x5C }, // /
 	{KEY_KEYPAD_ASTERIKS,        0x5D }, // NUM *
 	{KEY_KEYPAD_PLUS,            0x5E }, // NUM +
+	{KEY_HELP,                   0x5F }, // HELP
 	{KEY_SCROLL_LOCK,            0x5F }, // HELP (Mapped to ScrollLock?)
 	{KEY_APPLICATION,            0x5F }, // APP - HELP (Mapped to Key Application?)
 	{KEY_LEFTSHIFT,              0x60 }, // LSHIFT
@@ -239,6 +240,7 @@ static const uint8_t asciiscancode[KEYCODE_TAB_SIZE][2] =
 	{KEY_KEYPAD_SLASH,           '/' }, // /
 	{KEY_KEYPAD_ASTERIKS,        '*' }, // NUM *
 	{KEY_KEYPAD_PLUS,            '+' }, // NUM +
+	{KEY_HELP,                   'h' }, // HELP
 	{KEY_APPLICATION,            'h' }, // APP - HELP
 	{KEY_NONE,                   '(' }, // (
 	{KEY_NONE,                   ')' }, // )

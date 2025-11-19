@@ -122,7 +122,7 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE END 0 */
 
 /** @brief Firmware build version string with timestamp */
-static const char *fwBuild = "v3.0NG-RTOS BUILD: " __TIME__ "-" __DATE__;
+static const char *fwBuild = "v3.1NG-RTOS BUILD: " __TIME__ "-" __DATE__;
 /**
   * @brief  Display startup banner with firmware information
   * @details Prints colorized banner with firmware version and build information
