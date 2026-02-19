@@ -8,3 +8,9 @@
 /stalkb-bootloader/build/
 /.project
 /.cproject
+/hw/AmigaKeyboardAdapters/A1200-Internal/A1200MPU-Adapter.kicad_pcb-bak
+/hw/AmigaKeyboardAdapters/A1200-Internal/A1200MPU-Adapter.sch-bak
+/hw/AmigaKeyboardAdapters/A1200-Internal/fp-info-cache
+/hw/AmigaKeyboardAdapters/A600-Internal/A600MPU-Adapter-rescue.dcm
+/hw/AmigaKeyboardAdapters/A600-Internal/A600MPU-Adapter-rescue.lib
+/hw/AmigaKeyboardAdapters/A600-Internal/A600MPU-Adapter.sch-bak
