@@ -5,8 +5,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Amiga 600 MPU Keyboard Adapter"
-Date "2022-11-29"
-Rev "2.0"
+Date "2026-02-19"
+Rev "2.1"
 Comp "RetroBit Lab"
 Comment1 ""
 Comment2 ""
@@ -54,13 +54,13 @@ F 3 "" H 3600 2750 50  0001 C CNN
 $EndComp
 Text GLabel 5700 1800 0    60   BiDi ~ 0
 VCC
-Text GLabel 7350 2850 2    60   BiDi ~ 0
+Text GLabel 7345 2850 2    60   BiDi ~ 0
 ~RST
-Text GLabel 5350 2850 0    60   BiDi ~ 0
+Text GLabel 5345 2850 0    60   BiDi ~ 0
 KBD_DATA
-Text GLabel 5350 4700 0    60   BiDi ~ 0
+Text GLabel 5345 4700 0    60   BiDi ~ 0
 KBD_CLOCK
-Text GLabel 7350 4700 2    60   BiDi ~ 0
+Text GLabel 7345 4700 2    60   BiDi ~ 0
 ~TRESET
 Wire Wire Line
 	5850 1700 5850 1800
@@ -337,36 +337,33 @@ F 3 "~" H 3700 5500 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L RetroBitLab:6571R4_PLCC44_MPUKEY_REV U1
-U 1 1 5BECAC84
-P 6350 3800
-F 0 "U1" H 7050 5650 50  0000 C CNN
-F 1 "6571R4_PLCC44_MPUKEY_REV" H 6550 2000 50  0000 L CNN
-F 2 "RetroBitLab:PLCC-44_THT-Socket_3D" H 6350 3800 60  0001 C CNN
-F 3 "" H 6350 3800 60  0000 C CNN
-	1    6350 3800
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5850 1800 6050 1800
-Wire Wire Line
-	6500 1800 6700 1800
-Wire Wire Line
-	6500 1800 6250 1800
-Connection ~ 6500 1800
-Wire Wire Line
-	6250 1800 6050 1800
-Connection ~ 6250 1800
-Connection ~ 6050 1800
-$Comp
-L power:GND #PWR?
+L power:GND #PWR04
 U 1 1 6388659D
-P 6350 5800
-F 0 "#PWR?" H 6350 5550 50  0001 C CNN
-F 1 "GND" H 6350 5650 50  0000 C CNN
-F 2 "" H 6350 5800 50  0001 C CNN
-F 3 "" H 6350 5800 50  0001 C CNN
-	1    6350 5800
+P 6345 5800
+F 0 "#PWR04" H 6345 5550 50  0001 C CNN
+F 1 "GND" H 6345 5650 50  0000 C CNN
+F 2 "" H 6345 5800 50  0001 C CNN
+F 3 "" H 6345 5800 50  0001 C CNN
+	1    6345 5800
 	1    0    0    -1  
 $EndComp
+$Comp
+L RetroBitLab:6571R4_PLCC44_MPUKEY_REV U1
+U 1 1 6996E811
+P 6345 3800
+F 0 "U1" H 6945 5600 50  0000 C CNN
+F 1 "6571R4_PLCC44_MPUKEY_REV" H 5680 2010 50  0000 C CNN
+F 2 "RetroBitLab:PLCC-44_THT-Socket_3D" H 6345 3800 60  0001 C CNN
+F 3 "" H 6345 3800 60  0000 C CNN
+	1    6345 3800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5850 1800 6045 1800
+Wire Wire Line
+	6045 1800 6345 1800
+Connection ~ 6045 1800
+Wire Wire Line
+	6345 1800 6595 1800
+Connection ~ 6345 1800
 $EndSCHEMATC

@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name RetroBitLab)(type Legacy)(uri ${HOME}/Progetti/RetroBitLab-Library/RetroBitLab.lib)(options "")(descr ""))
+  (lib (name A600MPU-Adapter-rescue)(type Legacy)(uri ${KIPRJMOD}/A600MPU-Adapter-rescue.lib)(options "")(descr ""))
 )
