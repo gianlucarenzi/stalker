@@ -24,8 +24,6 @@ F 3 "" H 5750 3650 60  0000 C CNN
 	1    5750 3650
 	1    0    0    -1  
 $EndComp
-Text GLabel 4750 2750 0    60   BiDi ~ 0
-nVCC5V
 Text GLabel 5750 1650 1    60   BiDi ~ 0
 mVCC5V
 $Comp
@@ -44,8 +42,6 @@ Wire Wire Line
 	4100 1000 4100 1200
 Wire Wire Line
 	3850 1200 4100 1200
-Wire Wire Line
-	4700 1000 4700 1200
 Connection ~ 4100 1200
 Wire Wire Line
 	4100 1500 4100 1600
@@ -55,9 +51,6 @@ Text GLabel 3850 1600 0    60   BiDi ~ 0
 GND
 Text GLabel 4100 1000 1    60   BiDi ~ 0
 mVCC5V
-Text GLabel 4700 1000 1    60   BiDi ~ 0
-nVCC5V
-Connection ~ 4700 1200
 Text GLabel 5750 5650 3    60   BiDi ~ 0
 mGND
 Text GLabel 4100 1800 3    60   BiDi ~ 0
@@ -207,34 +200,17 @@ F 4 "C24497" H 4350 1400 50  0001 C CNN "LCSC"
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4950 1200 4950 1300
-Wire Wire Line
-	4950 1600 4950 1500
-Connection ~ 4700 1600
-Wire Wire Line
 	4350 1300 4350 1200
-Connection ~ 4350 1200
 Wire Wire Line
 	4350 1500 4350 1600
-Connection ~ 4350 1600
 Wire Wire Line
 	4100 1200 4100 1300
 Wire Wire Line
 	4100 1200 4350 1200
 Wire Wire Line
-	4700 1200 4700 1300
-Wire Wire Line
-	4700 1200 4950 1200
-Wire Wire Line
 	4100 1600 4100 1800
 Wire Wire Line
 	4100 1600 4350 1600
-Wire Wire Line
-	4700 1600 4950 1600
-Wire Wire Line
-	4350 1200 4700 1200
-Wire Wire Line
-	4350 1600 4700 1600
 $Comp
 L Connector_Generic:Conn_02x03_Odd_Even P1
 U 1 1 636CBEED
@@ -260,36 +236,11 @@ F 4 "C93133" V 8085 1850 50  0001 C CNN "LCSC"
 	1    8085 1850
 	0    -1   -1   0   
 $EndComp
-Wire Wire Line
-	4700 1500 4700 1600
-$Comp
-L Device:CP1_Small C2
-U 1 1 636E678B
-P 4700 1400
-F 0 "C2" H 4710 1470 50  0000 L CNN
-F 1 "10uF" H 4710 1320 50  0000 L CNN
-F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-12_Kemet-S_Pad1.58x1.35mm_HandSolder" H 4700 1400 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/lcsc/1811151641_Sunlord-TC212A106K016Y_C108529.pdf" H 4700 1400 50  0001 C CNN
-F 4 "C108529" H 4700 1400 50  0001 C CNN "LCSC"
-	1    4700 1400
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C_Small C4
-U 1 1 636E7056
-P 4950 1400
-F 0 "C4" H 4960 1470 50  0000 L CNN
-F 1 "100nF" H 4960 1320 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 4950 1400 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/lcsc/1810221109_Samsung-Electro-Mechanics-CL31B104KBCNNNC_C24497.pdf" H 4950 1400 50  0001 C CNN
-F 4 "C24497" H 4950 1400 50  0001 C CNN "LCSC"
-	1    4950 1400
-	1    0    0    -1  
-$EndComp
 Connection ~ 3000 1845
 Wire Wire Line
 	3000 1845 3000 1950
 Connection ~ 2500 1750
 Wire Wire Line
 	2500 1750 2500 1900
+NoConn ~ 4750 2750
 $EndSCHEMATC
