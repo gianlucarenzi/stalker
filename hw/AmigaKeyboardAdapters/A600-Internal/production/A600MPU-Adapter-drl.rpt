@@ -1,5 +1,5 @@
 Drill report for /home/gianluca/Progetti-CVS/Amiga/stalker/hw/AmigaKeyboardAdapters/A600-Internal/A600MPU-Adapter.kicad_pcb
-Created on Wed 18 Feb 2026 04:49:03 PM CET
+Created on Thu 19 Feb 2026 10:59:57 AM CET
 
 Copper Layer Stackup:
     =============================================================
@@ -10,11 +10,11 @@ Copper Layer Stackup:
 Drill file 'A600MPU-Adapter-PTH.drl' contains
     plated through holes:
     =============================================================
-    T1  0.40mm  0.016"  (3 holes)
+    T1  0.40mm  0.016"  (5 holes)
     T2  0.80mm  0.031"  (44 holes)
     T3  1.00mm  0.039"  (9 holes)
 
-    Total plated holes count 56
+    Total plated holes count 58
 
 
 Drill file 'A600MPU-Adapter-NPTH.drl' contains
