@@ -7,7 +7,7 @@
       "Application": "Pcbnew",
       "Version":     "5.1.9+dfsg1-1+deb11u1"
     },
-    "CreationDate":  "2026-02-19T10:59:52+01:00"
+    "CreationDate":  "2026-02-20T14:02:03+01:00"
   },
   "GeneralSpecs":
   {
@@ -15,7 +15,7 @@
     {
       "Name": "A600MPU-Adapter",
       "GUID": "41363030-4d50-4552-9d41-646170746572",
-      "Revision": "2.0"
+      "Revision": "3.0"
     },
     "Size":
     {

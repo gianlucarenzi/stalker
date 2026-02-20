@@ -5,8 +5,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Amiga 600 MPU Keyboard Adapter"
-Date "2026-02-19"
-Rev "2.1"
+Date "2026-02-20"
+Rev "3.0"
 Comp "RetroBit Lab"
 Comment1 ""
 Comment2 ""
