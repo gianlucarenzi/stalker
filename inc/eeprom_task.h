@@ -2,7 +2,7 @@
  * eeprom_task.h
  *
  *  Created on: Nov 12, 2025
- *      Author: Gemini
+ *      Author: Gianluca Renzi
  */
 
 #ifndef INC_EEPROM_TASK_H_

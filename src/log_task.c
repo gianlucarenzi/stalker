@@ -2,7 +2,7 @@
  * log_task.c
  *
  *  Created on: Nov 11, 2025
- *      Author: Gemini
+ *      Author: Gianluca Renzi
  */
 
 #include "log_task.h"

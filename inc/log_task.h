@@ -2,7 +2,7 @@
  * log_task.h
  *
  *  Created on: Nov 11, 2025
- *      Author: Gemini
+ *      Author: Gianluca Renzi
  */
 
 #ifndef INC_LOG_TASK_H_
