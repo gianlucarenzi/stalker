@@ -87,7 +87,7 @@ void Error_Handler(void);
 #define CURRENT_DEBUG_LEVEL DEBUG_LEVEL_ALL
 
 // Software Version
-#define SOFTWARE_VERSION "1.0"
+#define SOFTWARE_VERSION "1.1"
 
 // Custom Print Macros
 #define PRINT_NORMAL(fmt, ...)  printf(ANSI_COLOR_RESET fmt ANSI_COLOR_RESET, ##__VA_ARGS__)

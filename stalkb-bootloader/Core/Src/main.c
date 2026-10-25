@@ -62,6 +62,7 @@ static void application_run(void);
 static void print_startup_banner(void);
 static void show_dfu_mode(int use_dfu);
 static void amiga_reset(void);
+static void prepare_for_jump(void);
 /* USER CODE END PFP */
 
 /* Public function prototypes -------------------------------------------------*/
@@ -179,9 +180,45 @@ static uint8_t check_boot_mode_pin(void)
 	}
 }
 
+/**
+ * @brief Bring the MCU back to a reset-like state before leaving the bootloader
+ *
+ * The ST ROM DFU bootloader expects the default clock tree (HSI, PLL off) and
+ * no running SysTick/pending interrupts. GPIOs are left untouched so the Amiga
+ * stays in reset while updating.
+ */
+static void prepare_for_jump(void)
+{
+	__disable_irq();
+
+	HAL_UART_DeInit(&huart2);
+	HAL_RCC_DeInit();
+
+	// HAL_RCC_DeInit() restarts SysTick on HSI: stop it for good
+	SysTick->CTRL = 0;
+	SysTick->LOAD = 0;
+	SysTick->VAL = 0;
+	SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
+
+	for (uint32_t i = 0; i < (sizeof(NVIC->ICER) / sizeof(NVIC->ICER[0])); i++)
+	{
+		NVIC->ICER[i] = 0xFFFFFFFF;
+		NVIC->ICPR[i] = 0xFFFFFFFF;
+	}
+
+	// The ROM bootloader and the application expect interrupts enabled
+	__enable_irq();
+}
+
 static void jump_to_dfu_bootloader(void)
 {
 	PRINT_INFO("Jumping to DFU Bootloader...\r\n");
+
+	prepare_for_jump();
+
+	// Map System Memory at 0x00000000 as after a BOOT0 reset
+	__HAL_RCC_SYSCFG_CLK_ENABLE();
+	__HAL_SYSCFG_REMAPMEMORY_SYSTEMFLASH();
 
 	// Get the DFU entry point (reset handler address)
 	// The entry point is typically stored at the second word (offset 4) of the vector table
@@ -237,7 +274,7 @@ static void application_run(void)
 	// Turn off the LED before jumping to application
 	HAL_GPIO_WritePin(LED_PIN_GPIO_Port, LED_PIN_Pin, GPIO_PIN_SET);
 
-	//__disable_irq();
+	prepare_for_jump();
 
 	// Set the Vector Table Offset Register to the application's vector table
 	SCB->VTOR = (uint32_t)&__appflash_start;
