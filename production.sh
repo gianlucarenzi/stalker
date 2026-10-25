@@ -23,6 +23,26 @@ function check_integrity()
 	return 1
 }
 
+# Run a flashing step quietly; on failure show its output and abort
+function run_step()
+{
+	local m_TITLE=$1
+	shift
+	local m_LOG=$(mktemp)
+
+	echo
+	echo "${m_TITLE}"
+	"$@" > ${m_LOG} 2>&1
+	if [ $? -ne 0 ]; then
+		echo "Error on ${m_TITLE}:"
+		cat ${m_LOG}
+		rm -f ${m_LOG}
+		exit 1
+	fi
+	rm -f ${m_LOG}
+	echo "${m_TITLE} Done."
+}
+
 reset
 clear
 
@@ -98,19 +118,14 @@ fi
 cd ${PRJROOT}
 echo "Everything is fine..."
 # Erase all flash first
-echo
-echo "FORMAT FLASH"
-./format_flash.sh 1>/dev/null 2>/dev/null
-echo
+run_step "FORMAT FLASH" ./format_flash.sh
 
 # Then flash bootloader first
-echo
-echo "INSTALLING BOOTLOADER"
-./bootloader.sh 1>/dev/null 2>/dev/null
+run_step "INSTALLING BOOTLOADER" ./bootloader.sh
 
 # And finally flash the application
-echo
-echo "INSTALLING APPLICATION"
-./flash.sh 1>/dev/null 2>/dev/null
+run_step "INSTALLING APPLICATION" ./flash.sh ${APPLICATION}
 
+echo
+echo "Production programming completed."
 exit 0
