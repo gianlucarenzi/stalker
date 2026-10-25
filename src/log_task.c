@@ -126,6 +126,36 @@ int LogTask_SendString(const char *ptr, int len) {
 }
 
 /**
+ * @brief Sends a raw buffer to the UART/log queue without prefix
+ */
+static int log_send_raw(const char *buf, int len)
+{
+	// If scheduler is not running, write directly to UART
+	if (osKernelGetState() != osKernelRunning) {
+		if (s_logHuart != NULL) {
+			HAL_UART_Transmit(s_logHuart, (uint8_t *)buf, len, HAL_MAX_DELAY);
+		}
+		return len;
+	}
+
+	// If scheduler is running, send to queue WITHOUT prefix
+	if (s_logQueue == NULL) {
+		return -1;
+	}
+
+	uint32_t timeout = (__get_IPSR() != 0U) ? 0U : 10U;
+
+	// Send characters directly to queue without prefix logic
+	for (int i = 0; i < len; i++) {
+		if (osMessageQueuePut(s_logQueue, &buf[i], 0, timeout) != osOK) {
+			return i;
+		}
+	}
+
+	return len;
+}
+
+/**
  * @brief Printf-like function that sends data directly to log queue without prefix
  *
  * This function bypasses the normal printf mechanism and sends data directly
@@ -148,33 +178,23 @@ int log_printf(const char *format, ...)
 		return -1;
 	}
 
+	int original_len = len;
 	if (len >= (int)sizeof(buffer)) {
 		len = sizeof(buffer) - 1;
 	}
 
-	// If scheduler is not running, write directly to UART
-	if (osKernelGetState() != osKernelRunning) {
-		if (s_logHuart != NULL) {
-			HAL_UART_Transmit(s_logHuart, (uint8_t *)buffer, len, HAL_MAX_DELAY);
-		}
-		return len;
-	}
+	int sent = log_send_raw(buffer, len);
 
-	// If scheduler is running, send to queue WITHOUT prefix
-	if (s_logQueue == NULL) {
-		return -1;
-	}
-
-	uint32_t timeout = (__get_IPSR() != 0U) ? 0U : 10U;
-
-	// Send characters directly to queue without prefix logic
-	for (int i = 0; i < len; i++) {
-		if (osMessageQueuePut(s_logQueue, &buffer[i], 0, timeout) != osOK) {
-			return i;
+	// Notify truncation without going through printf (see note above)
+	if (original_len > len && sent == len) {
+		char note[48];
+		int n = snprintf(note, sizeof(note), "\r\n[log truncated: %d bytes]\r\n", original_len);
+		if (n > 0) {
+			log_send_raw(note, n < (int)sizeof(note) ? n : (int)sizeof(note) - 1);
 		}
 	}
 
-	return len;
+	return sent;
 }
 
 // NOTE: The HAL_UART_TxCpltCallback is not needed for this blocking implementation.

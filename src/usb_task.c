@@ -292,7 +292,11 @@ static void send_reset_event(void)
 	osStatus_t status = osMessageQueuePut(keyboardQueueHandle, &msg, 0, 0);
 	if (status == osOK)
 	{
-		DBG_E("Reset event sent to Amiga task\r\n");
+		DBG_V("Reset event sent to Amiga task\r\n");
+	}
+	else
+	{
+		DBG_E("Error sending reset event (status: %d)\r\n", status);
 	}
 }
 
@@ -318,7 +322,10 @@ static void handle_usb_state(void)
 			led_message_t msg;
 			msg.led_status = LED_RESET_BLINK;
 			msg.timestamp = osKernelGetTickCount();
-			osMessageQueuePut(ledQueueHandle, &msg, 0, 0);
+			osStatus_t status = osMessageQueuePut(ledQueueHandle, &msg, 0, 0);
+			if (status != osOK) {
+				DBG_E("Error: LED Queue full, message dropped (code: %d)\r\n", status);
+			}
 		}
 		// Send reset event on disconnect or when leaving READY state
 		else if (current_state == APPLICATION_DISCONNECT ||
@@ -376,7 +383,10 @@ static void led_on(void)
 			.data = 0,
 			.duration_ms = 0
 		};
-		osMessageQueuePut(ledManagerQueueHandle, &msg, 0, 0);
+		osStatus_t status = osMessageQueuePut(ledManagerQueueHandle, &msg, 0, 0);
+		if (status != osOK) {
+			DBG_E("Error: LED Manager Queue full, message dropped (code: %d)\r\n", status);
+		}
 		usb_led_state = 1;
 	}
 }
@@ -392,7 +402,10 @@ static void led_toggle(void)
 		.data = 0,
 		.duration_ms = 0
 	};
-	osMessageQueuePut(ledManagerQueueHandle, &msg, 0, 0);
+	osStatus_t status = osMessageQueuePut(ledManagerQueueHandle, &msg, 0, 0);
+	if (status != osOK) {
+		DBG_E("Error: LED Manager Queue full, message dropped (code: %d)\r\n", status);
+	}
 
 	// Update local state for tracking
 	led_blink_state = !led_blink_state;

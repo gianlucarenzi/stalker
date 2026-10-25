@@ -350,7 +350,7 @@ bool ee_write(void)
 		{
 			uint64_t double_word;
 			memcpy((uint8_t*)&double_word, data, 8);
-			if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, ee_handle.address + i, doubleWord) != HAL_OK)
+			if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, ee_handle.address + i, double_word) != HAL_OK)
 			{
 				answer = false;
 				break;

@@ -122,7 +122,7 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE END 0 */
 
 /** @brief Firmware build version string with timestamp */
-static const char *fwBuild = "v3.1NG-RTOS BUILD: " __TIME__ "-" __DATE__;
+static const char *fwBuild = "v3.2NG-RTOS BUILD: " __TIME__ "-" __DATE__;
 /**
   * @brief  Display startup banner with firmware information
   * @details Prints colorized banner with firmware version and build information
@@ -149,7 +149,7 @@ static void create_system_queues(void)
 	if (ledQueueHandle == NULL)
 	{
 		DBG_E("Error Creating ledQueueHandle\r\n");
-		assert(ledQueueHandle == NULL);
+		assert(ledQueueHandle != NULL);
 	}
 	else
 	{
@@ -160,7 +160,7 @@ static void create_system_queues(void)
 	if (ledManagerQueueHandle == NULL)
 	{
 		DBG_E("Error Creating ledManagerQueueHandle\r\n");
-		assert(ledManagerQueueHandle == NULL);
+		assert(ledManagerQueueHandle != NULL);
 	}
 	else
 	{
@@ -171,7 +171,7 @@ static void create_system_queues(void)
 	if (keyboardQueueHandle == NULL)
 	{
 		DBG_E("Error Creating keyboardQueueHandle\r\n");
-		assert(keyboardQueueHandle == NULL);
+		assert(keyboardQueueHandle != NULL);
 	}
 	else
 	{
@@ -182,7 +182,7 @@ static void create_system_queues(void)
 	if (amigaTaskQueueHandle == NULL)
 	{
 		DBG_E("Error Creating amigaTaskQueueHandle\r\n");
-		assert(amigaTaskQueueHandle == NULL);
+		assert(amigaTaskQueueHandle != NULL);
 	}
 	else
 	{
@@ -198,7 +198,7 @@ static void create_system_tasks(void)
 	if (USBKeyBoardTaskHandle == NULL)
 	{
 		DBG_E("Error Creating Task USBKeyBoardTaskHandle\r\n");
-		assert(USBKeyBoardTaskHandle == NULL);
+		assert(USBKeyBoardTaskHandle != NULL);
 	}
 	else
 	{
@@ -210,7 +210,7 @@ static void create_system_tasks(void)
 	if (AmigaTaskHandle == NULL)
 	{
 		DBG_E("Error Creating Task AmigaTaskHandle\r\n");
-		assert(AmigaTaskHandle == NULL);
+		assert(AmigaTaskHandle != NULL);
 	}
 	else
 	{
@@ -222,7 +222,7 @@ static void create_system_tasks(void)
 	if (LedManagerTaskHandle == NULL)
 	{
 		DBG_E("Error Creating Task LedManagerTaskHandle\r\n");
-		assert(LedManagerTaskHandle == NULL);
+		assert(LedManagerTaskHandle != NULL);
 	}
 	else
 	{
