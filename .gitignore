@@ -14,3 +14,12 @@
 /hw/AmigaKeyboardAdapters/A600-Internal/A600MPU-Adapter-rescue.dcm
 /hw/AmigaKeyboardAdapters/A600-Internal/A600MPU-Adapter-rescue.lib
 /hw/AmigaKeyboardAdapters/A600-Internal/A600MPU-Adapter.sch-bak
+# output_job.sh in hw/AmigaKeyboardAdapters/*
+/hw/AmigaKeyboardAdapters/*/eeplot-src/
+/hw/AmigaKeyboardAdapters/*/*.zip
+/hw/AmigaKeyboardAdapters/*/*-JLCPCB-BOM.csv
+/hw/AmigaKeyboardAdapters/*/*-JLCPCB-CPL.csv
+/hw/AmigaKeyboardAdapters/*/*.kicad_pcb.backup_*
+/hw/AmigaKeyboardAdapters/*/*.csv.backup_*
+/hw/AmigaKeyboardAdapters/*/*cleanup_report_*.txt
+*.kicad_prl

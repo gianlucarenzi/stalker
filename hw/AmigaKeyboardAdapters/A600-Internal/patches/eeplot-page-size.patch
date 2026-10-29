@@ -1,0 +1,95 @@
+diff --git a/gfx/cro.c b/gfx/cro.c
+index 68c0616..1c3ee0f 100644
+--- a/gfx/cro.c
++++ b/gfx/cro.c
+@@ -708,16 +708,40 @@ static void cr_pdf_new_sheet(void *ctx)
+ }
+ 
+ 
++/*
++ * Compute this sheet's own page size (from its own bounding box, not the
++ * union of all sheets recorded so far) and set cc->xo/yo so that it is
++ * drawn flush with that page's origin - each schematic sheet keeps its
++ * original paper size instead of every page being forced to the size of
++ * whichever sheet happens to be biggest.
++ */
++static void cr_pdf_page_size(struct cro_ctx *cc, const struct record *rec,
++    int *w, int *h)
++{
++	int bw, bh, xmin, ymin;
++
++	record_bbox(rec, &xmin, &ymin, &bw, &bh);
++	bw = ceil(cd(cc, bw));
++	bh = ceil(cd(cc, bh));
++
++	*w = ((bw + 15) >> 4) + ceil(0.5 * cc->scale);
++	*h = ((bh + 15) >> 4) + ceil(0.5 * cc->scale);
++
++	cc->xo = -cd(cc, xmin);
++	cc->yo = -cd(cc, ymin);
++}
++
++
+ static int cr_pdf_end(void *ctx, enum gfx_extra extra)
+ {
+ 	struct cro_ctx *cc = ctx;
+ 	int w, h;
+-	unsigned i;
++	unsigned i, n_pages = cc->n_sheets + 1;
+ 
+-	end_common(cc, &w, &h, NULL, NULL);
++	cairo_surface_destroy(cc->s);
++	cairo_destroy(cc->cr);
+ 
+-	w = ((w + 15) >> 4) + ceil(0.5 * cc->scale);
+-	h = ((h + 15) >> 4) + ceil(0.5 * cc->scale);
++	cr_pdf_page_size(cc, cc->n_sheets ? cc->sheets : &cc->record, &w, &h);
+ 
+ 	if (cc->toc)
+ 		cc->s = cairo_pdf_surface_create_for_stream(stream_to_pdftoc,
+@@ -736,21 +760,25 @@ static int cr_pdf_end(void *ctx, enum gfx_extra extra)
+ 	/* @@@ CAIRO_LINE_CAP_ROUND makes all non-dashed lines disappear */
+ 	cairo_set_line_cap(cc->cr, CAIRO_LINE_CAP_SQUARE);
+ 
+-	for (i = 0; i != cc->n_sheets; i++) {
++	for (i = 0; i != n_pages; i++) {
++		struct record *rec =
++		    i < cc->n_sheets ? cc->sheets + i : &cc->record;
++
++		if (i) {
++			/* resize before any drawing op touches the page */
++			cr_pdf_page_size(cc, rec, &w, &h);
++			cairo_pdf_surface_set_size(cc->s, w, h);
++		}
++
+ 		set_color(cc, COLOR_WHITE);
+ 		cairo_paint(cc->cr);
+ 
+-		record_replay(cc->sheets + i, extra);
+-		record_destroy(cc->sheets + i);
++		record_replay(rec, extra);
++		record_destroy(rec);
+ 
+ 		cairo_show_page(cc->cr);
+ 	}
+ 
+-	record_replay(&cc->record, extra);
+-	record_destroy(&cc->record);
+-
+-	cairo_show_page(cc->cr);
+-
+ 	cairo_surface_destroy(cc->s);
+ 	cairo_destroy(cc->cr);
+ 
+diff --git a/gfx/record.c b/gfx/record.c
+index 851d913..ebcfdc1 100644
+--- a/gfx/record.c
++++ b/gfx/record.c
+@@ -303,6 +303,7 @@ void record_init(struct record *rec, const struct gfx_ops *ops, void *user)
+ void record_wipe(struct record *rec)
+ {
+ 	rec->layers = NULL;
++	bb_init(&rec->bbox);
+ }
+ 
+ 

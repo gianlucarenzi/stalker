@@ -1,0 +1,69 @@
+eeplot fixes for KiCad 5 schematics:
+- symbols of a library given without a directory (e.g. the project
+  -rescue.lib) were looked up under a corrupted library name, because
+  the name was searched backwards for a "/" beyond the start of the path
+- embedded images ($Bitmap) stopped the plot with "cannot parse": skip them
+
+diff --git a/kicad/lib-parse.c b/kicad/lib-parse.c
+index 5b3c6f1..db8e1c3 100644
+--- a/kicad/lib-parse.c
++++ b/kicad/lib-parse.c
+@@ -178,13 +178,12 @@ static void create_kicad5_alias(struct comp *comp, const struct file *file, cons
+ 	// Add new alias for Kicad v5 support
+ 	char *libName = strstr(file->name, ".lib");
+ 	int nameLen = 0;
+-	// Find start of lib name
+-	while (*libName-- != '/') {
++	// Find start of lib name: after the last '/', or the start of the
++	// file name when the library is given without a directory
++	while (libName != file->name && libName[-1] != '/') {
++		libName--;
+ 		nameLen++;
+ 	}
+-	// Correct accidental overstepping
+-	libName += 2;
+-	nameLen--;
+ 
+ 	// Create alias name
+ 	int mallocAmount = nameLen+2+strlen(alias);
+diff --git a/kicad/sch-parse.c b/kicad/sch-parse.c
+index bb56620..9ce8fc4 100644
+--- a/kicad/sch-parse.c
++++ b/kicad/sch-parse.c
+@@ -583,6 +583,13 @@ static bool parse_line(const struct file *file, void *user, const char *line)
+ 			return 1;
+ 		}
+ 
++		/* Embedded images are not drawn: skip them */
++
++		if (sscanf(line, "$Bitmap%n", &n) == 0 && n) {
++			ctx->state = sch_bitmap;
++			return 1;
++		}
++
+ 		/* EndSCHEMATC */
+ 
+ 		if (sscanf(line, "$EndSCHEMATC%n", &n) == 0 && n) {
+@@ -719,6 +726,10 @@ static bool parse_line(const struct file *file, void *user, const char *line)
+ 		submit_obj(ctx, sch_obj_wire);
+ 		ctx->state = sch_basic;
+ 		return 1;
++	case sch_bitmap:
++		if (sscanf(line, "$EndBitmap%n", &n) == 0 && n)
++			ctx->state = sch_basic;
++		return 1;
+ 	case sch_eof:
+ 		return 1;
+ 	default:
+diff --git a/kicad/sch.h b/kicad/sch.h
+index c22d907..4998e96 100644
+--- a/kicad/sch.h
++++ b/kicad/sch.h
+@@ -30,6 +30,7 @@ enum sch_state {
+ 	sch_sheet,	/* sub-sheet */
+ 	sch_text,	/* text or label */
+ 	sch_wire,	/* wire */
++	sch_bitmap,	/* skipping an embedded image */
+ 	sch_eof,	/* skipping anything after $EndSCHEMATC */
+ };
+ 
