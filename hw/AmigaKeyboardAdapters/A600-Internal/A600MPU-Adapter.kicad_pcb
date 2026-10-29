@@ -557,11 +557,6 @@
     (pad 35 thru_hole circle (at 7.62 -5.08 180) (size 1.4224 1.4224) (drill 0.8) (layers *.Cu *.Mask))
     (pad 37 thru_hole circle (at 7.62 -2.54 180) (size 1.4224 1.4224) (drill 0.8) (layers *.Cu *.Mask))
     (pad 39 thru_hole circle (at 7.62 0 180) (size 1.4224 1.4224) (drill 0.8) (layers *.Cu *.Mask))
-    (model ${KISYS3DMOD}/Package_LCC.3dshapes/PLCC-44_THT-Socket.wrl
-      (at (xyz 0 0 0))
-      (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
-    )
     (model ${KILIBPATH}/RetroBitLab.3dshapes/54020-44030LF.stp
       (offset (xyz -12.85 -17.95 7.75))
       (scale (xyz 1 1 1))
